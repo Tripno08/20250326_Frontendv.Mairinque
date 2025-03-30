@@ -40,3 +40,6 @@ next-env.d.ts
 
 # Uploads
 /uploads
+
+# Project specific
+/innerview
