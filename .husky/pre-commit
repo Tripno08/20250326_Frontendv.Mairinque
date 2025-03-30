@@ -1,0 +1,51 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+echo '🏗️👷 Estilizando, testando e construindo seu projeto antes de commitar'
+
+# Verificar Prettier
+npm run check-format ||
+(
+    echo '🤢🤮 Formatação com Prettier falhou 🤮🤢
+            Rode npm run format, adicione as mudanças e tente commitar novamente.';
+    false;
+)
+
+# Verificar ESLint
+npm run check-lint ||
+(
+    echo '😤🏀 ESLint falhou 😤🏀
+            Faça as correções necessárias listadas acima e tente novamente.'
+    false;
+)
+
+# Verificar tipos do TypeScript
+npm run check-types ||
+(
+    echo '🤡😂 Verificação de tipos falhou 😂🤡
+            Corrija os erros de tipo listados acima e tente novamente.'
+    false;
+)
+
+# Se tudo passar... tente construir o projeto
+echo '🤔🤔 Tentando construir agora... 🤔🤔'
+
+npm run build ||
+(
+    echo '❌👷 Construção do Next.js falhou 👷❌
+            Veja os erros acima para ver o que deu errado.'
+    false;
+)
+
+# Se tudo passar... finalmente, execute os testes
+echo '🤔🤔 Executando testes... 🤔🤔'
+
+npm run test ||
+(
+    echo '❌🧪 Testes falharam 🧪❌
+            Veja os erros acima para ver o que deu errado.'
+    false;
+)
+
+# Se chegarmos aqui, commit pode prosseguir
+echo '✅✅ Você ganhou dessa vez... Estou permitindo o commit ✅✅'

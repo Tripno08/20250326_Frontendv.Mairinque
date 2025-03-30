@@ -1,0 +1,87 @@
+{
+  "version": 1,
+  "contexts": [
+    {
+      "name": "Project Overview",
+      "description": "General overview of the Innerview project, architecture and goals",
+      "files": [
+        "docs/architecture.md",
+        "docs/project_overview.md"
+      ]
+    },
+    {
+      "name": "API Documentation",
+      "description": "API endpoints and communication with backend",
+      "files": [
+        "docs/docs_api.md"
+      ]
+    },
+    {
+      "name": "Database Schema",
+      "description": "Prisma schema and database models",
+      "files": [
+        "docs/prisma_ref.md"
+      ]
+    },
+    {
+      "name": "Frontend Implementation",
+      "description": "Frontend implementation plan and components",
+      "files": [
+        "docs/projeto-frontend-revisado.md",
+        "docs/material-ui-api-doc.md"
+      ]
+    },
+    {
+      "name": "Development Guidelines",
+      "description": "Coding standards and development practices",
+      "files": [
+        "docs/cursor-ai-rules.md",
+        "docs/innerview-desenvolvimento.md"
+      ]
+    },
+    {
+      "name": "RTI/MTSS Concepts",
+      "description": "Educational concepts and domain knowledge for RTI/MTSS",
+      "files": [
+        "docs/rti-mtss-concepts.md"
+      ]
+    },
+    {
+      "name": "Backend Implementation",
+      "description": "Backend implementation details",
+      "files": [
+        "docs/ProjetoBackend.md"
+      ]
+    },
+    {
+      "name": "Component Examples",
+      "description": "Examples of key components implementation",
+      "files": [
+        "docs/component-examples.md"
+      ]
+    }
+  ],
+  "settings": {
+    "defaultModel": "claude-3-sonnet-20240229",
+    "contextWindow": 200000,
+    "autoIncludeCurrentFile": true,
+    "useFileHistory": true,
+    "fileTypes": [
+      ".tsx",
+      ".ts",
+      ".js",
+      ".jsx",
+      ".md",
+      ".json",
+      ".css",
+      ".scss"
+    ],
+    "excludePatterns": [
+      "node_modules/**",
+      ".git/**",
+      "dist/**",
+      ".next/**",
+      "build/**"
+    ]
+  }
+}

@@ -1,0 +1,24 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+
+# Your rule content
+
+- You can @ files here
+- You can use markdown but dont have to
+[architecture.md](mdc:docs/architecture.md)
+[padroes-tipagem.md](mdc:docs/padroes-tipagem.md)
+[api.md](mdc:docs/api.md)
+[exemplos-uso.md](mdc:docs/exemplos-uso.md)
+[rti-mtss-concepts.md](mdc:docs/rti-mtss-concepts.md)
+[mcp-setup-guide.md](mdc:docs/mcp-setup-guide.md)
+[project-overview.md](mdc:docs/project-overview.md)
+[typescript-types.md](mdc:docs/typescript-types.md)
+[componentes-testes.md](mdc:docs/componentes-testes.md)
+[component-examples.md](mdc:docs/component-examples.md)
+[desafios-solucoes.md](mdc:docs/desafios-solucoes.md)
+[testes.md](mdc:docs/testes.md)
+
+
