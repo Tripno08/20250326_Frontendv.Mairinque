@@ -67,7 +67,10 @@ export interface ReferralListProps extends BaseProps {
 export interface ReferralDetailsProps extends BaseProps {
   referral: Referral;
   onUpdate: (referral: Referral) => void;
-  onAddComment: (referralId: string, comment: Omit<Comment, 'id' | 'createdAt' | 'updatedAt'>) => void;
+  onAddComment: (
+    referralId: string,
+    comment: Omit<Comment, 'id' | 'createdAt' | 'updatedAt'>
+  ) => void;
 }
 
 export interface ReferralDashboardProps extends BaseProps {

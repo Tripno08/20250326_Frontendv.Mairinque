@@ -18,9 +18,9 @@ const mockWidgets: DashboardWidget[] = [
       x: 0,
       y: 0,
       w: 6,
-      h: 4
-    }
-  }
+      h: 4,
+    },
+  },
 ];
 
 const mockDefaultLayout: DashboardLayout = {
@@ -34,27 +34,25 @@ const mockDefaultLayout: DashboardLayout = {
       x: 0,
       y: 0,
       w: 6,
-      h: 4
-    }
+      h: 4,
+    },
   ],
   createdAt: new Date('2025-03-29T21:02:11.765Z'),
-  updatedAt: new Date('2025-03-29T21:02:11.765Z')
+  updatedAt: new Date('2025-03-29T21:02:11.765Z'),
 };
 
 // Mock do localStorage
 const mockLocalStorage = {
   getItem: jest.fn(),
   setItem: jest.fn(),
-  clear: jest.fn()
+  clear: jest.fn(),
 };
 Object.defineProperty(window, 'localStorage', { value: mockLocalStorage });
 
 const renderWithProvider = (ui: React.ReactElement) => {
   return render(
     <DashboardProvider>
-      <div style={{ width: 800, height: 600 }}>
-        {ui}
-      </div>
+      <div style={{ width: 800, height: 600 }}>{ui}</div>
     </DashboardProvider>
   );
 };
@@ -67,7 +65,7 @@ const mapWidgetToConfig = (widget: DashboardWidget): WidgetConfig => ({
   x: widget.defaultConfig.x || 0,
   y: widget.defaultConfig.y || 0,
   w: widget.defaultConfig.w || 6,
-  h: widget.defaultConfig.h || 4
+  h: widget.defaultConfig.h || 4,
 });
 
 describe('CustomizableDashboard', () => {
@@ -121,12 +119,14 @@ describe('CustomizableDashboard', () => {
     const layoutChangeEvent = new CustomEvent('layoutchange', {
       detail: {
         ...mockDefaultLayout,
-        widgets: [{
-          ...mockDefaultLayout.widgets[0],
-          x: 2,
-          y: 2
-        }]
-      }
+        widgets: [
+          {
+            ...mockDefaultLayout.widgets[0],
+            x: 2,
+            y: 2,
+          },
+        ],
+      },
     });
     window.dispatchEvent(layoutChangeEvent);
 
@@ -169,18 +169,22 @@ describe('CustomizableDashboard', () => {
   it('renderiza com layout personalizado do localStorage', () => {
     const customLayout = {
       ...mockDefaultLayout,
-      widgets: [{
-        ...mockDefaultLayout.widgets[0],
-        x: 2,
-        y: 2
-      }]
+      widgets: [
+        {
+          ...mockDefaultLayout.widgets[0],
+          x: 2,
+          y: 2,
+        },
+      ],
     };
 
-    mockLocalStorage.getItem.mockReturnValue(JSON.stringify({
-      ...customLayout,
-      version: STORAGE_CONFIG.version,
-      updatedAt: new Date().toISOString()
-    }));
+    mockLocalStorage.getItem.mockReturnValue(
+      JSON.stringify({
+        ...customLayout,
+        version: STORAGE_CONFIG.version,
+        updatedAt: new Date().toISOString(),
+      })
+    );
 
     renderWithProvider(
       <CustomizableDashboard
@@ -196,15 +200,17 @@ describe('CustomizableDashboard', () => {
   it('lida com widgets inválidos', () => {
     const invalidLayout = {
       ...mockDefaultLayout,
-      widgets: [{
-        id: 'widget-1',
-        type: 'invalid-type',
-        title: 'Widget de Teste',
-        x: 0,
-        y: 0,
-        w: 6,
-        h: 4
-      }]
+      widgets: [
+        {
+          id: 'widget-1',
+          type: 'invalid-type',
+          title: 'Widget de Teste',
+          x: 0,
+          y: 0,
+          w: 6,
+          h: 4,
+        },
+      ],
     };
 
     renderWithProvider(

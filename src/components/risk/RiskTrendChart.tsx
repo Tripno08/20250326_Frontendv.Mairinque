@@ -9,7 +9,7 @@ import {
   Legend,
   ResponsiveContainer,
   Area,
-  ComposedChart
+  ComposedChart,
 } from 'recharts';
 import { Typography, Box, CircularProgress, Paper } from '@mui/material';
 import { RiskTrendData } from '@/types/risk-analysis';
@@ -35,7 +35,7 @@ const RiskTrendChart: React.FC<RiskTrendChartProps> = ({
   const formattedData = useMemo(() => {
     return data.map(item => ({
       ...item,
-      formattedDate: formatDate(item.date)
+      formattedDate: formatDate(item.date),
     }));
   }, [data]);
 
@@ -48,7 +48,7 @@ const RiskTrendChart: React.FC<RiskTrendChartProps> = ({
           alignItems: 'center',
           justifyContent: 'center',
           height,
-          p: 2
+          p: 2,
         }}
       >
         <CircularProgress size={40} />
@@ -65,7 +65,7 @@ const RiskTrendChart: React.FC<RiskTrendChartProps> = ({
           alignItems: 'center',
           justifyContent: 'center',
           height,
-          p: 2
+          p: 2,
         }}
       >
         <Typography color="text.secondary">Dados não disponíveis</Typography>
@@ -75,7 +75,9 @@ const RiskTrendChart: React.FC<RiskTrendChartProps> = ({
 
   return (
     <Paper elevation={2} sx={{ p: 2, height }}>
-      <Typography variant="h6" gutterBottom>{title}</Typography>
+      <Typography variant="h6" gutterBottom>
+        {title}
+      </Typography>
       <Box sx={{ width: '100%', height: height - 80 }}>
         <ResponsiveContainer width="100%" height="100%">
           <ComposedChart
@@ -91,8 +93,8 @@ const RiskTrendChart: React.FC<RiskTrendChartProps> = ({
             <XAxis dataKey="formattedDate" />
             <YAxis />
             <Tooltip
-              formatter={(value) => [`${value}%`, '']}
-              labelFormatter={(label) => `Período: ${label}`}
+              formatter={value => [`${value}%`, '']}
+              labelFormatter={label => `Período: ${label}`}
             />
             <Legend verticalAlign="top" height={36} />
             <Area

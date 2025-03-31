@@ -1,6 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { assessmentService } from '@/services/assessmentService';
-import { Assessment, AssessmentFilters, AssessmentResult } from '@/types/api';
+import { Assessment, AssessmentFilters, AssessmentResult, AssessmentStats } from '@/types/api';
 
 // Chaves de cache para queries
 export const assessmentKeys = {
@@ -50,7 +50,7 @@ export const useUpdateAssessment = () => {
   return useMutation({
     mutationFn: ({ id, assessment }: { id: string; assessment: Partial<Assessment> }) =>
       assessmentService.updateAssessment(id, assessment),
-    onSuccess: (data) => {
+    onSuccess: data => {
       queryClient.invalidateQueries({ queryKey: assessmentKeys.detail(data.id) });
       queryClient.invalidateQueries({ queryKey: assessmentKeys.lists() });
     },
@@ -76,7 +76,7 @@ export const usePublishAssessment = () => {
 
   return useMutation({
     mutationFn: (id: string) => assessmentService.publishAssessment(id),
-    onSuccess: (data) => {
+    onSuccess: data => {
       queryClient.invalidateQueries({ queryKey: assessmentKeys.detail(data.id) });
       queryClient.invalidateQueries({ queryKey: assessmentKeys.lists() });
     },
@@ -89,7 +89,7 @@ export const useCloseAssessment = () => {
 
   return useMutation({
     mutationFn: (id: string) => assessmentService.closeAssessment(id),
-    onSuccess: (data) => {
+    onSuccess: data => {
       queryClient.invalidateQueries({ queryKey: assessmentKeys.detail(data.id) });
       queryClient.invalidateQueries({ queryKey: assessmentKeys.lists() });
     },
@@ -125,9 +125,9 @@ export const useSubmitAssessment = () => {
       id: string;
       answers: { questionId: string; answer: string }[];
     }) => assessmentService.submitAssessment(id, answers),
-    onSuccess: (data) => {
+    onSuccess: data => {
       queryClient.invalidateQueries({ queryKey: assessmentKeys.results(data.assessmentId) });
       queryClient.invalidateQueries({ queryKey: assessmentKeys.stats() });
     },
   });
-}; 
+};

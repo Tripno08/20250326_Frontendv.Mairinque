@@ -26,11 +26,11 @@ class AuthService {
   public async login(credentials: LoginCredentials): Promise<AuthResponse> {
     try {
       const response = await post<AuthResponse>(apiClient, '/auth/login', credentials);
-      
+
       // Salva o token e dados do usuário
       localStorage.setItem('auth_token', response.data.token);
       localStorage.setItem('user', JSON.stringify(response.data.user));
-      
+
       this.currentUser = response.data.user;
       return response.data;
     } catch (error) {
@@ -76,4 +76,4 @@ class AuthService {
   }
 }
 
-export const authService = AuthService.getInstance(); 
+export const authService = AuthService.getInstance();

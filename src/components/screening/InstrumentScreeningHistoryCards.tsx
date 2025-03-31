@@ -11,7 +11,7 @@ import {
   Card,
   CardContent,
   Chip,
-  Pagination
+  Pagination,
 } from '@mui/material';
 import { useScreeningAdministrations } from '../../hooks/useScreening';
 import { ScreeningAdministration } from '../../types/screening';
@@ -51,7 +51,7 @@ const getStatusLabel = (status: string) => {
 };
 
 export const InstrumentScreeningHistoryCards: React.FC<InstrumentScreeningHistoryCardsProps> = ({
-  instrumentId
+  instrumentId,
 }) => {
   const [filters, setFilters] = useState<{
     status?: ScreeningAdministration['status'];
@@ -63,7 +63,7 @@ export const InstrumentScreeningHistoryCards: React.FC<InstrumentScreeningHistor
 
   const { administrations, loading, error } = useScreeningAdministrations({
     instrumentId,
-    ...filters
+    ...filters,
   });
 
   const handleFilterChange = (field: keyof typeof filters, value: any) => {
@@ -84,10 +84,7 @@ export const InstrumentScreeningHistoryCards: React.FC<InstrumentScreeningHistor
   }
 
   const totalPages = Math.ceil(administrations.length / cardsPerPage);
-  const paginatedData = administrations.slice(
-    (page - 1) * cardsPerPage,
-    page * cardsPerPage
-  );
+  const paginatedData = administrations.slice((page - 1) * cardsPerPage, page * cardsPerPage);
 
   return (
     <Box>
@@ -102,7 +99,7 @@ export const InstrumentScreeningHistoryCards: React.FC<InstrumentScreeningHistor
             <Select
               value={filters.status || ''}
               label="Status"
-              onChange={(e) => handleFilterChange('status', e.target.value)}
+              onChange={e => handleFilterChange('status', e.target.value)}
             >
               <MenuItem value="">Todos</MenuItem>
               <MenuItem value="pending">Pendente</MenuItem>
@@ -119,7 +116,9 @@ export const InstrumentScreeningHistoryCards: React.FC<InstrumentScreeningHistor
             label="Data Inicial"
             type="date"
             value={filters.startDate ? new Date(filters.startDate).toISOString().split('T')[0] : ''}
-            onChange={(e) => handleFilterChange('startDate', e.target.value ? new Date(e.target.value) : undefined)}
+            onChange={e =>
+              handleFilterChange('startDate', e.target.value ? new Date(e.target.value) : undefined)
+            }
             InputLabelProps={{ shrink: true }}
           />
         </Grid>
@@ -130,18 +129,27 @@ export const InstrumentScreeningHistoryCards: React.FC<InstrumentScreeningHistor
             label="Data Final"
             type="date"
             value={filters.endDate ? new Date(filters.endDate).toISOString().split('T')[0] : ''}
-            onChange={(e) => handleFilterChange('endDate', e.target.value ? new Date(e.target.value) : undefined)}
+            onChange={e =>
+              handleFilterChange('endDate', e.target.value ? new Date(e.target.value) : undefined)
+            }
             InputLabelProps={{ shrink: true }}
           />
         </Grid>
       </Grid>
 
       <Grid container spacing={2}>
-        {paginatedData.map((administration) => (
+        {paginatedData.map(administration => (
           <Grid item xs={12} sm={6} md={4} key={administration.id}>
             <Card>
               <CardContent>
-                <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
+                <Box
+                  sx={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    mb: 2,
+                  }}
+                >
                   <Typography variant="subtitle1" component="div">
                     Estudante: {administration.studentId}
                   </Typography>
@@ -158,7 +166,8 @@ export const InstrumentScreeningHistoryCards: React.FC<InstrumentScreeningHistor
                   Início: {new Date(administration.startDate).toLocaleString()}
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
-                  Término: {administration.endDate ? new Date(administration.endDate).toLocaleString() : '-'}
+                  Término:{' '}
+                  {administration.endDate ? new Date(administration.endDate).toLocaleString() : '-'}
                 </Typography>
                 <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>
                   Respostas: {administration.responses.length}

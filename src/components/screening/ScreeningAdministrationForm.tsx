@@ -19,13 +19,13 @@ import {
   Alert,
   CircularProgress,
   IconButton,
-  Tooltip
+  Tooltip,
 } from '@mui/material';
 import {
   Save as SaveIcon,
   Timer as TimerIcon,
   OfflineBolt as OfflineIcon,
-  Help as HelpIcon
+  Help as HelpIcon,
 } from '@mui/icons-material';
 import { screeningService } from '../../services/screeningService';
 import {
@@ -34,14 +34,14 @@ import {
   ScreeningResponse,
   ScreeningAdministrationFormProps,
   Question,
-  QuestionType
+  QuestionType,
 } from '../../types/screening';
 
 export const ScreeningAdministrationForm: React.FC<ScreeningAdministrationFormProps> = ({
   instrument,
   studentId,
   onComplete,
-  onCancel
+  onCancel,
 }) => {
   const [activeStep, setActiveStep] = useState(0);
   const [administration, setAdministration] = useState<ScreeningAdministration | null>(null);
@@ -143,15 +143,10 @@ export const ScreeningAdministrationForm: React.FC<ScreeningAdministrationFormPr
             <FormLabel component="legend">{question.text}</FormLabel>
             <RadioGroup
               value={responses.find(r => r.questionId === question.id)?.value || ''}
-              onChange={(e) => handleResponse(question.id, e.target.value)}
+              onChange={e => handleResponse(question.id, e.target.value)}
             >
               {question.options?.map((option: string) => (
-                <FormControlLabel
-                  key={option}
-                  value={option}
-                  control={<Radio />}
-                  label={option}
-                />
+                <FormControlLabel key={option} value={option} control={<Radio />} label={option} />
               ))}
             </RadioGroup>
           </FormControl>
@@ -167,9 +162,13 @@ export const ScreeningAdministrationForm: React.FC<ScreeningAdministrationFormPr
                   key={option}
                   control={
                     <Checkbox
-                      checked={(responses.find(r => r.questionId === question.id)?.value as string[] || []).includes(option)}
-                      onChange={(e) => {
-                        const currentValue = responses.find(r => r.questionId === question.id)?.value as string[] || [];
+                      checked={(
+                        (responses.find(r => r.questionId === question.id)?.value as string[]) || []
+                      ).includes(option)}
+                      onChange={e => {
+                        const currentValue =
+                          (responses.find(r => r.questionId === question.id)?.value as string[]) ||
+                          [];
                         const newValue = e.target.checked
                           ? [...currentValue, option]
                           : currentValue.filter(v => v !== option);
@@ -189,7 +188,11 @@ export const ScreeningAdministrationForm: React.FC<ScreeningAdministrationFormPr
           <Box sx={{ width: '100%' }}>
             <Typography gutterBottom>{question.text}</Typography>
             <Slider
-              value={responses.find(r => r.questionId === question.id)?.value as number || question.min || 0}
+              value={
+                (responses.find(r => r.questionId === question.id)?.value as number) ||
+                question.min ||
+                0
+              }
               onChange={(_, value) => handleResponse(question.id, value as number)}
               min={question.min || 0}
               max={question.max || 100}
@@ -204,8 +207,8 @@ export const ScreeningAdministrationForm: React.FC<ScreeningAdministrationFormPr
           <TextField
             fullWidth
             label={question.text}
-            value={responses.find(r => r.questionId === question.id)?.value as string || ''}
-            onChange={(e) => handleResponse(question.id, e.target.value)}
+            value={(responses.find(r => r.questionId === question.id)?.value as string) || ''}
+            onChange={e => handleResponse(question.id, e.target.value)}
           />
         );
 
@@ -233,16 +236,15 @@ export const ScreeningAdministrationForm: React.FC<ScreeningAdministrationFormPr
   return (
     <Paper sx={{ p: 3 }}>
       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
-        <Typography variant="h5">
-          {instrument.name}
-        </Typography>
+        <Typography variant="h5">{instrument.name}</Typography>
         <Box>
           {timeRemaining !== null && (
             <Tooltip title="Tempo restante">
               <IconButton>
                 <TimerIcon />
                 <Typography variant="body2" sx={{ ml: 1 }}>
-                  {Math.floor(timeRemaining / 60)}:{(timeRemaining % 60).toString().padStart(2, '0')}
+                  {Math.floor(timeRemaining / 60)}:
+                  {(timeRemaining % 60).toString().padStart(2, '0')}
                 </Typography>
               </IconButton>
             </Tooltip>
@@ -276,9 +278,7 @@ export const ScreeningAdministrationForm: React.FC<ScreeningAdministrationFormPr
         ))}
       </Stepper>
 
-      <Box sx={{ mb: 3 }}>
-        {renderQuestion(instrument.questions[activeStep], activeStep)}
-      </Box>
+      <Box sx={{ mb: 3 }}>{renderQuestion(instrument.questions[activeStep], activeStep)}</Box>
 
       <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
         <Button
@@ -288,10 +288,7 @@ export const ScreeningAdministrationForm: React.FC<ScreeningAdministrationFormPr
           Anterior
         </Button>
         <Box>
-          <Button
-            onClick={onCancel}
-            sx={{ mr: 1 }}
-          >
+          <Button onClick={onCancel} sx={{ mr: 1 }}>
             Cancelar
           </Button>
           {activeStep === instrument.questions.length - 1 ? (
@@ -306,7 +303,9 @@ export const ScreeningAdministrationForm: React.FC<ScreeningAdministrationFormPr
           ) : (
             <Button
               variant="contained"
-              onClick={() => setActiveStep(prev => Math.min(instrument.questions.length - 1, prev + 1))}
+              onClick={() =>
+                setActiveStep(prev => Math.min(instrument.questions.length - 1, prev + 1))
+              }
             >
               Próxima
             </Button>

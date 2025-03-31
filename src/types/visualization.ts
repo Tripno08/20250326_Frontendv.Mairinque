@@ -33,7 +33,7 @@ export interface TierDistributionChartProps extends BaseVisualizationProps {
 export interface InterventionEffectiveness {
   intervention: string;
   domain: string;
-  effectiveness: number;  // Valor normalizado entre 0 e 100
+  effectiveness: number; // Valor normalizado entre 0 e 100
   studentsCount: number;
   averageGrowth: number;
   durationInWeeks: number;

@@ -75,4 +75,4 @@ export const getLevelColor = (level: RTILevel): string => {
 
 export const getLevelOpacity = (isHovered: boolean): number => {
   return isHovered ? 1 : 0.8;
-}; 
+};

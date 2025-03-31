@@ -7,16 +7,19 @@ Innerview é uma plataforma educacional avançada focada em intervenções, moni
 ## Objetivos do Projeto
 
 1. **Facilitar a Implementação de RTI/MTSS**
+
    - Fornecer ferramentas estruturadas para cada nível de intervenção
    - Automatizar fluxos de trabalho para equipes educacionais
    - Centralizar dados para tomada de decisão baseada em evidências
 
 2. **Melhorar o Monitoramento de Estudantes**
+
    - Rastrear progresso acadêmico e comportamental
    - Identificar precocemente estudantes que precisam de suporte
    - Visualizar tendências e padrões em nível individual e de grupo
 
 3. **Otimizar Recursos Educacionais**
+
    - Direcionar intervenções para onde são mais necessárias
    - Monitorar eficácia de diferentes abordagens
    - Facilitar colaboração entre profissionais
@@ -31,16 +34,19 @@ Innerview é uma plataforma educacional avançada focada em intervenções, moni
 O Innerview foi projetado para superar as limitações de soluções concorrentes como Branching Minds, PanoramaEd e AIMSweb, oferecendo:
 
 1. **Visualizações de Dados Superiores**
+
    - Gráficos e dashboards interativos e customizáveis
    - Visualizações específicas para o contexto RTI/MTSS
    - Métricas e KPIs relevantes para educadores
 
 2. **Experiência de Usuário Sofisticada**
+
    - Interfaces drag-and-drop para planejamento de intervenções
    - Design moderno e acessível
    - Micro-interações e feedback visual aprimorado
 
 3. **Capacidades Offline Robustas**
+
    - Funcionalidade mesmo sem conexão à internet
    - Sincronização inteligente quando a conexão é restaurada
    - Ferramentas otimizadas para trabalho em campo
@@ -53,31 +59,37 @@ O Innerview foi projetado para superar as limitações de soluções concorrente
 ## Principais Características
 
 ### 1. Sistema RTI/MTSS Completo
+
 - Visualização e gestão dos três níveis de intervenção
 - Planejador visual de intervenções com biblioteca baseada em evidências
 - Monitoramento de progresso com metas e objetivos mensuráveis
 
 ### 2. Dashboard Multinível
+
 - Visões específicas para administradores, professores e especialistas
 - Drill-down de rede → escola → turma → aluno
 - Personalização por usuário com widgets arrastáveis
 
 ### 3. Avaliações e Rastreios
+
 - Catálogo de instrumentos por área e idade
 - Sistema de pontuação e interpretação automática
 - Ciclos de avaliação programáveis com calendário integrado
 
 ### 4. Gestão de Equipes e Colaboração
+
 - Formação de equipes multidisciplinares
 - Agendamento e documentação de reuniões
 - Sistema de encaminhamentos e notificações
 
 ### 5. Análise Preditiva e Insights
+
 - Identificação precoce de riscos acadêmicos
 - Recomendações de intervenções personalizadas
 - Alertas preventivos baseados em padrões
 
 ### 6. Integrações Educacionais
+
 - Compatibilidade LTI com sistemas LMS
 - Integração com Microsoft Education e Google Classroom
 - API extensível para conexão com sistemas existentes
@@ -85,13 +97,15 @@ O Innerview foi projetado para superar as limitações de soluções concorrente
 ## Tecnologias Principais
 
 ### Frontend
+
 - Next.js 15.x com App Router
 - TypeScript 5.x
-- Material UI 6.x (customizado)
+- Material UI 7.x (customizado)
 - React Query e Zustand para gerenciamento de estado
 - D3.js e Recharts para visualizações
 
 ### Backend
+
 - NestJS 10.x
 - TypeScript
 - Prisma ORM
@@ -101,16 +115,19 @@ O Innerview foi projetado para superar as limitações de soluções concorrente
 ## Usuários-Alvo
 
 1. **Administradores Educacionais**
+
    - Diretores e coordenadores de rede
    - Gestores de educação especial
    - Administradores de distrito/rede
 
 2. **Equipe Pedagógica**
+
    - Professores de sala regular
    - Especialistas em educação especial
    - Psicólogos e orientadores educacionais
 
 3. **Equipe de Suporte**
+
    - Fonoaudiólogos
    - Terapeutas ocupacionais
    - Assistentes sociais escolares
@@ -122,26 +139,31 @@ O Innerview foi projetado para superar as limitações de soluções concorrente
 ## Fases do Projeto
 
 ### Fase 1: Fundação (Concluída)
+
 - Definição de requisitos e arquitetura
 - Modelagem de dados com Prisma
 - Prototipagem de interfaces principais
 
 ### Fase 2: Desenvolvimento Frontend (Atual)
+
 - Implementação do design system estendido
 - Desenvolvimento de componentes core
 - Criação de visualizações de dados educacionais
 
 ### Fase 3: Desenvolvimento Backend (Paralelo)
+
 - Implementação da API RESTful
 - Desenvolvimento de serviços de autenticação e autorização
 - Criação de endpoints para todos os recursos
 
 ### Fase 4: Integrações e Analytics
+
 - Implementação de conectores LTI
 - Desenvolvimento de modelos preditivos
 - Integração com sistemas externos
 
 ### Fase 5: Refinamento e Lançamento
+
 - Testes de usabilidade com educadores
 - Otimização de performance
 - Preparação para deploy em produção

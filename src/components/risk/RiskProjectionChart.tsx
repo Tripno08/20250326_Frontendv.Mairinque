@@ -8,7 +8,7 @@ import {
   Tooltip,
   Legend,
   ResponsiveContainer,
-  ReferenceLine
+  ReferenceLine,
 } from 'recharts';
 import { Typography, Box, CircularProgress, Paper } from '@mui/material';
 import { RiskProjectionData } from '@/types/risk-analysis';
@@ -50,7 +50,7 @@ const RiskProjectionChart: React.FC<RiskProjectionChartProps> = ({
           alignItems: 'center',
           justifyContent: 'center',
           height,
-          p: 2
+          p: 2,
         }}
       >
         <CircularProgress size={40} />
@@ -67,7 +67,7 @@ const RiskProjectionChart: React.FC<RiskProjectionChartProps> = ({
           alignItems: 'center',
           justifyContent: 'center',
           height,
-          p: 2
+          p: 2,
         }}
       >
         <Typography color="text.secondary">Dados não disponíveis</Typography>
@@ -77,7 +77,9 @@ const RiskProjectionChart: React.FC<RiskProjectionChartProps> = ({
 
   return (
     <Paper elevation={2} sx={{ p: 2, height }}>
-      <Typography variant="h6" gutterBottom>{title}</Typography>
+      <Typography variant="h6" gutterBottom>
+        {title}
+      </Typography>
       <Box sx={{ width: '100%', height: height - 80 }}>
         <ResponsiveContainer width="100%" height="100%">
           <LineChart
@@ -93,8 +95,8 @@ const RiskProjectionChart: React.FC<RiskProjectionChartProps> = ({
             <XAxis dataKey="month" />
             <YAxis domain={[0, 'dataMax + 5']} />
             <Tooltip
-              formatter={(value) => [`${value}%`, '']}
-              labelFormatter={(label) => `Mês: ${label}`}
+              formatter={value => [`${value}%`, '']}
+              labelFormatter={label => `Mês: ${label}`}
             />
             <Legend verticalAlign="top" height={36} />
 

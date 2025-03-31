@@ -32,7 +32,7 @@ import {
   Alert,
   Divider,
   useTheme,
-  SelectChangeEvent
+  SelectChangeEvent,
 } from '@mui/material';
 import {
   Person as PersonIcon,
@@ -49,9 +49,12 @@ import {
   TeamRole,
   InterventionTier,
   CaseStatus,
-  RoleAssignmentProps
+  RoleAssignmentProps,
 } from '@/types/team';
 import { useCaseAssignments } from '@/hooks/useTeam';
+import GridItem from '@/components/GridItem';
+import GridContainer from '@/components/GridContainer';
+import ListItemWrapper from '@/components/ListItemWrapper';
 
 /**
  * Componente para atribuição de papéis e responsabilidades aos membros da equipe
@@ -63,7 +66,7 @@ export const RoleAssignment: React.FC<RoleAssignmentProps> = ({
   members,
   cases,
   onAssignmentChange,
-  onRoleChange
+  onRoleChange,
 }) => {
   const theme = useTheme();
 
@@ -81,7 +84,7 @@ export const RoleAssignment: React.FC<RoleAssignmentProps> = ({
   }>({
     open: false,
     message: '',
-    severity: 'info'
+    severity: 'info',
   });
 
   // Hooks personalizados
@@ -118,7 +121,9 @@ export const RoleAssignment: React.FC<RoleAssignmentProps> = ({
 
   const getCaseName = (caseId: string): string => {
     const caseItem = cases.find(c => c.id === caseId);
-    return caseItem ? `${caseItem.studentName} - ${caseItem.description.substring(0, 30)}...` : 'Caso desconhecido';
+    return caseItem
+      ? `${caseItem.studentName} - ${caseItem.description.substring(0, 30)}...`
+      : 'Caso desconhecido';
   };
 
   // Funções utilitárias para cores
@@ -174,14 +179,14 @@ export const RoleAssignment: React.FC<RoleAssignmentProps> = ({
       setSnackbar({
         open: true,
         message: 'Função atualizada com sucesso.',
-        severity: 'success'
+        severity: 'success',
       });
       setEditingRole(null);
     } catch (err) {
       setSnackbar({
         open: true,
         message: `Erro ao atualizar função: ${err instanceof Error ? err.message : 'Erro desconhecido'}`,
-        severity: 'error'
+        severity: 'error',
       });
     } finally {
       setIsSaving(false);
@@ -225,14 +230,14 @@ export const RoleAssignment: React.FC<RoleAssignmentProps> = ({
       setSnackbar({
         open: true,
         message: 'Atribuições atualizadas com sucesso.',
-        severity: 'success'
+        severity: 'success',
       });
       handleCloseAssignCasesDialog();
     } catch (err) {
       setSnackbar({
         open: true,
         message: `Erro ao atualizar atribuições: ${err instanceof Error ? err.message : 'Erro desconhecido'}`,
-        severity: 'error'
+        severity: 'error',
       });
     } finally {
       setIsSaving(false);
@@ -258,17 +263,14 @@ export const RoleAssignment: React.FC<RoleAssignmentProps> = ({
           border: isSelected ? `2px solid ${theme.palette.primary.main}` : 'none',
           transition: 'all 0.3s ease',
           '&:hover': {
-            boxShadow: theme.shadows[8]
-          }
+            boxShadow: theme.shadows[8],
+          },
         }}
         onClick={() => handleMemberSelect(member.id)}
       >
         <CardHeader
           avatar={
-            <Avatar
-              src={member.avatar || undefined}
-              alt={member.name}
-            >
+            <Avatar src={member.avatar || undefined} alt={member.name}>
               {member.name.charAt(0)}
             </Avatar>
           }
@@ -284,7 +286,7 @@ export const RoleAssignment: React.FC<RoleAssignmentProps> = ({
                   label="Função"
                   size="small"
                 >
-                  {Object.values(TeamRole).map((role) => (
+                  {Object.values(TeamRole).map(role => (
                     <MenuItem key={role} value={role}>
                       {role.charAt(0).toUpperCase() + role.slice(1)}
                     </MenuItem>
@@ -298,7 +300,7 @@ export const RoleAssignment: React.FC<RoleAssignmentProps> = ({
                 sx={{
                   bgcolor: getRoleColor(member.role),
                   color: '#fff',
-                  mt: 1
+                  mt: 1,
                 }}
               />
             )
@@ -312,7 +314,7 @@ export const RoleAssignment: React.FC<RoleAssignmentProps> = ({
                   <>
                     <IconButton
                       size="small"
-                      onClick={(e) => {
+                      onClick={e => {
                         e.stopPropagation();
                         handleSaveRole(member.id);
                       }}
@@ -321,7 +323,7 @@ export const RoleAssignment: React.FC<RoleAssignmentProps> = ({
                     </IconButton>
                     <IconButton
                       size="small"
-                      onClick={(e) => {
+                      onClick={e => {
                         e.stopPropagation();
                         handleCancelEditRole();
                       }}
@@ -335,7 +337,7 @@ export const RoleAssignment: React.FC<RoleAssignmentProps> = ({
               <Tooltip title="Editar função">
                 <IconButton
                   size="small"
-                  onClick={(e) => {
+                  onClick={e => {
                     e.stopPropagation();
                     handleStartEditingRole(member.id, member.role);
                   }}
@@ -350,13 +352,16 @@ export const RoleAssignment: React.FC<RoleAssignmentProps> = ({
           <Grid container spacing={1}>
             <Grid item xs={12}>
               <Typography variant="body2" sx={{ display: 'flex', alignItems: 'center' }}>
-                <AssignmentIcon fontSize="small" sx={{ mr: 1, color: theme.palette.warning.main }} />
+                <AssignmentIcon
+                  fontSize="small"
+                  sx={{ mr: 1, color: theme.palette.warning.main }}
+                />
                 Casos atribuídos: {assignedCases.length}
                 <Tooltip title="Atribuir casos">
                   <IconButton
                     size="small"
                     sx={{ ml: 1 }}
-                    onClick={(e) => {
+                    onClick={e => {
                       e.stopPropagation();
                       handleOpenAssignCasesDialog(member.id);
                     }}
@@ -376,7 +381,9 @@ export const RoleAssignment: React.FC<RoleAssignmentProps> = ({
                   {member.specialties.map(specialty => (
                     <Chip
                       key={specialty}
-                      label={specialty.charAt(0).toUpperCase() + specialty.slice(1).replace('_', ' ')}
+                      label={
+                        specialty.charAt(0).toUpperCase() + specialty.slice(1).replace('_', ' ')
+                      }
                       size="small"
                       variant="outlined"
                     />
@@ -398,29 +405,25 @@ export const RoleAssignment: React.FC<RoleAssignmentProps> = ({
         maxWidth="md"
         fullWidth
       >
-        <DialogTitle>
-          Atribuir Casos para {selectedMember ? selectedMember.name : ''}
-        </DialogTitle>
+        <DialogTitle>Atribuir Casos para {selectedMember ? selectedMember.name : ''}</DialogTitle>
         <DialogContent>
           <List>
             {cases.map(caseItem => {
               const isAssigned = casesToAssign.includes(caseItem.id);
 
               return (
-                <ListItem
+                <ListItemWrapper
                   key={caseItem.id}
                   button
                   onClick={() => handleToggleCaseAssignment(caseItem.id)}
                   sx={{
                     borderLeft: `4px solid ${getTierColor(caseItem.tier)}`,
                     mb: 1,
-                    bgcolor: isAssigned ? 'rgba(0, 0, 0, 0.04)' : 'transparent'
+                    bgcolor: isAssigned ? 'rgba(0, 0, 0, 0.04)' : 'transparent',
                   }}
                 >
                   <ListItemAvatar>
-                    <Avatar sx={{ bgcolor: getTierColor(caseItem.tier) }}>
-                      {caseItem.tier}
-                    </Avatar>
+                    <Avatar sx={{ bgcolor: getTierColor(caseItem.tier) }}>{caseItem.tier}</Avatar>
                   </ListItemAvatar>
                   <ListItemText
                     primary={caseItem.studentName}
@@ -440,7 +443,7 @@ export const RoleAssignment: React.FC<RoleAssignmentProps> = ({
                       onChange={() => handleToggleCaseAssignment(caseItem.id)}
                     />
                   </ListItemSecondaryAction>
-                </ListItem>
+                </ListItemWrapper>
               );
             })}
           </List>
@@ -468,8 +471,8 @@ export const RoleAssignment: React.FC<RoleAssignmentProps> = ({
           Atribuição de Papéis e Responsabilidades
         </Typography>
         <Typography variant="body1" paragraph>
-          Gerencie os papéis dos membros da equipe e atribua casos para cada profissional.
-          Clique em um membro para ver seus detalhes ou use os botões para editar suas atribuições.
+          Gerencie os papéis dos membros da equipe e atribua casos para cada profissional. Clique em
+          um membro para ver seus detalhes ou use os botões para editar suas atribuições.
         </Typography>
       </Paper>
 
@@ -482,114 +485,68 @@ export const RoleAssignment: React.FC<RoleAssignmentProps> = ({
           Erro ao carregar atribuições: {error.message}
         </Alert>
       ) : (
-        <Grid container spacing={3}>
-          <Grid item xs={12} md={8}>
+        <GridContainer spacing={3}>
+          <GridItem xs={12} md={8}>
             <Typography variant="h6" gutterBottom>
               Membros da Equipe
             </Typography>
-            <Grid container spacing={2}>
+            <GridContainer spacing={2}>
               {members.map(member => (
-                <Grid item xs={12} sm={6} key={member.id}>
+                <GridItem xs={12} sm={6} key={member.id}>
                   {renderMemberCard(member)}
-                </Grid>
+                </GridItem>
               ))}
-            </Grid>
-          </Grid>
+            </GridContainer>
+          </GridItem>
 
-          <Grid item xs={12} md={4}>
+          <GridItem xs={12} md={4}>
             <Paper sx={{ p: 2, height: '100%' }}>
+              <Typography variant="h6" gutterBottom>
+                Casos Atribuídos
+              </Typography>
               {selectedMember ? (
                 <>
-                  <Typography variant="h6" gutterBottom>
-                    Detalhes do Membro
+                  <Typography variant="subtitle1">
+                    {selectedMember.name} - {selectedMember.role}
                   </Typography>
-                  <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
-                    <Avatar
-                      src={selectedMember.avatar || undefined}
-                      alt={selectedMember.name}
-                      sx={{ width: 64, height: 64, mr: 2 }}
-                    >
-                      {selectedMember.name.charAt(0)}
-                    </Avatar>
-                    <Box>
-                      <Typography variant="h6">{selectedMember.name}</Typography>
-                      <Typography variant="body2">{selectedMember.email}</Typography>
-                    </Box>
-                  </Box>
-
-                  <Divider sx={{ my: 2 }} />
-
-                  <Typography variant="subtitle1" gutterBottom>
-                    Casos Atribuídos
-                  </Typography>
-
-                  {(assignedCasesByMember[selectedMember.id] || []).length > 0 ? (
-                    <List>
-                      {(assignedCasesByMember[selectedMember.id] || []).map(caseId => {
+                  <List sx={{ mt: 2 }}>
+                    {(assignedCasesByMember[selectedMember.id] || []).length > 0 ? (
+                      (assignedCasesByMember[selectedMember.id] || []).map(caseId => {
                         const caseItem = cases.find(c => c.id === caseId);
                         if (!caseItem) return null;
 
                         return (
-                          <ListItem key={caseId} sx={{ py: 1, px: 0 }}>
+                          <ListItemWrapper key={caseId} sx={{ py: 1, px: 0 }}>
                             <ListItemText
                               primary={caseItem.studentName}
-                              secondary={`Tier ${caseItem.tier} - ${caseItem.status}`}
+                              secondary={caseItem.description.substring(0, 60) + '...'}
                             />
-                          </ListItem>
+                          </ListItemWrapper>
                         );
-                      })}
-                    </List>
-                  ) : (
-                    <Typography variant="body2" color="text.secondary">
-                      Nenhum caso atribuído a este membro.
-                    </Typography>
-                  )}
-
-                  <Button
-                    variant="outlined"
-                    startIcon={<AssignmentIcon />}
-                    onClick={() => handleOpenAssignCasesDialog(selectedMember.id)}
-                    sx={{ mt: 2 }}
-                    fullWidth
-                  >
-                    Gerenciar Atribuições
-                  </Button>
+                      })
+                    ) : (
+                      <Typography variant="body2" color="text.secondary">
+                        Nenhum caso atribuído.
+                      </Typography>
+                    )}
+                  </List>
                 </>
               ) : (
-                <Box sx={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  height: '100%',
-                  p: 3,
-                  textAlign: 'center'
-                }}>
-                  <PersonIcon sx={{ fontSize: 60, color: 'text.secondary', mb: 2 }} />
-                  <Typography variant="h6" gutterBottom>
-                    Selecione um Membro
-                  </Typography>
-                  <Typography variant="body2" color="text.secondary">
-                    Clique em um dos membros da equipe para ver seus detalhes e gerenciar suas atribuições.
-                  </Typography>
-                </Box>
+                <Typography variant="body2" color="text.secondary">
+                  Selecione um membro da equipe para ver seus casos atribuídos.
+                </Typography>
               )}
             </Paper>
-          </Grid>
-        </Grid>
+          </GridItem>
+        </GridContainer>
       )}
 
-      {/* Diálogo para atribuição de casos */}
+      {/* Dialog para atribuir casos */}
       {renderCasesDialog()}
 
       {/* Snackbar para feedback */}
-      <Snackbar
-        open={snackbar.open}
-        autoHideDuration={6000}
-        onClose={handleCloseSnackbar}
-        anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
-      >
-        <Alert onClose={handleCloseSnackbar} severity={snackbar.severity} sx={{ width: '100%' }}>
+      <Snackbar open={snackbar.open} autoHideDuration={6000} onClose={handleCloseSnackbar}>
+        <Alert onClose={handleCloseSnackbar} severity={snackbar.severity}>
           {snackbar.message}
         </Alert>
       </Snackbar>

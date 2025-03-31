@@ -14,7 +14,7 @@ jest.mock('@/services/riskAnalysisService', () => ({
     getRiskDistributionData: jest.fn(),
     getRiskFactorData: jest.fn(),
     getEarlyWarningIndicators: jest.fn(),
-  }
+  },
 }));
 
 // Mock dos hooks
@@ -29,14 +29,14 @@ jest.mock('@/hooks/useRiskAnalysis', () => ({
       moderate: 95,
       high: 32,
       severe: 12,
-      total: 319
+      total: 319,
     },
     riskFactorData: [],
     earlyWarningIndicators: [],
     isLoading: false,
     refetch: jest.fn(),
-    setFilters: jest.fn()
-  })
+    setFilters: jest.fn(),
+  }),
 }));
 
 // Dados de exemplo para testes
@@ -50,19 +50,19 @@ const mockStudentData: StudentRiskData[] = [
     previousScore: 72,
     changeTrend: 'worsening',
     domains: {
-      'leitura': {
+      leitura: {
         score: 58,
         threshold: 70,
-        status: 'at-risk'
+        status: 'at-risk',
       },
-      'matemática': {
+      matemática: {
         score: 72,
         threshold: 70,
-        status: 'on-track'
-      }
+        status: 'on-track',
+      },
     },
     lastAssessment: '2023-03-15',
-    interventions: ['Grupo de leitura intensiva']
+    interventions: ['Grupo de leitura intensiva'],
   },
   {
     id: '2',
@@ -73,15 +73,15 @@ const mockStudentData: StudentRiskData[] = [
     previousScore: 40,
     changeTrend: 'stable',
     domains: {
-      'leitura': {
+      leitura: {
         score: 38,
         threshold: 70,
-        status: 'critical'
-      }
+        status: 'critical',
+      },
     },
     lastAssessment: '2023-03-10',
-    interventions: []
-  }
+    interventions: [],
+  },
 ];
 
 describe('RiskAnalysisDashboard', () => {
@@ -94,7 +94,7 @@ describe('RiskAnalysisDashboard', () => {
       moderate: 95,
       high: 32,
       severe: 12,
-      total: 319
+      total: 319,
     });
   });
 
@@ -140,11 +140,15 @@ describe('RiskAnalysisDashboard', () => {
 
     // Clicar na segunda aba
     fireEvent.click(screen.getByText('Alertas Precoces'));
-    expect(screen.getByText('Indicadores que sinalizam potenciais dificuldades acadêmicas')).toBeInTheDocument();
+    expect(
+      screen.getByText('Indicadores que sinalizam potenciais dificuldades acadêmicas')
+    ).toBeInTheDocument();
 
     // Clicar na terceira aba
     fireEvent.click(screen.getByText('Fatores de Risco'));
-    expect(screen.getByText('Principais fatores correlacionados com baixo desempenho acadêmico')).toBeInTheDocument();
+    expect(
+      screen.getByText('Principais fatores correlacionados com baixo desempenho acadêmico')
+    ).toBeInTheDocument();
   });
 
   it('chama a função onStudentClick quando um estudante é clicado', () => {

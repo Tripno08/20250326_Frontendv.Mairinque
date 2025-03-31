@@ -48,12 +48,7 @@ export const DomainSummaryWidget: React.FC<DomainSummaryWidgetProps> = ({
   };
 
   return (
-    <WidgetBase
-      widget={widget}
-      title="Desempenho por Domínio"
-      isLoading={isLoading}
-      error={error}
-    >
+    <WidgetBase widget={widget} title="Desempenho por Domínio" isLoading={isLoading} error={error}>
       <Box sx={{ height: '100%', width: '100%', p: 2 }}>
         <ResponsiveContainer width="100%" height="100%">
           <BarChart data={chartData}>
@@ -71,4 +66,4 @@ export const DomainSummaryWidget: React.FC<DomainSummaryWidgetProps> = ({
       </Box>
     </WidgetBase>
   );
-}; 
+};

@@ -224,4 +224,4 @@ export const useLayoutAnimation = (isEditing: boolean) => {
   }, [isEditing]);
 
   return animationState;
-}; 
+};

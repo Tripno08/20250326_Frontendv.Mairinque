@@ -8,12 +8,7 @@ interface NotificationProps {
   onClose: () => void;
 }
 
-export const Notification: React.FC<NotificationProps> = ({
-  open,
-  message,
-  severity,
-  onClose
-}) => {
+export const Notification: React.FC<NotificationProps> = ({ open, message, severity, onClose }) => {
   return (
     <Snackbar
       open={open}

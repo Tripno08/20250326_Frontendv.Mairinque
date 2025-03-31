@@ -9,8 +9,21 @@ export type ScreeningFrequency = 'weekly' | 'biweekly' | 'monthly' | 'quarterly'
 export type QuestionType = 'radio' | 'checkbox' | 'slider' | 'text';
 export type ScreeningRuleConditionType = 'score' | 'frequency' | 'attendance' | 'behavior';
 export type ScreeningRuleActionType = 'notification' | 'referral' | 'intervention' | 'assessment';
-export type ScreeningRuleActionTarget = 'student' | 'teacher' | 'parent' | 'counselor' | 'principal';
-export type ScreeningRuleOperator = 'equals' | 'notEquals' | 'greaterThan' | 'lessThan' | 'greaterThanOrEqual' | 'lessThanOrEqual' | 'contains' | 'notContains';
+export type ScreeningRuleActionTarget =
+  | 'student'
+  | 'teacher'
+  | 'parent'
+  | 'counselor'
+  | 'principal';
+export type ScreeningRuleOperator =
+  | 'equals'
+  | 'notEquals'
+  | 'greaterThan'
+  | 'lessThan'
+  | 'greaterThanOrEqual'
+  | 'lessThanOrEqual'
+  | 'contains'
+  | 'notContains';
 
 // Interfaces
 export interface Question {
@@ -169,11 +182,15 @@ export interface ScreeningRuleManagerProps {
 }
 
 export interface ScreeningInstrumentManagerProps {
-  onInstrumentCreate: (instrument: Omit<ScreeningInstrument, 'id' | 'createdAt' | 'updatedAt'>) => void;
+  onInstrumentCreate: (
+    instrument: Omit<ScreeningInstrument, 'id' | 'createdAt' | 'updatedAt'>
+  ) => void;
   onInstrumentUpdate: (id: string, instrument: Partial<ScreeningInstrument>) => void;
 }
 
 export interface ScreeningAdministrationManagerProps {
-  onAdministrationCreate: (administration: Omit<ScreeningAdministration, 'id' | 'createdAt' | 'updatedAt'>) => void;
+  onAdministrationCreate: (
+    administration: Omit<ScreeningAdministration, 'id' | 'createdAt' | 'updatedAt'>
+  ) => void;
   onAdministrationUpdate: (id: string, administration: Partial<ScreeningAdministration>) => void;
 }

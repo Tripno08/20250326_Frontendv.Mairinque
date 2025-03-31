@@ -2,6 +2,8 @@
 
 ## Visão Geral
 
+O Dashboard de Progresso é uma ferramenta avançada que integra análise preditiva e recomendações personalizadas usando IA para monitorar e otimizar o progresso dos estudantes.
+
 Este documento descreve o progresso do desenvolvimento do dashboard, incluindo:
 
 - Componentes implementados
@@ -70,6 +72,70 @@ Este documento descreve o progresso do desenvolvimento do dashboard, incluindo:
    - Tempo médio de resolução
    - Taxa de conclusão
 
+## Editor de Fluxos RTI/MTSS
+
+### Componentes Implementados
+
+1. **FlowEditor**
+   - Editor visual para mapeamento de processos RTI/MTSS
+   - Biblioteca de nós personalizados
+   - Sistema de conectores condicionais
+   - Validação em tempo real
+   - Persistência automática
+
+2. **NodeLibrary**
+   - Nós de rastreio com configuração de instrumentos
+   - Nós de avaliação com critérios e responsáveis
+   - Nós de intervenção com recursos e evidências
+   - Nós de decisão com critérios e resultados
+   - Nós de grupo para agrupamento de estudantes
+   - Nós de atividade para sequenciamento
+   - Nós de condição para regras de decisão
+
+3. **EdgeLibrary**
+   - Conectores padrão para fluxo sequencial
+   - Conectores condicionais para decisões
+   - Conectores paralelos para atividades simultâneas
+   - Conectores de feedback para loops
+   - Labels interativos para conectores
+
+4. **FlowControls**
+   - Zoom e pan do canvas
+   - Mini-mapa para navegação
+   - Controles de alinhamento
+   - Atalhos de teclado
+   - Modo de visualização
+
+### Funcionalidades Implementadas
+
+1. **Edição de Fluxos**
+   - Arrastar e soltar de nós
+   - Conexão visual entre nós
+   - Configuração de propriedades
+   - Validação de fluxo
+   - Desfazer/Refazer
+
+2. **Templates e Modelos**
+   - Templates predefinidos RTI/MTSS
+   - Modelos de protocolos de intervenção
+   - Ciclos de rastreio padrão
+   - Árvores de decisão comuns
+   - Fluxos de avaliação
+
+3. **Persistência e Sincronização**
+   - Salvamento automático
+   - Versionamento de fluxos
+   - Exportação/Importação
+   - Compartilhamento
+   - Histórico de alterações
+
+4. **Acessibilidade**
+   - Navegação por teclado
+   - Modo de alto contraste
+   - Descrições verbais
+   - Suporte a leitores de tela
+   - Atalhos personalizados
+
 ### Próximos Passos
 
 1. **Melhorias de Interface**
@@ -100,11 +166,11 @@ Este documento descreve o progresso do desenvolvimento do dashboard, incluindo:
 
 1. **Gestão de Estado**
    - Desafio: Complexidade do estado global
-   - Solução: Implementação de Context API e hooks personalizados
+   - Solução: Implementação de Zustand para gerenciamento de estado
 
 2. **Performance**
-   - Desafio: Carregamento lento com muitos encaminhamentos
-   - Solução: Implementação de paginação e virtualização
+   - Desafio: Carregamento lento com muitos nós
+   - Solução: Implementação de virtualização e lazy loading
 
 3. **Responsividade**
    - Desafio: Adaptação para diferentes tamanhos de tela
@@ -308,3 +374,227 @@ Este documento descreve o progresso do desenvolvimento do dashboard, incluindo:
 - [x] FAQs
 - [x] Vídeos
 - [x] Suporte
+
+## Funcionalidades Principais
+
+### 1. Análise Preditiva de Risco
+
+- **Modelo de Aprendizado de Máquina**
+  - Previsão de risco acadêmico usando TensorFlow.js
+  - Rede neural profunda com camadas de dropout
+  - Treinamento local com dados específicos da instituição
+  - Visualizações interativas de fatores de influência
+
+- **Métricas de Performance**
+  - Acurácia do modelo
+  - Precisão e recall
+  - Curva ROC
+  - Matriz de confusão
+
+### 2. Sistema de Recomendações
+
+- **Motor de Recomendação**
+  - Filtragem colaborativa baseada em perfis similares
+  - Feedback loop para aprendizado contínuo
+  - Explicações visuais das recomendações
+  - Ajuste manual por educadores
+
+- **Tipos de Intervenção**
+  - Tutoria
+  - Mentoria
+  - Aconselhamento
+  - Envolvimento parental
+  - Suporte acadêmico
+  - Intervenção comportamental
+
+### 3. Análise de Clusters
+
+- **Agrupamento de Estudantes**
+  - Clustering não-supervisionado
+  - Redução de dimensionalidade
+  - Visualizações 2D/3D
+  - Insights automáticos
+
+- **Características dos Clusters**
+  - Perfil acadêmico
+  - Perfil demográfico
+  - Histórico de intervenções
+  - Recomendações específicas
+
+### 4. Detecção de Padrões
+
+- **Análise de Dados**
+  - Detecção de anomalias
+  - Análise de séries temporais
+  - Correlações entre fatores
+  - Alertas automáticos
+
+- **Tipos de Padrões**
+  - Anomalias acadêmicas
+  - Tendências de progresso
+  - Correlações entre métricas
+  - Padrões de intervenção
+
+## Interface do Usuário
+
+### 1. Visão Geral
+
+- **Cards de Resumo**
+  - Total de estudantes em risco
+  - Taxa de sucesso das intervenções
+  - Número de clusters ativos
+  - Padrões detectados recentemente
+
+- **Gráficos Principais**
+  - Distribuição de risco
+  - Efetividade das intervenções
+  - Visualização de clusters
+  - Tendências temporais
+
+### 2. Análise Individual
+
+- **Perfil do Estudante**
+  - Dados acadêmicos
+  - Histórico de intervenções
+  - Previsão de risco
+  - Recomendações personalizadas
+
+- **Visualizações**
+  - Gráfico de progresso
+  - Fatores de influência
+  - Comparação com pares
+  - Timeline de intervenções
+
+### 3. Análise de Grupo
+
+- **Clusters**
+  - Características comuns
+  - Padrões de sucesso
+  - Recomendações em grupo
+  - Métricas agregadas
+
+- **Comparações**
+  - Entre clusters
+  - Entre períodos
+  - Entre intervenções
+  - Entre métricas
+
+## Integração com RTI/MTSS
+
+### 1. Fluxo de Trabalho
+
+- **Identificação**
+  - Detecção automática de risco
+  - Triagem inicial
+  - Priorização de casos
+  - Alocação de recursos
+
+- **Intervenção**
+  - Recomendações personalizadas
+  - Acompanhamento de progresso
+  - Ajuste de estratégias
+  - Documentação de resultados
+
+### 2. Monitoramento
+
+- **Métricas**
+  - Progresso acadêmico
+  - Frequência escolar
+  - Comportamento
+  - Engajamento
+
+- **Alertas**
+  - Risco iminente
+  - Falta de progresso
+  - Padrões negativos
+  - Necessidade de ajuste
+
+## Privacidade e Segurança
+
+### 1. Proteção de Dados
+
+- **Criptografia**
+  - Dados em repouso
+  - Dados em trânsito
+  - Chaves de acesso
+  - Logs de auditoria
+
+- **Controle de Acesso**
+  - Níveis de permissão
+  - Autenticação
+  - Autorização
+  - Registro de atividades
+
+### 2. Conformidade
+
+- **Regulamentações**
+  - LGPD
+  - FERPA
+  - COPPA
+  - Diretrizes educacionais
+
+- **Boas Práticas**
+  - Minimização de dados
+  - Consentimento
+  - Transparência
+  - Responsabilidade
+
+## Performance e Escalabilidade
+
+### 1. Otimização
+
+- **Processamento**
+  - Computação distribuída
+  - Cache em camadas
+  - Processamento em lote
+  - Otimização de consultas
+
+- **Interface**
+  - Carregamento lazy
+  - Virtualização de listas
+  - Compressão de dados
+  - Cache do navegador
+
+### 2. Monitoramento
+
+- **Métricas**
+  - Tempo de resposta
+  - Uso de recursos
+  - Taxa de erro
+  - Satisfação do usuário
+
+- **Alertas**
+  - Performance degradada
+  - Erros críticos
+  - Uso excessivo
+  - Problemas de segurança
+
+## Próximos Passos
+
+### 1. Melhorias Planejadas
+
+- **Funcionalidades**
+  - Análise preditiva avançada
+  - Recomendações em tempo real
+  - Integração com LMS
+  - API para terceiros
+
+- **Interface**
+  - Design responsivo
+  - Temas personalizáveis
+  - Acessibilidade
+  - Internacionalização
+
+### 2. Pesquisa e Desenvolvimento
+
+- **IA/ML**
+  - Novos algoritmos
+  - Modelos mais precisos
+  - Explicabilidade
+  - Privacidade diferencial
+
+- **UX/UI**
+  - Pesquisa de usuário
+  - Testes A/B
+  - Feedback contínuo
+  - Iterações de design

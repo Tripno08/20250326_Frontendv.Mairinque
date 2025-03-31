@@ -10,9 +10,18 @@ import {
   Legend,
   ReferenceLine,
   Cell,
-  LabelList
+  LabelList,
 } from 'recharts';
-import { Box, Paper, Typography, useTheme, Switch, FormControlLabel, FormGroup, Grid } from '@mui/material';
+import {
+  Box,
+  Paper,
+  Typography,
+  useTheme,
+  Switch,
+  FormControlLabel,
+  FormGroup,
+  Grid,
+} from '@mui/material';
 import { DomainProgressChartProps } from '@/types/visualization';
 
 export const DomainProgressChart: React.FC<DomainProgressChartProps> = ({
@@ -25,13 +34,13 @@ export const DomainProgressChart: React.FC<DomainProgressChartProps> = ({
   className,
   style,
   width = 700,
-  height = 500
+  height = 500,
 }) => {
   const theme = useTheme();
   const [showDetails, setShowDetails] = React.useState({
     benchmarks: showBenchmarks,
     nationalAverage: showNationalAverage,
-    targets: showTargets
+    targets: showTargets,
   });
 
   // Reorganizar os dados para facilitar a visualização no gráfico
@@ -44,25 +53,29 @@ export const DomainProgressChart: React.FC<DomainProgressChartProps> = ({
     nacional: domain.nationalAverage || 0,
     benchmarks: domain.benchmarks || [],
     crescimento: domain.currentScore - domain.initialScore,
-    percentualMeta: ((domain.currentScore - domain.initialScore) /
-      (domain.targetScore - domain.initialScore) * 100).toFixed(0)
+    percentualMeta: (
+      ((domain.currentScore - domain.initialScore) / (domain.targetScore - domain.initialScore)) *
+      100
+    ).toFixed(0),
   }));
 
   // Encontrar o valor máximo para definir o domínio do eixo Y
   const maxValue = Math.max(
-    ...chartData.map(d => Math.max(
-      d.inicial,
-      d.atual,
-      d.meta,
-      d.nacional || 0,
-      ...((d.benchmarks && d.benchmarks.map(b => b.value)) || [0])
-    ))
+    ...chartData.map(d =>
+      Math.max(
+        d.inicial,
+        d.atual,
+        d.meta,
+        d.nacional || 0,
+        ...((d.benchmarks && d.benchmarks.map(b => b.value)) || [0])
+      )
+    )
   );
 
   const handleToggleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setShowDetails({
       ...showDetails,
-      [event.target.name]: event.target.checked
+      [event.target.name]: event.target.checked,
     });
   };
 
@@ -88,7 +101,7 @@ export const DomainProgressChart: React.FC<DomainProgressChartProps> = ({
             p: 2,
             bgcolor: 'background.paper',
             boxShadow: theme.shadows[3],
-            borderRadius: 1
+            borderRadius: 1,
           }}
         >
           <Typography variant="subtitle2" sx={{ color: data.color, fontWeight: 'bold', mb: 1 }}>
@@ -134,11 +147,13 @@ export const DomainProgressChart: React.FC<DomainProgressChartProps> = ({
         height: height,
         display: 'flex',
         flexDirection: 'column',
-        ...(style || {})
+        ...(style || {}),
       }}
       className={className}
     >
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', mb: 2 }}>
+      <Box
+        sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', mb: 2 }}
+      >
         <Typography variant="h6">{title}</Typography>
 
         <FormGroup row>
@@ -209,7 +224,7 @@ export const DomainProgressChart: React.FC<DomainProgressChartProps> = ({
                 </Bar>
 
                 {/* Linhas de referência condicionais */}
-                {showDetails.targets && (
+                {showDetails.targets &&
                   chartData.map((entry, index) => (
                     <ReferenceLine
                       key={`target-${index}`}
@@ -222,34 +237,33 @@ export const DomainProgressChart: React.FC<DomainProgressChartProps> = ({
                         value: 'Meta',
                         position: 'right',
                         fill: '#FF5722',
-                        fontSize: 11
+                        fontSize: 11,
                       }}
                     />
-                  ))
-                )}
+                  ))}
 
-                {showDetails.nationalAverage && (
-                  chartData.map((entry, index) => (
-                    entry.nacional > 0 && (
-                      <ReferenceLine
-                        key={`national-${index}`}
-                        x={entry.name}
-                        y={entry.nacional}
-                        stroke="#3F51B5"
-                        strokeDasharray="3 3"
-                        isFront={true}
-                        label={{
-                          value: 'Nacional',
-                          position: 'insideBottomRight',
-                          fill: '#3F51B5',
-                          fontSize: 11
-                        }}
-                      />
-                    )
-                  ))
-                )}
+                {showDetails.nationalAverage &&
+                  chartData.map(
+                    (entry, index) =>
+                      entry.nacional > 0 && (
+                        <ReferenceLine
+                          key={`national-${index}`}
+                          x={entry.name}
+                          y={entry.nacional}
+                          stroke="#3F51B5"
+                          strokeDasharray="3 3"
+                          isFront={true}
+                          label={{
+                            value: 'Nacional',
+                            position: 'insideBottomRight',
+                            fill: '#3F51B5',
+                            fontSize: 11,
+                          }}
+                        />
+                      )
+                  )}
 
-                {showDetails.benchmarks && (
+                {showDetails.benchmarks &&
                   chartData.flatMap((entry, domainIndex) =>
                     entry.benchmarks.map((benchmark, index) => (
                       <ReferenceLine
@@ -263,12 +277,11 @@ export const DomainProgressChart: React.FC<DomainProgressChartProps> = ({
                           value: benchmark.name,
                           position: 'left',
                           fill: '#607D8B',
-                          fontSize: 10
+                          fontSize: 10,
                         }}
                       />
                     ))
-                  )
-                )}
+                  )}
               </BarChart>
             </ResponsiveContainer>
           </Box>
@@ -280,7 +293,11 @@ export const DomainProgressChart: React.FC<DomainProgressChartProps> = ({
               Mostrando progresso em {chartData.length} domínios
             </Typography>
             <Typography variant="body2" color="text.secondary">
-              Crescimento médio: {(chartData.reduce((acc, curr) => acc + curr.crescimento, 0) / chartData.length).toFixed(1)} pontos
+              Crescimento médio:{' '}
+              {(
+                chartData.reduce((acc, curr) => acc + curr.crescimento, 0) / chartData.length
+              ).toFixed(1)}{' '}
+              pontos
             </Typography>
           </Box>
         </Grid>

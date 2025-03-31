@@ -9,7 +9,7 @@ import {
   UseScreeningResultsReturn,
   UseScreeningCycleReturn,
   ScreeningAdministration,
-  ScreeningAdministrationManagerProps
+  ScreeningAdministrationManagerProps,
 } from '../types/screening';
 
 export function useScreeningInstrument(id: string): UseScreeningInstrumentReturn {
@@ -38,7 +38,7 @@ export function useScreeningInstrument(id: string): UseScreeningInstrumentReturn
 
     try {
       await screeningService.toggleFavoriteInstrument(instrument.id);
-      setInstrument(prev => prev ? { ...prev, isFavorite: !prev.isFavorite } : null);
+      setInstrument(prev => (prev ? { ...prev, isFavorite: !prev.isFavorite } : null));
     } catch (err) {
       setError(err instanceof Error ? err : new Error('Erro ao favoritar instrumento'));
     }
@@ -48,7 +48,7 @@ export function useScreeningInstrument(id: string): UseScreeningInstrumentReturn
     instrument,
     isLoading,
     error,
-    toggleFavorite
+    toggleFavorite,
   };
 }
 
@@ -80,7 +80,7 @@ export function useScreeningResults(
     results,
     isLoading,
     error,
-    refresh: fetchResults
+    refresh: fetchResults,
   };
 }
 
@@ -94,9 +94,9 @@ export function useScreeningCycle(id: string): UseScreeningCycleReturn {
       try {
         setIsLoading(true);
         // TODO: Implementar endpoint específico para buscar ciclo
-        const data = await screeningService.getRules().then(rules =>
-          rules.find(rule => rule.id === id)
-        );
+        const data = await screeningService
+          .getRules()
+          .then(rules => rules.find(rule => rule.id === id));
         // Por enquanto, vamos criar um ciclo mockado para teste
         setCycle({
           id: id,
@@ -108,7 +108,7 @@ export function useScreeningCycle(id: string): UseScreeningCycleReturn {
           instruments: [],
           status: 'pending',
           createdAt: new Date(),
-          updatedAt: new Date()
+          updatedAt: new Date(),
         });
       } catch (err) {
         setError(err instanceof Error ? err : new Error('Erro desconhecido'));
@@ -135,7 +135,7 @@ export function useScreeningCycle(id: string): UseScreeningCycleReturn {
     cycle,
     isLoading,
     error,
-    updateCycle
+    updateCycle,
   };
 }
 
@@ -175,9 +175,7 @@ export function useScreeningRules() {
   const updateRule = async (id: string, updates: Partial<ScreeningRule>) => {
     try {
       const updated = await screeningService.updateRule(id, updates);
-      setRules(prev => prev.map(rule =>
-        rule.id === id ? updated : rule
-      ));
+      setRules(prev => prev.map(rule => (rule.id === id ? updated : rule)));
       return updated;
     } catch (err) {
       setError(err instanceof Error ? err : new Error('Erro ao atualizar regra'));
@@ -190,7 +188,7 @@ export function useScreeningRules() {
     isLoading,
     error,
     createRule,
-    updateRule
+    updateRule,
   };
 }
 
@@ -217,7 +215,9 @@ export const useScreeningAdministration = (id?: string) => {
     fetchAdministration();
   }, [id]);
 
-  const createAdministration = async (data: Omit<ScreeningAdministration, 'id' | 'createdAt' | 'updatedAt'>) => {
+  const createAdministration = async (
+    data: Omit<ScreeningAdministration, 'id' | 'createdAt' | 'updatedAt'>
+  ) => {
     try {
       setLoading(true);
       const result = await screeningService.createAdministration(data);
@@ -261,7 +261,7 @@ export const useScreeningAdministration = (id?: string) => {
     error,
     createAdministration,
     updateAdministration,
-    deleteAdministration
+    deleteAdministration,
   };
 };
 

@@ -9,7 +9,7 @@ import {
   MenuItem,
   TextField,
   Paper,
-  Pagination
+  Pagination,
 } from '@mui/material';
 import {
   ResponsiveContainer,
@@ -19,7 +19,7 @@ import {
   YAxis,
   CartesianGrid,
   Tooltip,
-  Legend
+  Legend,
 } from 'recharts';
 import { useScreeningAdministrations } from '../../hooks/useScreening';
 import { ScreeningAdministration } from '../../types/screening';
@@ -28,9 +28,9 @@ interface InstrumentScreeningHistoryStackedAreaChartProps {
   instrumentId: string;
 }
 
-export const InstrumentScreeningHistoryStackedAreaChart: React.FC<InstrumentScreeningHistoryStackedAreaChartProps> = ({
-  instrumentId
-}) => {
+export const InstrumentScreeningHistoryStackedAreaChart: React.FC<
+  InstrumentScreeningHistoryStackedAreaChartProps
+> = ({ instrumentId }) => {
   const [filters, setFilters] = useState<{
     status?: ScreeningAdministration['status'];
     startDate?: Date;
@@ -41,7 +41,7 @@ export const InstrumentScreeningHistoryStackedAreaChart: React.FC<InstrumentScre
 
   const { administrations, loading, error } = useScreeningAdministrations({
     instrumentId,
-    ...filters
+    ...filters,
   });
 
   const handleFilterChange = (field: keyof typeof filters, value: any) => {
@@ -62,24 +62,22 @@ export const InstrumentScreeningHistoryStackedAreaChart: React.FC<InstrumentScre
   }
 
   const totalPages = Math.ceil(administrations.length / itemsPerPage);
-  const paginatedData = administrations.slice(
-    (page - 1) * itemsPerPage,
-    page * itemsPerPage
-  );
+  const paginatedData = administrations.slice((page - 1) * itemsPerPage, page * itemsPerPage);
 
   const chartData = paginatedData.reduce((acc: any[], administration) => {
     const date = new Date(administration.startDate).toLocaleDateString();
     const existingDate = acc.find(item => item.date === date);
 
     if (existingDate) {
-      existingDate[administration.status] = (existingDate[administration.status] || 0) + administration.responses.length;
+      existingDate[administration.status] =
+        (existingDate[administration.status] || 0) + administration.responses.length;
     } else {
       acc.push({
         date,
         pending: administration.status === 'pending' ? administration.responses.length : 0,
         in_progress: administration.status === 'in_progress' ? administration.responses.length : 0,
         completed: administration.status === 'completed' ? administration.responses.length : 0,
-        cancelled: administration.status === 'cancelled' ? administration.responses.length : 0
+        cancelled: administration.status === 'cancelled' ? administration.responses.length : 0,
       });
     }
     return acc;
@@ -89,7 +87,7 @@ export const InstrumentScreeningHistoryStackedAreaChart: React.FC<InstrumentScre
     pending: '#FFBB28',
     in_progress: '#00C49F',
     completed: '#0088FE',
-    cancelled: '#FF8042'
+    cancelled: '#FF8042',
   };
 
   return (
@@ -105,7 +103,7 @@ export const InstrumentScreeningHistoryStackedAreaChart: React.FC<InstrumentScre
             <Select
               value={filters.status || ''}
               label="Status"
-              onChange={(e) => handleFilterChange('status', e.target.value)}
+              onChange={e => handleFilterChange('status', e.target.value)}
             >
               <MenuItem value="">Todos</MenuItem>
               <MenuItem value="pending">Pendente</MenuItem>
@@ -122,7 +120,9 @@ export const InstrumentScreeningHistoryStackedAreaChart: React.FC<InstrumentScre
             label="Data Inicial"
             type="date"
             value={filters.startDate ? new Date(filters.startDate).toISOString().split('T')[0] : ''}
-            onChange={(e) => handleFilterChange('startDate', e.target.value ? new Date(e.target.value) : undefined)}
+            onChange={e =>
+              handleFilterChange('startDate', e.target.value ? new Date(e.target.value) : undefined)
+            }
             InputLabelProps={{ shrink: true }}
           />
         </Grid>
@@ -133,7 +133,9 @@ export const InstrumentScreeningHistoryStackedAreaChart: React.FC<InstrumentScre
             label="Data Final"
             type="date"
             value={filters.endDate ? new Date(filters.endDate).toISOString().split('T')[0] : ''}
-            onChange={(e) => handleFilterChange('endDate', e.target.value ? new Date(e.target.value) : undefined)}
+            onChange={e =>
+              handleFilterChange('endDate', e.target.value ? new Date(e.target.value) : undefined)
+            }
             InputLabelProps={{ shrink: true }}
           />
         </Grid>

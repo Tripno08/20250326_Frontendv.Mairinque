@@ -1,12 +1,12 @@
-import React from 'react'
-import { Box, Grid, Container, Typography } from '@mui/material'
-import { TierDistributionChart } from './TierDistributionChart'
-import { DomainSummary } from './DomainSummary'
-import { AssessmentCoverage } from './AssessmentCoverage'
-import { useDashboard } from '@/hooks/useDashboard'
+import React from 'react';
+import { Box, Grid, Container, Typography } from '@mui/material';
+import { TierDistributionChart } from './TierDistributionChart';
+import { DomainSummary } from './DomainSummary';
+import { AssessmentCoverage } from './AssessmentCoverage';
+import { useDashboard } from '@/hooks/useDashboard';
 
 export const Dashboard: React.FC = () => {
-  const { data, isLoading, error } = useDashboard()
+  const { data, isLoading, error } = useDashboard();
 
   if (isLoading) {
     return (
@@ -15,7 +15,7 @@ export const Dashboard: React.FC = () => {
           Carregando dashboard...
         </Typography>
       </Container>
-    )
+    );
   }
 
   if (error) {
@@ -26,7 +26,7 @@ export const Dashboard: React.FC = () => {
         </Typography>
         <Typography color="error">{error.message}</Typography>
       </Container>
-    )
+    );
   }
 
   return (
@@ -43,20 +43,12 @@ export const Dashboard: React.FC = () => {
           />
         </Grid>
         <Grid item xs={12} md={6}>
-          <DomainSummary
-            data={data?.domainSummary}
-            isLoading={isLoading}
-            error={error}
-          />
+          <DomainSummary data={data?.domainSummary} isLoading={isLoading} error={error} />
         </Grid>
         <Grid item xs={12}>
-          <AssessmentCoverage
-            data={data?.assessmentCoverage}
-            isLoading={isLoading}
-            error={error}
-          />
+          <AssessmentCoverage data={data?.assessmentCoverage} isLoading={isLoading} error={error} />
         </Grid>
       </Grid>
     </Container>
-  )
-} 
+  );
+};

@@ -13,6 +13,7 @@ module.exports = {
     'plugin:react-hooks/recommended',
     'plugin:jsx-a11y/recommended',
     'plugin:prettier/recommended',
+    'plugin:testing-library/react',
   ],
   parser: '@typescript-eslint/parser',
   parserOptions: {
@@ -28,6 +29,7 @@ module.exports = {
     '@typescript-eslint',
     'jsx-a11y',
     'prettier',
+    'testing-library',
   ],
   settings: {
     react: {
@@ -51,7 +53,7 @@ module.exports = {
     // TypeScript
     '@typescript-eslint/explicit-module-boundary-types': 'off',
     '@typescript-eslint/no-explicit-any': 'warn',
-    '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
+    '@typescript-eslint/no-unused-vars': ['warn', { argsIgnorePattern: '^_' }],
     '@typescript-eslint/no-non-null-assertion': 'warn',
     '@typescript-eslint/ban-ts-comment': 'warn',
 
@@ -84,6 +86,11 @@ module.exports = {
         endOfLine: 'auto',
       },
     ],
+
+    // Testing Library
+    'testing-library/await-async-queries': 'error',
+    'testing-library/no-await-sync-queries': 'error',
+    'testing-library/no-debugging-utils': 'warn',
   },
   overrides: [
     {

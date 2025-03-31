@@ -13,6 +13,13 @@ import {
   useSubmitAssessment,
 } from '../useAssessments';
 import { assessmentService } from '@/services/assessmentService';
+import {
+  Assessment,
+  AssessmentType,
+  AssessmentStatus,
+  AssessmentFilters,
+  AssessmentStats,
+} from '@/types/api';
 
 // Mock do serviço de avaliações
 jest.mock('@/services/assessmentService', () => ({
@@ -40,19 +47,15 @@ describe('useAssessments', () => {
   });
 
   const wrapper = ({ children }: { children: React.ReactNode }) => {
-    return (
-      <QueryClientProvider client={queryClient}>
-        {children}
-      </QueryClientProvider>
-    );
+    return <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>;
   };
 
-  const mockAssessment = {
+  const mockAssessment: Assessment = {
     id: '1',
     title: 'Test Assessment',
     description: 'Test Description',
-    type: 'quiz',
-    status: 'draft',
+    type: 'quiz' as AssessmentType,
+    status: 'draft' as AssessmentStatus,
     startDate: '2024-03-26',
     endDate: '2024-03-27',
     createdAt: '2024-03-26T00:00:00Z',
@@ -68,9 +71,9 @@ describe('useAssessments', () => {
 
   describe('useAssessments', () => {
     it('deve buscar lista de avaliações', async () => {
-      const mockFilters = {
-        type: 'quiz',
-        status: 'draft',
+      const mockFilters: AssessmentFilters = {
+        type: 'quiz' as AssessmentType,
+        status: 'draft' as AssessmentStatus,
         page: 1,
         limit: 10,
       };
@@ -91,7 +94,7 @@ describe('useAssessments', () => {
       expect(assessmentService.listAssessments).toHaveBeenCalledWith(mockFilters);
 
       await act(async () => {
-        await new Promise((resolve) => setTimeout(resolve, 0));
+        await new Promise(resolve => setTimeout(resolve, 0));
       });
 
       expect(result.current.isLoading).toBe(false);
@@ -109,7 +112,7 @@ describe('useAssessments', () => {
       expect(assessmentService.getAssessment).toHaveBeenCalledWith('1');
 
       await act(async () => {
-        await new Promise((resolve) => setTimeout(resolve, 0));
+        await new Promise(resolve => setTimeout(resolve, 0));
       });
 
       expect(result.current.isLoading).toBe(false);
@@ -119,8 +122,8 @@ describe('useAssessments', () => {
 
   describe('useCreateAssessment', () => {
     it('deve criar uma nova avaliação', async () => {
-      const newAssessment = { ...mockAssessment };
-      delete newAssessment.id;
+      const newAssessment: Omit<Assessment, 'id'> = { ...mockAssessment };
+      delete (newAssessment as any).id;
 
       (assessmentService.createAssessment as jest.Mock).mockResolvedValue(mockAssessment);
 
@@ -137,7 +140,7 @@ describe('useAssessments', () => {
 
   describe('useUpdateAssessment', () => {
     it('deve atualizar uma avaliação existente', async () => {
-      const updateData = {
+      const updateData: Partial<Assessment> = {
         title: 'Updated Title',
       };
 
@@ -172,7 +175,10 @@ describe('useAssessments', () => {
 
   describe('usePublishAssessment', () => {
     it('deve publicar uma avaliação', async () => {
-      const publishedAssessment = { ...mockAssessment, status: 'published' };
+      const publishedAssessment: Assessment = {
+        ...mockAssessment,
+        status: 'published' as AssessmentStatus,
+      };
       (assessmentService.publishAssessment as jest.Mock).mockResolvedValue(publishedAssessment);
 
       const { result } = renderHook(() => usePublishAssessment(), { wrapper });
@@ -188,7 +194,10 @@ describe('useAssessments', () => {
 
   describe('useCloseAssessment', () => {
     it('deve fechar uma avaliação', async () => {
-      const closedAssessment = { ...mockAssessment, status: 'closed' };
+      const closedAssessment: Assessment = {
+        ...mockAssessment,
+        status: 'closed' as AssessmentStatus,
+      };
       (assessmentService.closeAssessment as jest.Mock).mockResolvedValue(closedAssessment);
 
       const { result } = renderHook(() => useCloseAssessment(), { wrapper });
@@ -224,7 +233,7 @@ describe('useAssessments', () => {
       expect(assessmentService.getAssessmentResults).toHaveBeenCalledWith('1');
 
       await act(async () => {
-        await new Promise((resolve) => setTimeout(resolve, 0));
+        await new Promise(resolve => setTimeout(resolve, 0));
       });
 
       expect(result.current.isLoading).toBe(false);
@@ -234,7 +243,7 @@ describe('useAssessments', () => {
 
   describe('useAssessmentStats', () => {
     it('deve buscar estatísticas de avaliações', async () => {
-      const mockStats = {
+      const mockStats: AssessmentStats = {
         totalAssessments: 10,
         totalStudents: 50,
         averageScore: 75,
@@ -250,7 +259,7 @@ describe('useAssessments', () => {
       expect(assessmentService.getAssessmentStats).toHaveBeenCalled();
 
       await act(async () => {
-        await new Promise((resolve) => setTimeout(resolve, 0));
+        await new Promise(resolve => setTimeout(resolve, 0));
       });
 
       expect(result.current.isLoading).toBe(false);

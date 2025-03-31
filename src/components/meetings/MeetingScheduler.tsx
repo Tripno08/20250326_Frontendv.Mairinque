@@ -63,17 +63,16 @@ export const MeetingScheduler: React.FC<MeetingSchedulerProps> = ({
     }
   };
 
-  const handleTextChange = (field: string) => (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    setFormData((prev) => ({
-      ...prev,
-      [field]: e.target.value,
-    }));
-  };
+  const handleTextChange =
+    (field: string) => (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+      setFormData(prev => ({
+        ...prev,
+        [field]: e.target.value,
+      }));
+    };
 
   const handleSelectChange = (e: SelectChangeEvent<MeetingType>) => {
-    setFormData((prev) => ({
+    setFormData(prev => ({
       ...prev,
       type: e.target.value as MeetingType,
     }));
@@ -138,8 +137,8 @@ export const MeetingScheduler: React.FC<MeetingSchedulerProps> = ({
                 <DateTimePicker
                   label="Data e Hora de Início"
                   value={formData.startDate}
-                  onChange={(newValue) =>
-                    setFormData((prev) => ({ ...prev, startDate: newValue || new Date() }))
+                  onChange={newValue =>
+                    setFormData(prev => ({ ...prev, startDate: newValue || new Date() }))
                   }
                   slotProps={{ textField: { fullWidth: true, required: true } }}
                 />
@@ -149,8 +148,8 @@ export const MeetingScheduler: React.FC<MeetingSchedulerProps> = ({
                 <DateTimePicker
                   label="Data e Hora de Término"
                   value={formData.endDate}
-                  onChange={(newValue) =>
-                    setFormData((prev) => ({ ...prev, endDate: newValue || new Date() }))
+                  onChange={newValue =>
+                    setFormData(prev => ({ ...prev, endDate: newValue || new Date() }))
                   }
                   slotProps={{ textField: { fullWidth: true, required: true } }}
                 />

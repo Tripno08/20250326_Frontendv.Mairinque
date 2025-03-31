@@ -8,7 +8,7 @@ import {
   Tooltip,
   Legend,
   ResponsiveContainer,
-  Cell
+  Cell,
 } from 'recharts';
 import { Typography, Box, CircularProgress, Paper } from '@mui/material';
 import { RiskDistributionData } from '@/types/risk-analysis';
@@ -36,26 +36,26 @@ const RiskDistributionChart: React.FC<RiskDistributionChartProps> = ({
         name: 'Baixo',
         value: data.low,
         percentage: ((data.low / data.total) * 100).toFixed(1),
-        color: '#4caf50'
+        color: '#4caf50',
       },
       {
         name: 'Moderado',
         value: data.moderate,
         percentage: ((data.moderate / data.total) * 100).toFixed(1),
-        color: '#ff9800'
+        color: '#ff9800',
       },
       {
         name: 'Alto',
         value: data.high,
         percentage: ((data.high / data.total) * 100).toFixed(1),
-        color: '#f44336'
+        color: '#f44336',
       },
       {
         name: 'Severo',
         value: data.severe,
         percentage: ((data.severe / data.total) * 100).toFixed(1),
-        color: '#9c27b0'
-      }
+        color: '#9c27b0',
+      },
     ];
   }, [data]);
 
@@ -68,7 +68,7 @@ const RiskDistributionChart: React.FC<RiskDistributionChartProps> = ({
           alignItems: 'center',
           justifyContent: 'center',
           height,
-          p: 2
+          p: 2,
         }}
       >
         <CircularProgress size={40} />
@@ -85,7 +85,7 @@ const RiskDistributionChart: React.FC<RiskDistributionChartProps> = ({
           alignItems: 'center',
           justifyContent: 'center',
           height,
-          p: 2
+          p: 2,
         }}
       >
         <Typography color="text.secondary">Dados não disponíveis</Typography>
@@ -95,7 +95,9 @@ const RiskDistributionChart: React.FC<RiskDistributionChartProps> = ({
 
   return (
     <Paper elevation={2} sx={{ p: 2, height }} className={className || undefined}>
-      <Typography variant="h6" gutterBottom>{title}</Typography>
+      <Typography variant="h6" gutterBottom>
+        {title}
+      </Typography>
       <Box sx={{ width: '100%', height: height - 80 }}>
         <ResponsiveContainer width="100%" height="100%">
           <BarChart
@@ -112,8 +114,11 @@ const RiskDistributionChart: React.FC<RiskDistributionChartProps> = ({
             <XAxis dataKey="name" />
             <YAxis />
             <Tooltip
-              formatter={(value, name, props) => [`${value} estudantes (${props.payload.percentage}%)`, 'Quantidade']}
-              labelFormatter={(label) => `Nível de Risco: ${label}`}
+              formatter={(value, name, props) => [
+                `${value} estudantes (${props.payload.percentage}%)`,
+                'Quantidade',
+              ]}
+              labelFormatter={label => `Nível de Risco: ${label}`}
             />
             <Legend verticalAlign="top" height={36} />
             <Bar dataKey="value" name="Estudantes" radius={[4, 4, 0, 0]}>

@@ -14,7 +14,7 @@ export function useAllGoals() {
   const [state, setState] = useState<FetchState<SmartGoal[]>>({
     data: null,
     loading: true,
-    error: null
+    error: null,
   });
 
   const fetchGoals = useCallback(async () => {
@@ -33,7 +33,7 @@ export function useAllGoals() {
       setState(prev => ({
         ...prev,
         loading: false,
-        error: error instanceof Error ? error : new Error(String(error))
+        error: error instanceof Error ? error : new Error(String(error)),
       }));
     }
   }, []);
@@ -52,7 +52,7 @@ export function useStudentGoals(studentId: string) {
   const [state, setState] = useState<FetchState<SmartGoal[]>>({
     data: null,
     loading: true,
-    error: null
+    error: null,
   });
 
   const fetchGoals = useCallback(async () => {
@@ -71,7 +71,7 @@ export function useStudentGoals(studentId: string) {
       setState(prev => ({
         ...prev,
         loading: false,
-        error: error instanceof Error ? error : new Error(String(error))
+        error: error instanceof Error ? error : new Error(String(error)),
       }));
     }
   }, [studentId]);
@@ -90,7 +90,7 @@ export function useGoal(goalId: string) {
   const [state, setState] = useState<FetchState<SmartGoal>>({
     data: null,
     loading: true,
-    error: null
+    error: null,
   });
 
   const fetchGoal = useCallback(async () => {
@@ -114,7 +114,7 @@ export function useGoal(goalId: string) {
       setState(prev => ({
         ...prev,
         loading: false,
-        error: error instanceof Error ? error : new Error(String(error))
+        error: error instanceof Error ? error : new Error(String(error)),
       }));
     }
   }, [goalId]);
@@ -139,7 +139,7 @@ export function useCreateGoal() {
     loading: false,
     error: null,
     success: false,
-    data: null
+    data: null,
   });
 
   const createGoal = async (formData: SmartGoalFormData) => {
@@ -149,9 +149,9 @@ export function useCreateGoal() {
       const response = await fetch('/api/goals', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
         },
-        body: JSON.stringify(formData)
+        body: JSON.stringify(formData),
       });
 
       if (!response.ok) {
@@ -167,7 +167,7 @@ export function useCreateGoal() {
         loading: false,
         error: error instanceof Error ? error : new Error(String(error)),
         success: false,
-        data: null
+        data: null,
       });
 
       throw error;
@@ -190,7 +190,7 @@ export function useUpdateGoal(goalId: string) {
     loading: false,
     error: null,
     success: false,
-    data: null
+    data: null,
   });
 
   const updateGoal = async (formData: SmartGoalFormData) => {
@@ -200,9 +200,9 @@ export function useUpdateGoal(goalId: string) {
       const response = await fetch(`/api/goals/${goalId}`, {
         method: 'PUT',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
         },
-        body: JSON.stringify(formData)
+        body: JSON.stringify(formData),
       });
 
       if (!response.ok) {
@@ -218,7 +218,7 @@ export function useUpdateGoal(goalId: string) {
         loading: false,
         error: error instanceof Error ? error : new Error(String(error)),
         success: false,
-        data: null
+        data: null,
       });
 
       throw error;
@@ -239,7 +239,7 @@ export function useDeleteGoal() {
   }>({
     loading: false,
     error: null,
-    success: false
+    success: false,
   });
 
   const deleteGoal = async (goalId: string) => {
@@ -247,7 +247,7 @@ export function useDeleteGoal() {
 
     try {
       const response = await fetch(`/api/goals/${goalId}`, {
-        method: 'DELETE'
+        method: 'DELETE',
       });
 
       if (!response.ok) {
@@ -261,7 +261,7 @@ export function useDeleteGoal() {
       setState({
         loading: false,
         error: error instanceof Error ? error : new Error(String(error)),
-        success: false
+        success: false,
       });
 
       throw error;
@@ -284,7 +284,7 @@ export function useUpdateGoalProgress() {
     loading: false,
     error: null,
     success: false,
-    data: null
+    data: null,
   });
 
   const updateProgress = async (goalId: string, value: number, notes?: string) => {
@@ -294,9 +294,9 @@ export function useUpdateGoalProgress() {
       const response = await fetch(`/api/goals/${goalId}/progress`, {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ value, notes })
+        body: JSON.stringify({ value, notes }),
       });
 
       if (!response.ok) {
@@ -312,7 +312,7 @@ export function useUpdateGoalProgress() {
         loading: false,
         error: error instanceof Error ? error : new Error(String(error)),
         success: false,
-        data: null
+        data: null,
       });
 
       throw error;

@@ -5,7 +5,7 @@ import {
   RiskPatternData,
   RiskDistributionData,
   RiskFactorData,
-  EarlyWarningIndicator
+  EarlyWarningIndicator,
 } from '@/types/risk-analysis';
 
 // Dados de exemplo
@@ -19,24 +19,24 @@ const mockStudentRiskData: StudentRiskData[] = [
     previousScore: 72,
     changeTrend: 'worsening',
     domains: {
-      'leitura': {
+      leitura: {
         score: 58,
         threshold: 70,
-        status: 'at-risk'
+        status: 'at-risk',
       },
-      'matemática': {
+      matemática: {
         score: 72,
         threshold: 70,
-        status: 'on-track'
+        status: 'on-track',
       },
-      'escrita': {
+      escrita: {
         score: 64,
         threshold: 70,
-        status: 'at-risk'
-      }
+        status: 'at-risk',
+      },
     },
     lastAssessment: '2023-03-15',
-    interventions: ['Grupo de leitura intensiva', 'Monitoria de escrita']
+    interventions: ['Grupo de leitura intensiva', 'Monitoria de escrita'],
   },
   {
     id: '2',
@@ -47,24 +47,24 @@ const mockStudentRiskData: StudentRiskData[] = [
     previousScore: 40,
     changeTrend: 'stable',
     domains: {
-      'leitura': {
+      leitura: {
         score: 38,
         threshold: 70,
-        status: 'critical'
+        status: 'critical',
       },
-      'matemática': {
+      matemática: {
         score: 45,
         threshold: 70,
-        status: 'at-risk'
+        status: 'at-risk',
       },
-      'escrita': {
+      escrita: {
         score: 42,
         threshold: 70,
-        status: 'at-risk'
-      }
+        status: 'at-risk',
+      },
     },
     lastAssessment: '2023-03-10',
-    interventions: ['Intervenção de leitura diária', 'Apoio individual']
+    interventions: ['Intervenção de leitura diária', 'Apoio individual'],
   },
   {
     id: '3',
@@ -75,24 +75,24 @@ const mockStudentRiskData: StudentRiskData[] = [
     previousScore: 78,
     changeTrend: 'improving',
     domains: {
-      'leitura': {
+      leitura: {
         score: 88,
         threshold: 70,
-        status: 'above'
+        status: 'above',
       },
-      'matemática': {
+      matemática: {
         score: 82,
         threshold: 70,
-        status: 'above'
+        status: 'above',
       },
-      'escrita': {
+      escrita: {
         score: 86,
         threshold: 70,
-        status: 'above'
-      }
+        status: 'above',
+      },
     },
     lastAssessment: '2023-03-18',
-    interventions: []
+    interventions: [],
   },
   {
     id: '4',
@@ -103,24 +103,24 @@ const mockStudentRiskData: StudentRiskData[] = [
     previousScore: 30,
     changeTrend: 'worsening',
     domains: {
-      'leitura': {
+      leitura: {
         score: 22,
         threshold: 70,
-        status: 'critical'
+        status: 'critical',
       },
-      'matemática': {
+      matemática: {
         score: 28,
         threshold: 70,
-        status: 'critical'
+        status: 'critical',
       },
-      'escrita': {
+      escrita: {
         score: 26,
         threshold: 70,
-        status: 'critical'
-      }
+        status: 'critical',
+      },
     },
     lastAssessment: '2023-03-12',
-    interventions: ['Suporte intensivo diário', 'Terapia educacional']
+    interventions: ['Suporte intensivo diário', 'Terapia educacional'],
   },
   {
     id: '5',
@@ -131,25 +131,25 @@ const mockStudentRiskData: StudentRiskData[] = [
     previousScore: 58,
     changeTrend: 'improving',
     domains: {
-      'leitura': {
+      leitura: {
         score: 66,
         threshold: 70,
-        status: 'at-risk'
+        status: 'at-risk',
       },
-      'matemática': {
+      matemática: {
         score: 55,
         threshold: 70,
-        status: 'at-risk'
+        status: 'at-risk',
       },
-      'escrita': {
+      escrita: {
         score: 64,
         threshold: 70,
-        status: 'at-risk'
-      }
+        status: 'at-risk',
+      },
     },
     lastAssessment: '2023-03-16',
-    interventions: ['Grupo de leitura intensiva']
-  }
+    interventions: ['Grupo de leitura intensiva'],
+  },
 ];
 
 const mockRiskTrendData: RiskTrendData[] = [
@@ -158,43 +158,43 @@ const mockRiskTrendData: RiskTrendData[] = [
     lowRisk: 62,
     moderateRisk: 28,
     highRisk: 8,
-    severeRisk: 2
+    severeRisk: 2,
   },
   {
     date: '2023-02',
     lowRisk: 60,
     moderateRisk: 29,
     highRisk: 9,
-    severeRisk: 2
+    severeRisk: 2,
   },
   {
     date: '2023-03',
     lowRisk: 58,
     moderateRisk: 30,
     highRisk: 9,
-    severeRisk: 3
+    severeRisk: 3,
   },
   {
     date: '2023-04',
     lowRisk: 56,
     moderateRisk: 31,
     highRisk: 10,
-    severeRisk: 3
+    severeRisk: 3,
   },
   {
     date: '2023-05',
     lowRisk: 54,
     moderateRisk: 32,
     highRisk: 11,
-    severeRisk: 3
+    severeRisk: 3,
   },
   {
     date: '2023-06',
     lowRisk: 58,
     moderateRisk: 30,
     highRisk: 9,
-    severeRisk: 3
-  }
+    severeRisk: 3,
+  },
 ];
 
 const mockRiskProjectionData: RiskProjectionData[] = [
@@ -202,47 +202,47 @@ const mockRiskProjectionData: RiskProjectionData[] = [
     month: 'Jan',
     projected: 12,
     actual: 10,
-    baseline: 15
+    baseline: 15,
   },
   {
     month: 'Fev',
     projected: 11,
     actual: 12,
-    baseline: 15
+    baseline: 15,
   },
   {
     month: 'Mar',
     projected: 10,
     actual: 9,
-    baseline: 15
+    baseline: 15,
   },
   {
     month: 'Abr',
     projected: 9,
     actual: 11,
-    baseline: 15
+    baseline: 15,
   },
   {
     month: 'Mai',
     projected: 8,
     actual: 8,
-    baseline: 15
+    baseline: 15,
   },
   {
     month: 'Jun',
     projected: 7,
-    baseline: 15
+    baseline: 15,
   },
   {
     month: 'Jul',
     projected: 6,
-    baseline: 15
+    baseline: 15,
   },
   {
     month: 'Ago',
     projected: 5,
-    baseline: 15
-  }
+    baseline: 15,
+  },
 ];
 
 const mockRiskPatternData: RiskPatternData[] = [
@@ -251,29 +251,29 @@ const mockRiskPatternData: RiskPatternData[] = [
     correlationScore: 0.85,
     impactFactor: 0.9,
     studentsAffected: 28,
-    riskContribution: 0.4
+    riskContribution: 0.4,
   },
   {
     domain: 'Notas Baixas',
     correlationScore: 0.78,
     impactFactor: 0.85,
     studentsAffected: 42,
-    riskContribution: 0.35
+    riskContribution: 0.35,
   },
   {
     domain: 'Comportamento',
     correlationScore: 0.65,
     impactFactor: 0.7,
     studentsAffected: 15,
-    riskContribution: 0.15
+    riskContribution: 0.15,
   },
   {
     domain: 'Participação',
     correlationScore: 0.58,
     impactFactor: 0.6,
     studentsAffected: 22,
-    riskContribution: 0.1
-  }
+    riskContribution: 0.1,
+  },
 ];
 
 const mockRiskDistributionData: RiskDistributionData = {
@@ -281,7 +281,7 @@ const mockRiskDistributionData: RiskDistributionData = {
   moderate: 95,
   high: 32,
   severe: 12,
-  total: 319
+  total: 319,
 };
 
 const mockRiskFactorData: RiskFactorData[] = [
@@ -289,26 +289,26 @@ const mockRiskFactorData: RiskFactorData[] = [
     factor: 'Frequência < 80%',
     weight: 0.35,
     students: 48,
-    significance: 'high'
+    significance: 'high',
   },
   {
     factor: 'Nota em leitura < 60%',
     weight: 0.28,
     students: 72,
-    significance: 'high'
+    significance: 'high',
   },
   {
     factor: 'Nota em matemática < 60%',
     weight: 0.22,
     students: 64,
-    significance: 'medium'
+    significance: 'medium',
   },
   {
     factor: 'Múltiplas ocorrências disciplinares',
     weight: 0.15,
     students: 28,
-    significance: 'medium'
-  }
+    significance: 'medium',
+  },
 ];
 
 const mockEarlyWarningIndicators: EarlyWarningIndicator[] = [
@@ -320,7 +320,7 @@ const mockEarlyWarningIndicators: EarlyWarningIndicator[] = [
     currentValue: 22,
     status: 'critical',
     trend: 'worsening',
-    affectedStudents: 28
+    affectedStudents: 28,
   },
   {
     id: '2',
@@ -330,7 +330,7 @@ const mockEarlyWarningIndicators: EarlyWarningIndicator[] = [
     currentValue: 12,
     status: 'warning',
     trend: 'worsening',
-    affectedStudents: 32
+    affectedStudents: 32,
   },
   {
     id: '3',
@@ -340,7 +340,7 @@ const mockEarlyWarningIndicators: EarlyWarningIndicator[] = [
     currentValue: 8,
     status: 'normal',
     trend: 'stable',
-    affectedStudents: 15
+    affectedStudents: 15,
   },
   {
     id: '4',
@@ -350,8 +350,8 @@ const mockEarlyWarningIndicators: EarlyWarningIndicator[] = [
     currentValue: 25,
     status: 'warning',
     trend: 'worsening',
-    affectedStudents: 42
-  }
+    affectedStudents: 42,
+  },
 ];
 
 // Simulação de atraso de rede
@@ -381,7 +381,7 @@ export const riskAnalysisService = {
 
   getRiskDistributionData: async (): Promise<RiskDistributionData> => {
     await delay(400);
-    return {...mockRiskDistributionData};
+    return { ...mockRiskDistributionData };
   },
 
   getRiskFactorData: async (): Promise<RiskFactorData[]> => {
@@ -392,5 +392,5 @@ export const riskAnalysisService = {
   getEarlyWarningIndicators: async (): Promise<EarlyWarningIndicator[]> => {
     await delay(500);
     return [...mockEarlyWarningIndicators];
-  }
+  },
 };

@@ -16,27 +16,18 @@ export async function POST(request: NextRequest, { params }: RouteParams) {
 
     // Validar dados
     if (value === undefined || value === null) {
-      return NextResponse.json(
-        { error: 'Valor de progresso é obrigatório' },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: 'Valor de progresso é obrigatório' }, { status: 400 });
     }
 
     const updatedGoal = await updateGoalProgress(id, value, notes);
 
     if (!updatedGoal) {
-      return NextResponse.json(
-        { error: 'Meta não encontrada' },
-        { status: 404 }
-      );
+      return NextResponse.json({ error: 'Meta não encontrada' }, { status: 404 });
     }
 
     return NextResponse.json(updatedGoal);
   } catch (error) {
     console.error('Erro ao atualizar progresso:', error);
-    return NextResponse.json(
-      { error: 'Erro ao atualizar progresso' },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: 'Erro ao atualizar progresso' }, { status: 500 });
   }
 }

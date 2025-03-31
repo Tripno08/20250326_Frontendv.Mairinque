@@ -45,4 +45,4 @@ export interface PyramidLevelDimensions {
   percentageY: number;
   studentsX: number;
   studentsY: number;
-} 
+}

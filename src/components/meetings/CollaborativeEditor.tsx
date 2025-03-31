@@ -72,9 +72,7 @@ export const CollaborativeEditor: React.FC<CollaborativeEditorProps> = ({
         isEdited: true,
       };
 
-      const updatedNotes = notes.map((note) =>
-        note.id === editingNote.id ? updatedNote : note
-      );
+      const updatedNotes = notes.map(note => (note.id === editingNote.id ? updatedNote : note));
 
       setNotes(updatedNotes);
       await onUpdateNotes(updatedNotes);
@@ -85,7 +83,7 @@ export const CollaborativeEditor: React.FC<CollaborativeEditorProps> = ({
   };
 
   const handleDeleteNote = async (noteId: string) => {
-    const updatedNotes = notes.filter((note) => note.id !== noteId);
+    const updatedNotes = notes.filter(note => note.id !== noteId);
     setNotes(updatedNotes);
     await onUpdateNotes(updatedNotes);
   };
@@ -111,11 +109,7 @@ export const CollaborativeEditor: React.FC<CollaborativeEditorProps> = ({
       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
         <Typography variant="h6">Notas e Ata da Reunião</Typography>
         {!isEditing && (
-          <Button
-            startIcon={<EditIcon />}
-            onClick={() => setIsEditing(true)}
-            variant="outlined"
-          >
+          <Button startIcon={<EditIcon />} onClick={() => setIsEditing(true)} variant="outlined">
             Nova Nota
           </Button>
         )}
@@ -131,16 +125,12 @@ export const CollaborativeEditor: React.FC<CollaborativeEditorProps> = ({
                 rows={4}
                 label={editingNote ? 'Editar Nota' : 'Nova Nota'}
                 value={newNote}
-                onChange={(e) => setNewNote(e.target.value)}
+                onChange={e => setNewNote(e.target.value)}
                 variant="outlined"
               />
             </Grid>
             <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'flex-end', gap: 1 }}>
-              <Button
-                startIcon={<CancelIcon />}
-                onClick={handleCancel}
-                variant="outlined"
-              >
+              <Button startIcon={<CancelIcon />} onClick={handleCancel} variant="outlined">
                 Cancelar
               </Button>
               <Button
@@ -158,7 +148,7 @@ export const CollaborativeEditor: React.FC<CollaborativeEditorProps> = ({
       )}
 
       <List>
-        {notes.map((note) => (
+        {notes.map(note => (
           <React.Fragment key={note.id}>
             <ListItem
               secondaryAction={
@@ -191,13 +181,7 @@ export const CollaborativeEditor: React.FC<CollaborativeEditorProps> = ({
                     <Typography variant="body2" color="text.secondary">
                       {formatDate(note.createdAt)}
                     </Typography>
-                    {note.isEdited && (
-                      <Chip
-                        label="Editado"
-                        size="small"
-                        color="info"
-                      />
-                    )}
+                    {note.isEdited && <Chip label="Editado" size="small" color="info" />}
                   </Box>
                 }
               />

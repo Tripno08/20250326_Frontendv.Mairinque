@@ -23,7 +23,7 @@ import {
   Chip,
   Stack,
   Switch,
-  FormControlLabel
+  FormControlLabel,
 } from '@mui/material';
 import {
   Add as AddIcon,
@@ -31,14 +31,14 @@ import {
   Delete as DeleteIcon,
   Assessment as AssessmentIcon,
   Notifications as NotificationsIcon,
-  Warning as WarningIcon
+  Warning as WarningIcon,
 } from '@mui/icons-material';
 import { useScreeningRules } from '../../hooks/useScreening';
 import {
   ScreeningRule,
   ScreeningRuleManagerProps,
   ScreeningTier,
-  ScreeningArea
+  ScreeningArea,
 } from '../../types/screening';
 
 const getTierColor = (tier: ScreeningTier) => {
@@ -86,7 +86,7 @@ const getAreaLabel = (area: ScreeningArea) => {
 
 export const ScreeningRulesManager: React.FC<ScreeningRuleManagerProps> = ({
   onRuleCreate,
-  onRuleUpdate
+  onRuleUpdate,
 }) => {
   const [selectedRule, setSelectedRule] = useState<ScreeningRule | null>(null);
   const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
@@ -98,7 +98,7 @@ export const ScreeningRulesManager: React.FC<ScreeningRuleManagerProps> = ({
     tier: 'universal',
     conditions: [],
     actions: [],
-    isActive: true
+    isActive: true,
   });
 
   const handleCreateRule = () => {
@@ -111,7 +111,7 @@ export const ScreeningRulesManager: React.FC<ScreeningRuleManagerProps> = ({
       tier: 'universal',
       conditions: [],
       actions: [],
-      isActive: true
+      isActive: true,
     });
   };
 
@@ -127,7 +127,7 @@ export const ScreeningRulesManager: React.FC<ScreeningRuleManagerProps> = ({
       tier: 'universal',
       conditions: [],
       actions: [],
-      isActive: true
+      isActive: true,
     });
   };
 
@@ -211,13 +211,13 @@ export const ScreeningRulesManager: React.FC<ScreeningRuleManagerProps> = ({
           <TextField
             label="Nome"
             value={formData.name}
-            onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}
+            onChange={e => setFormData(prev => ({ ...prev, name: e.target.value }))}
             fullWidth
           />
           <TextField
             label="Descrição"
             value={formData.description}
-            onChange={(e) => setFormData(prev => ({ ...prev, description: e.target.value }))}
+            onChange={e => setFormData(prev => ({ ...prev, description: e.target.value }))}
             fullWidth
             multiline
             rows={3}
@@ -227,7 +227,9 @@ export const ScreeningRulesManager: React.FC<ScreeningRuleManagerProps> = ({
             <Select
               value={formData.area}
               label="Área"
-              onChange={(e) => setFormData(prev => ({ ...prev, area: e.target.value as ScreeningArea }))}
+              onChange={e =>
+                setFormData(prev => ({ ...prev, area: e.target.value as ScreeningArea }))
+              }
             >
               <MenuItem value="academic">Acadêmico</MenuItem>
               <MenuItem value="behavioral">Comportamental</MenuItem>
@@ -241,7 +243,9 @@ export const ScreeningRulesManager: React.FC<ScreeningRuleManagerProps> = ({
             <Select
               value={formData.tier}
               label="Tier"
-              onChange={(e) => setFormData(prev => ({ ...prev, tier: e.target.value as ScreeningTier }))}
+              onChange={e =>
+                setFormData(prev => ({ ...prev, tier: e.target.value as ScreeningTier }))
+              }
             >
               <MenuItem value="universal">Universal</MenuItem>
               <MenuItem value="selective">Seletivo</MenuItem>
@@ -252,7 +256,7 @@ export const ScreeningRulesManager: React.FC<ScreeningRuleManagerProps> = ({
             control={
               <Switch
                 checked={formData.isActive}
-                onChange={(e) => setFormData(prev => ({ ...prev, isActive: e.target.checked }))}
+                onChange={e => setFormData(prev => ({ ...prev, isActive: e.target.checked }))}
               />
             }
             label="Ativo"
@@ -281,13 +285,13 @@ export const ScreeningRulesManager: React.FC<ScreeningRuleManagerProps> = ({
           <TextField
             label="Nome"
             value={formData.name}
-            onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}
+            onChange={e => setFormData(prev => ({ ...prev, name: e.target.value }))}
             fullWidth
           />
           <TextField
             label="Descrição"
             value={formData.description}
-            onChange={(e) => setFormData(prev => ({ ...prev, description: e.target.value }))}
+            onChange={e => setFormData(prev => ({ ...prev, description: e.target.value }))}
             fullWidth
             multiline
             rows={3}
@@ -297,7 +301,9 @@ export const ScreeningRulesManager: React.FC<ScreeningRuleManagerProps> = ({
             <Select
               value={formData.area}
               label="Área"
-              onChange={(e) => setFormData(prev => ({ ...prev, area: e.target.value as ScreeningArea }))}
+              onChange={e =>
+                setFormData(prev => ({ ...prev, area: e.target.value as ScreeningArea }))
+              }
             >
               <MenuItem value="academic">Acadêmico</MenuItem>
               <MenuItem value="behavioral">Comportamental</MenuItem>
@@ -311,7 +317,9 @@ export const ScreeningRulesManager: React.FC<ScreeningRuleManagerProps> = ({
             <Select
               value={formData.tier}
               label="Tier"
-              onChange={(e) => setFormData(prev => ({ ...prev, tier: e.target.value as ScreeningTier }))}
+              onChange={e =>
+                setFormData(prev => ({ ...prev, tier: e.target.value as ScreeningTier }))
+              }
             >
               <MenuItem value="universal">Universal</MenuItem>
               <MenuItem value="selective">Seletivo</MenuItem>
@@ -322,7 +330,7 @@ export const ScreeningRulesManager: React.FC<ScreeningRuleManagerProps> = ({
             control={
               <Switch
                 checked={formData.isActive}
-                onChange={(e) => setFormData(prev => ({ ...prev, isActive: e.target.checked }))}
+                onChange={e => setFormData(prev => ({ ...prev, isActive: e.target.checked }))}
               />
             }
             label="Ativo"
@@ -341,9 +349,7 @@ export const ScreeningRulesManager: React.FC<ScreeningRuleManagerProps> = ({
   return (
     <Box sx={{ p: 3 }}>
       <Box sx={{ mb: 3, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <Typography variant="h5">
-          Regras de Rastreio
-        </Typography>
+        <Typography variant="h5">Regras de Rastreio</Typography>
         <Button
           variant="contained"
           startIcon={<AddIcon />}

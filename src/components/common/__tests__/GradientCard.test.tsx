@@ -7,11 +7,7 @@ import { GradientCard } from '../GradientCard';
 
 describe('GradientCard', () => {
   const renderWithTheme = (component: React.ReactNode) => {
-    return render(
-      <ThemeProvider theme={theme}>
-        {component}
-      </ThemeProvider>
-    );
+    return render(<ThemeProvider theme={theme}>{component}</ThemeProvider>);
   };
 
   it('renderiza corretamente com conteúdo básico', () => {
@@ -33,7 +29,7 @@ describe('GradientCard', () => {
 
     const card = container.firstChild as HTMLElement;
     expect(card).toHaveStyle({
-      background: expect.stringContaining('linear-gradient')
+      background: expect.stringContaining('linear-gradient'),
     });
   });
 
@@ -41,7 +37,7 @@ describe('GradientCard', () => {
     const customGradient = {
       startColor: '#1976d2',
       endColor: '#1565c0',
-      angle: 135
+      angle: 135,
     };
 
     const { container } = renderWithTheme(
@@ -52,7 +48,7 @@ describe('GradientCard', () => {
 
     const card = container.firstChild as HTMLElement;
     expect(card).toHaveStyle({
-      background: expect.stringContaining('linear-gradient(135deg')
+      background: expect.stringContaining('linear-gradient(135deg'),
     });
   });
 
@@ -65,7 +61,7 @@ describe('GradientCard', () => {
 
     const card = container.firstChild as HTMLElement;
     expect(card).not.toHaveStyle({
-      transition: expect.any(String)
+      transition: expect.any(String),
     });
   });
 
@@ -95,7 +91,7 @@ describe('GradientCard', () => {
   it('aplica estilos inline quando style é fornecido', () => {
     const customStyle = {
       padding: '20px',
-      margin: '10px'
+      margin: '10px',
     };
 
     const { container } = renderWithTheme(
@@ -120,11 +116,7 @@ describe('GradientCard', () => {
   });
 
   it('renderiza com children nulos', () => {
-    const { container } = renderWithTheme(
-      <GradientCard>
-        {null}
-      </GradientCard>
-    );
+    const { container } = renderWithTheme(<GradientCard>{null}</GradientCard>);
 
     const card = container.firstChild as HTMLElement;
     expect(card).toBeEmptyDOMElement();

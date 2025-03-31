@@ -84,7 +84,9 @@ export const DraggableIntervention: React.FC<DraggableInterventionProps> = ({
           position: 'relative',
         }}
       >
-        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', mb: 1 }}>
+        <Box
+          sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', mb: 1 }}
+        >
           <Typography variant="subtitle1" fontWeight="bold" gutterBottom>
             {intervention.title}
           </Typography>
@@ -124,7 +126,7 @@ export const DraggableIntervention: React.FC<DraggableInterventionProps> = ({
         </Box>
 
         <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
-          {intervention.tags.slice(0, 3).map((tag) => (
+          {intervention.tags.slice(0, 3).map(tag => (
             <Chip
               key={tag}
               label={tag}

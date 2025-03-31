@@ -9,7 +9,7 @@ import {
   MenuItem,
   TextField,
   Paper,
-  Pagination
+  Pagination,
 } from '@mui/material';
 import {
   ResponsiveContainer,
@@ -19,7 +19,7 @@ import {
   YAxis,
   CartesianGrid,
   Tooltip,
-  Legend
+  Legend,
 } from 'recharts';
 import { useScreeningAdministrations } from '../../hooks/useScreening';
 import { ScreeningAdministration } from '../../types/screening';
@@ -28,9 +28,9 @@ interface InstrumentScreeningHistoryLineChartProps {
   instrumentId: string;
 }
 
-export const InstrumentScreeningHistoryLineChart: React.FC<InstrumentScreeningHistoryLineChartProps> = ({
-  instrumentId
-}) => {
+export const InstrumentScreeningHistoryLineChart: React.FC<
+  InstrumentScreeningHistoryLineChartProps
+> = ({ instrumentId }) => {
   const [filters, setFilters] = useState<{
     status?: ScreeningAdministration['status'];
     startDate?: Date;
@@ -41,7 +41,7 @@ export const InstrumentScreeningHistoryLineChart: React.FC<InstrumentScreeningHi
 
   const { administrations, loading, error } = useScreeningAdministrations({
     instrumentId,
-    ...filters
+    ...filters,
   });
 
   const handleFilterChange = (field: keyof typeof filters, value: any) => {
@@ -62,15 +62,12 @@ export const InstrumentScreeningHistoryLineChart: React.FC<InstrumentScreeningHi
   }
 
   const totalPages = Math.ceil(administrations.length / itemsPerPage);
-  const paginatedData = administrations.slice(
-    (page - 1) * itemsPerPage,
-    page * itemsPerPage
-  );
+  const paginatedData = administrations.slice((page - 1) * itemsPerPage, page * itemsPerPage);
 
   const chartData = paginatedData.map(administration => ({
     date: new Date(administration.startDate).toLocaleDateString(),
     status: administration.status,
-    responses: administration.responses.length
+    responses: administration.responses.length,
   }));
 
   return (
@@ -86,7 +83,7 @@ export const InstrumentScreeningHistoryLineChart: React.FC<InstrumentScreeningHi
             <Select
               value={filters.status || ''}
               label="Status"
-              onChange={(e) => handleFilterChange('status', e.target.value)}
+              onChange={e => handleFilterChange('status', e.target.value)}
             >
               <MenuItem value="">Todos</MenuItem>
               <MenuItem value="pending">Pendente</MenuItem>
@@ -103,7 +100,9 @@ export const InstrumentScreeningHistoryLineChart: React.FC<InstrumentScreeningHi
             label="Data Inicial"
             type="date"
             value={filters.startDate ? new Date(filters.startDate).toISOString().split('T')[0] : ''}
-            onChange={(e) => handleFilterChange('startDate', e.target.value ? new Date(e.target.value) : undefined)}
+            onChange={e =>
+              handleFilterChange('startDate', e.target.value ? new Date(e.target.value) : undefined)
+            }
             InputLabelProps={{ shrink: true }}
           />
         </Grid>
@@ -114,7 +113,9 @@ export const InstrumentScreeningHistoryLineChart: React.FC<InstrumentScreeningHi
             label="Data Final"
             type="date"
             value={filters.endDate ? new Date(filters.endDate).toISOString().split('T')[0] : ''}
-            onChange={(e) => handleFilterChange('endDate', e.target.value ? new Date(e.target.value) : undefined)}
+            onChange={e =>
+              handleFilterChange('endDate', e.target.value ? new Date(e.target.value) : undefined)
+            }
             InputLabelProps={{ shrink: true }}
           />
         </Grid>
@@ -128,12 +129,7 @@ export const InstrumentScreeningHistoryLineChart: React.FC<InstrumentScreeningHi
             <YAxis />
             <Tooltip />
             <Legend />
-            <Line
-              type="monotone"
-              dataKey="responses"
-              stroke="#8884d8"
-              name="Respostas"
-            />
+            <Line type="monotone" dataKey="responses" stroke="#8884d8" name="Respostas" />
           </LineChart>
         </ResponsiveContainer>
       </Paper>

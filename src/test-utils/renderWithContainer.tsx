@@ -67,10 +67,11 @@ const TestWrapper: React.FC<TestWrapperProps> = ({
       }}
       data-testid="chart-container"
     >
-      {mounted && React.cloneElement(children, {
-        width: dimensions.width,
-        height: dimensions.height,
-      })}
+      {mounted &&
+        React.cloneElement(children, {
+          width: dimensions.width,
+          height: dimensions.height,
+        })}
     </div>
   );
 };
@@ -82,13 +83,6 @@ interface RenderOptions {
   minHeight?: number;
 }
 
-export const renderWithContainer = (
-  ui: React.ReactElement,
-  options: RenderOptions = {}
-) => {
-  return render(
-    <TestWrapper {...options}>
-      {ui}
-    </TestWrapper>
-  );
+export const renderWithContainer = (ui: React.ReactElement, options: RenderOptions = {}) => {
+  return render(<TestWrapper {...options}>{ui}</TestWrapper>);
 };

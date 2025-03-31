@@ -73,11 +73,7 @@ export const MeetingAgenda: React.FC<MeetingAgendaProps> = ({
       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
         <Typography variant="h6">Pauta da Reunião</Typography>
         {!isEditing && (
-          <Button
-            startIcon={<AddIcon />}
-            onClick={() => setIsEditing(true)}
-            variant="outlined"
-          >
+          <Button startIcon={<AddIcon />} onClick={() => setIsEditing(true)} variant="outlined">
             Adicionar Item
           </Button>
         )}
@@ -91,7 +87,7 @@ export const MeetingAgenda: React.FC<MeetingAgendaProps> = ({
                 fullWidth
                 label={editingIndex !== null ? 'Editar Item' : 'Novo Item'}
                 value={newItem}
-                onChange={(e) => setNewItem(e.target.value)}
+                onChange={e => setNewItem(e.target.value)}
                 variant="outlined"
                 size="small"
               />
@@ -129,11 +125,7 @@ export const MeetingAgenda: React.FC<MeetingAgendaProps> = ({
                 >
                   <EditIcon />
                 </IconButton>
-                <IconButton
-                  edge="end"
-                  aria-label="deletar"
-                  onClick={() => handleDeleteItem(index)}
-                >
+                <IconButton edge="end" aria-label="deletar" onClick={() => handleDeleteItem(index)}>
                   <DeleteIcon />
                 </IconButton>
               </Box>

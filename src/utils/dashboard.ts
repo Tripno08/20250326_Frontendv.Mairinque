@@ -4,11 +4,14 @@ import { STORAGE_CONFIG } from '@/config/dashboard';
 // Funções de persistência
 export const saveLayout = (layout: DashboardLayout): void => {
   try {
-    localStorage.setItem(STORAGE_CONFIG.key, JSON.stringify({
-      ...layout,
-      version: STORAGE_CONFIG.version,
-      updatedAt: new Date(),
-    }));
+    localStorage.setItem(
+      STORAGE_CONFIG.key,
+      JSON.stringify({
+        ...layout,
+        version: STORAGE_CONFIG.version,
+        updatedAt: new Date(),
+      })
+    );
   } catch (error) {
     console.error('Erro ao salvar layout:', error);
   }
@@ -73,7 +76,10 @@ export const cloneLayout = (layout: DashboardLayout): DashboardLayout => {
   };
 };
 
-export const mergeLayouts = (base: DashboardLayout, overlay: Partial<DashboardLayout>): DashboardLayout => {
+export const mergeLayouts = (
+  base: DashboardLayout,
+  overlay: Partial<DashboardLayout>
+): DashboardLayout => {
   return {
     ...base,
     ...overlay,
@@ -99,12 +105,7 @@ export const calculateWidgetOverlap = (widgets: WidgetConfig[]): boolean => {
       const w1 = widgets[i];
       const w2 = widgets[j];
 
-      if (
-        w1.x < w2.x + w2.w &&
-        w1.x + w1.w > w2.x &&
-        w1.y < w2.y + w2.h &&
-        w1.y + w1.h > w2.y
-      ) {
+      if (w1.x < w2.x + w2.w && w1.x + w1.w > w2.x && w1.y < w2.y + w2.h && w1.y + w1.h > w2.y) {
         return true;
       }
     }
@@ -185,4 +186,4 @@ export const logWidget = (widget: WidgetConfig): void => {
     position: { x: widget.x, y: widget.y },
     size: { w: widget.w, h: widget.h },
   });
-}; 
+};

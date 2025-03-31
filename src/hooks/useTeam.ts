@@ -6,7 +6,7 @@ import {
   TeamMeeting,
   TeamMessage,
   TeamMetrics,
-  TeamFilters
+  TeamFilters,
 } from '@/types/team';
 import { teamService } from '@/services/teamService';
 
@@ -33,27 +33,33 @@ export function useTeams() {
     fetchTeams();
   }, [fetchTeams]);
 
-  const createTeam = useCallback(async (teamData: Omit<Team, 'id' | 'dateCreated' | 'dateModified'>) => {
-    try {
-      const newTeam = await teamService.createTeam(teamData);
-      setTeams(prev => [...prev, newTeam]);
-      return newTeam;
-    } catch (err) {
-      throw err instanceof Error ? err : new Error('Erro ao criar equipe');
-    }
-  }, []);
-
-  const updateTeam = useCallback(async (teamId: string, teamData: Partial<Omit<Team, 'id' | 'dateCreated'>>) => {
-    try {
-      const updatedTeam = await teamService.updateTeam(teamId, teamData);
-      if (updatedTeam) {
-        setTeams(prev => prev.map(team => team.id === teamId ? updatedTeam : team));
+  const createTeam = useCallback(
+    async (teamData: Omit<Team, 'id' | 'dateCreated' | 'dateModified'>) => {
+      try {
+        const newTeam = await teamService.createTeam(teamData);
+        setTeams(prev => [...prev, newTeam]);
+        return newTeam;
+      } catch (err) {
+        throw err instanceof Error ? err : new Error('Erro ao criar equipe');
       }
-      return updatedTeam;
-    } catch (err) {
-      throw err instanceof Error ? err : new Error('Erro ao atualizar equipe');
-    }
-  }, []);
+    },
+    []
+  );
+
+  const updateTeam = useCallback(
+    async (teamId: string, teamData: Partial<Omit<Team, 'id' | 'dateCreated'>>) => {
+      try {
+        const updatedTeam = await teamService.updateTeam(teamId, teamData);
+        if (updatedTeam) {
+          setTeams(prev => prev.map(team => (team.id === teamId ? updatedTeam : team)));
+        }
+        return updatedTeam;
+      } catch (err) {
+        throw err instanceof Error ? err : new Error('Erro ao atualizar equipe');
+      }
+    },
+    []
+  );
 
   const deleteTeam = useCallback(async (teamId: string) => {
     try {
@@ -74,7 +80,7 @@ export function useTeams() {
     fetchTeams,
     createTeam,
     updateTeam,
-    deleteTeam
+    deleteTeam,
   };
 }
 
@@ -94,21 +100,15 @@ export function useTeam(teamId: string) {
     setError(null);
     try {
       // Buscar dados da equipe em paralelo
-      const [
-        teamData,
-        membersData,
-        casesData,
-        metricsData,
-        meetingsData,
-        messagesData
-      ] = await Promise.all([
-        teamService.getTeamById(teamId),
-        teamService.getTeamMembers(teamId),
-        teamService.getTeamCases(teamId),
-        teamService.getTeamMetrics(teamId),
-        teamService.getTeamMeetings(teamId),
-        teamService.getTeamMessages(teamId)
-      ]);
+      const [teamData, membersData, casesData, metricsData, meetingsData, messagesData] =
+        await Promise.all([
+          teamService.getTeamById(teamId),
+          teamService.getTeamMembers(teamId),
+          teamService.getTeamCases(teamId),
+          teamService.getTeamMetrics(teamId),
+          teamService.getTeamMeetings(teamId),
+          teamService.getTeamMessages(teamId),
+        ]);
 
       setTeam(teamData);
       setMembers(membersData);
@@ -130,87 +130,105 @@ export function useTeam(teamId: string) {
   }, [teamId, fetchTeamData]);
 
   // Funções para manipular membros da equipe
-  const addMember = useCallback(async (memberData: Omit<TeamMember, 'id'>) => {
-    try {
-      const newMember = await teamService.addMemberToTeam(teamId, memberData);
-      if (newMember) {
-        setMembers(prev => [...prev, newMember]);
+  const addMember = useCallback(
+    async (memberData: Omit<TeamMember, 'id'>) => {
+      try {
+        const newMember = await teamService.addMemberToTeam(teamId, memberData);
+        if (newMember) {
+          setMembers(prev => [...prev, newMember]);
+        }
+        return newMember;
+      } catch (err) {
+        throw err instanceof Error ? err : new Error('Erro ao adicionar membro à equipe');
       }
-      return newMember;
-    } catch (err) {
-      throw err instanceof Error ? err : new Error('Erro ao adicionar membro à equipe');
-    }
-  }, [teamId]);
+    },
+    [teamId]
+  );
 
-  const removeMember = useCallback(async (memberId: string) => {
-    try {
-      const success = await teamService.removeMemberFromTeam(teamId, memberId);
-      if (success) {
-        setMembers(prev => prev.filter(member => member.id !== memberId));
+  const removeMember = useCallback(
+    async (memberId: string) => {
+      try {
+        const success = await teamService.removeMemberFromTeam(teamId, memberId);
+        if (success) {
+          setMembers(prev => prev.filter(member => member.id !== memberId));
+        }
+        return success;
+      } catch (err) {
+        throw err instanceof Error ? err : new Error('Erro ao remover membro da equipe');
       }
-      return success;
-    } catch (err) {
-      throw err instanceof Error ? err : new Error('Erro ao remover membro da equipe');
-    }
-  }, [teamId]);
+    },
+    [teamId]
+  );
 
-  const updateMember = useCallback(async (memberId: string, memberData: Partial<Omit<TeamMember, 'id'>>) => {
-    try {
-      const updatedMember = await teamService.updateTeamMember(memberId, memberData);
-      if (updatedMember) {
-        setMembers(prev => prev.map(member => member.id === memberId ? updatedMember : member));
+  const updateMember = useCallback(
+    async (memberId: string, memberData: Partial<Omit<TeamMember, 'id'>>) => {
+      try {
+        const updatedMember = await teamService.updateTeamMember(memberId, memberData);
+        if (updatedMember) {
+          setMembers(prev => prev.map(member => (member.id === memberId ? updatedMember : member)));
+        }
+        return updatedMember;
+      } catch (err) {
+        throw err instanceof Error ? err : new Error('Erro ao atualizar membro da equipe');
       }
-      return updatedMember;
-    } catch (err) {
-      throw err instanceof Error ? err : new Error('Erro ao atualizar membro da equipe');
-    }
-  }, []);
+    },
+    []
+  );
 
   // Funções para manipular casos da equipe
-  const assignCase = useCallback(async (caseId: string) => {
-    try {
-      const success = await teamService.assignCaseToTeam(teamId, caseId);
-      if (success) {
-        // Recarregar os casos após a atribuição
-        const updatedCases = await teamService.getTeamCases(teamId);
-        setCases(updatedCases);
+  const assignCase = useCallback(
+    async (caseId: string) => {
+      try {
+        const success = await teamService.assignCaseToTeam(teamId, caseId);
+        if (success) {
+          // Recarregar os casos após a atribuição
+          const updatedCases = await teamService.getTeamCases(teamId);
+          setCases(updatedCases);
+        }
+        return success;
+      } catch (err) {
+        throw err instanceof Error ? err : new Error('Erro ao atribuir caso à equipe');
       }
-      return success;
-    } catch (err) {
-      throw err instanceof Error ? err : new Error('Erro ao atribuir caso à equipe');
-    }
-  }, [teamId]);
+    },
+    [teamId]
+  );
 
-  const unassignCase = useCallback(async (caseId: string) => {
-    try {
-      const success = await teamService.unassignCaseFromTeam(teamId, caseId);
-      if (success) {
-        setCases(prev => prev.filter(c => c.id !== caseId));
+  const unassignCase = useCallback(
+    async (caseId: string) => {
+      try {
+        const success = await teamService.unassignCaseFromTeam(teamId, caseId);
+        if (success) {
+          setCases(prev => prev.filter(c => c.id !== caseId));
+        }
+        return success;
+      } catch (err) {
+        throw err instanceof Error ? err : new Error('Erro ao remover caso da equipe');
       }
-      return success;
-    } catch (err) {
-      throw err instanceof Error ? err : new Error('Erro ao remover caso da equipe');
-    }
-  }, [teamId]);
+    },
+    [teamId]
+  );
 
   // Funções para manipular mensagens
-  const sendMessage = useCallback(async (messageData: Omit<TeamMessage, 'id' | 'timestamp' | 'isRead'>) => {
-    try {
-      const newMessage = await teamService.sendMessage(messageData);
-      setMessages(prev => [...prev, newMessage]);
-      return newMessage;
-    } catch (err) {
-      throw err instanceof Error ? err : new Error('Erro ao enviar mensagem');
-    }
-  }, []);
+  const sendMessage = useCallback(
+    async (messageData: Omit<TeamMessage, 'id' | 'timestamp' | 'isRead'>) => {
+      try {
+        const newMessage = await teamService.sendMessage(messageData);
+        setMessages(prev => [...prev, newMessage]);
+        return newMessage;
+      } catch (err) {
+        throw err instanceof Error ? err : new Error('Erro ao enviar mensagem');
+      }
+    },
+    []
+  );
 
   const markMessageAsRead = useCallback(async (messageId: string) => {
     try {
       const success = await teamService.markMessageAsRead(messageId);
       if (success) {
-        setMessages(prev => prev.map(msg =>
-          msg.id === messageId ? { ...msg, isRead: true } : msg
-        ));
+        setMessages(prev =>
+          prev.map(msg => (msg.id === messageId ? { ...msg, isRead: true } : msg))
+        );
       }
       return success;
     } catch (err) {
@@ -242,8 +260,8 @@ export function useTeam(teamId: string) {
         casesByTier: {
           1: assignedCases.filter(c => c.tier === 1).length,
           2: assignedCases.filter(c => c.tier === 2).length,
-          3: assignedCases.filter(c => c.tier === 3).length
-        }
+          3: assignedCases.filter(c => c.tier === 3).length,
+        },
       };
     });
   }, [cases, members]);
@@ -266,7 +284,7 @@ export function useTeam(teamId: string) {
     sendMessage,
     markMessageAsRead,
     createMeeting,
-    membersWithCaseload
+    membersWithCaseload,
   };
 }
 
@@ -277,19 +295,22 @@ export function useTeamMemberFilters(teamId: string) {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<Error | null>(null);
 
-  const applyFilters = useCallback(async (newFilters: TeamFilters) => {
-    setIsLoading(true);
-    setError(null);
-    try {
-      const members = await teamService.filterTeamMembers(teamId, newFilters);
-      setFilteredMembers(members);
-      setFilters(newFilters);
-    } catch (err) {
-      setError(err instanceof Error ? err : new Error('Erro ao filtrar membros'));
-    } finally {
-      setIsLoading(false);
-    }
-  }, [teamId]);
+  const applyFilters = useCallback(
+    async (newFilters: TeamFilters) => {
+      setIsLoading(true);
+      setError(null);
+      try {
+        const members = await teamService.filterTeamMembers(teamId, newFilters);
+        setFilteredMembers(members);
+        setFilters(newFilters);
+      } catch (err) {
+        setError(err instanceof Error ? err : new Error('Erro ao filtrar membros'));
+      } finally {
+        setIsLoading(false);
+      }
+    },
+    [teamId]
+  );
 
   // Aplicar filtros iniciais (vazios)
   useEffect(() => {
@@ -303,7 +324,7 @@ export function useTeamMemberFilters(teamId: string) {
     filteredMembers,
     isLoading,
     error,
-    applyFilters
+    applyFilters,
   };
 }
 
@@ -345,7 +366,7 @@ export function useCaseAssignments(teamId: string) {
 
       setAssignments(prev => ({
         ...prev,
-        [memberId]: caseIds
+        [memberId]: caseIds,
       }));
 
       return true;
@@ -363,7 +384,7 @@ export function useCaseAssignments(teamId: string) {
         memberId: member.id,
         memberName: member.name,
         caseCount: memberCases.length,
-        cases: cases.filter(c => memberCases.includes(c.id))
+        cases: cases.filter(c => memberCases.includes(c.id)),
       };
     });
   }, [members, cases, assignments]);
@@ -373,7 +394,7 @@ export function useCaseAssignments(teamId: string) {
     isLoading,
     error,
     updateAssignment,
-    caseloadByMember
+    caseloadByMember,
   };
 }
 
@@ -406,6 +427,6 @@ export function useTeamPerformance(teamId: string, dateRange?: { start: string; 
     metrics,
     isLoading,
     error,
-    fetchMetrics
+    fetchMetrics,
   };
 }

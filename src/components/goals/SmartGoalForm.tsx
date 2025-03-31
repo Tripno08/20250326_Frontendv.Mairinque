@@ -7,36 +7,34 @@ import {
   TextField,
   Button,
   Paper,
-  Grid,
   FormControl,
   InputLabel,
   Select,
-  MenuItem,
   Chip,
   Divider,
   FormHelperText,
   InputAdornment,
   Autocomplete,
   Stack,
-  ListItem,
-  IconButton
+  IconButton,
 } from '@mui/material';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { ptBR } from 'date-fns/locale';
-import {
-  Add as AddIcon,
-  Delete as DeleteIcon
-} from '@mui/icons-material';
+import { Add as AddIcon, Delete as DeleteIcon } from '@mui/icons-material';
 import { v4 as uuidv4 } from 'uuid';
 import type {
   GoalFormProps,
   SmartGoalFormData,
   GoalStatus,
-  GoalPriority
+  GoalPriority,
 } from '@/types/smart-goals';
 import type { Intervention } from '@/types/intervention';
+import GridContainer from '@/components/GridContainer';
+import GridItem from '@/components/GridItem';
+import MenuItemWrapper from '@/components/MenuItemWrapper';
+import ListItemWrapper from '@/components/ListItemWrapper';
 
 // Domínios educacionais
 const DOMAINS = [
@@ -49,7 +47,7 @@ const DOMAINS = [
   'Educação Física',
   'Inglês',
   'Competências Socioemocionais',
-  'Outro'
+  'Outro',
 ];
 
 // Estrutura inicial vazia do formulário
@@ -78,13 +76,13 @@ export const SmartGoalForm: React.FC<GoalFormProps> = ({
   studentId,
   interventionsLibrary = [],
   onSave,
-  onCancel
+  onCancel,
 }) => {
   // Estado do formulário
   const [formData, setFormData] = useState<SmartGoalFormData>({
     ...emptyFormData,
     ...initialData,
-    studentId
+    studentId,
   });
 
   // Estado de validação
@@ -106,7 +104,10 @@ export const SmartGoalForm: React.FC<GoalFormProps> = ({
   };
 
   // Manipulador para campos de select
-  const handleSelectChange = (e: React.ChangeEvent<{ name?: string; value: unknown }>, name: string) => {
+  const handleSelectChange = (
+    e: React.ChangeEvent<{ name?: string; value: unknown }>,
+    name: string
+  ) => {
     setFormData(prev => ({ ...prev, [name]: e.target.value }));
 
     // Limpa erro ao editar campo
@@ -142,7 +143,7 @@ export const SmartGoalForm: React.FC<GoalFormProps> = ({
 
     setFormData(prev => ({
       ...prev,
-      achievementSteps: newSteps
+      achievementSteps: newSteps,
     }));
   };
 
@@ -150,7 +151,7 @@ export const SmartGoalForm: React.FC<GoalFormProps> = ({
   const addStep = () => {
     setFormData(prev => ({
       ...prev,
-      achievementSteps: [...prev.achievementSteps, '']
+      achievementSteps: [...prev.achievementSteps, ''],
     }));
   };
 
@@ -161,7 +162,7 @@ export const SmartGoalForm: React.FC<GoalFormProps> = ({
 
     setFormData(prev => ({
       ...prev,
-      achievementSteps: newSteps.length > 0 ? newSteps : ['']
+      achievementSteps: newSteps.length > 0 ? newSteps : [''],
     }));
   };
 
@@ -169,7 +170,7 @@ export const SmartGoalForm: React.FC<GoalFormProps> = ({
   const handleSkillsChange = (event: React.SyntheticEvent, newValue: string[]) => {
     setFormData(prev => ({
       ...prev,
-      skills: newValue
+      skills: newValue,
     }));
   };
 
@@ -177,7 +178,7 @@ export const SmartGoalForm: React.FC<GoalFormProps> = ({
   const handleInterventionsChange = (event: React.SyntheticEvent, newValue: string[]) => {
     setFormData(prev => ({
       ...prev,
-      interventions: newValue
+      interventions: newValue,
     }));
   };
 
@@ -185,7 +186,7 @@ export const SmartGoalForm: React.FC<GoalFormProps> = ({
   const handleResponsibleChange = (event: React.SyntheticEvent, newValue: string[]) => {
     setFormData(prev => ({
       ...prev,
-      responsibleUsers: newValue
+      responsibleUsers: newValue,
     }));
   };
 
@@ -195,7 +196,8 @@ export const SmartGoalForm: React.FC<GoalFormProps> = ({
 
     // Campos obrigatórios
     if (!formData.title.trim()) newErrors.title = 'O título é obrigatório';
-    if (!formData.specificDetails.trim()) newErrors.specificDetails = 'Os detalhes específicos são obrigatórios';
+    if (!formData.specificDetails.trim())
+      newErrors.specificDetails = 'Os detalhes específicos são obrigatórios';
     if (!formData.domain.trim()) newErrors.domain = 'O domínio é obrigatório';
     if (!formData.unit.trim()) newErrors.unit = 'A unidade de medida é obrigatória';
     if (formData.achievementSteps.length === 0 || !formData.achievementSteps[0].trim())
@@ -229,7 +231,7 @@ export const SmartGoalForm: React.FC<GoalFormProps> = ({
   };
 
   return (
-    <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={ptBR}>
+    <LocalizationProvider dateAdapter={AdapterDateFns} locale={ptBR}>
       <Paper elevation={3} sx={{ p: 3, mb: 4, borderRadius: 2 }}>
         <Typography variant="h5" component="h2" gutterBottom align="center">
           {initialData?.id ? 'Editar Meta SMART' : 'Nova Meta SMART'}
@@ -238,9 +240,9 @@ export const SmartGoalForm: React.FC<GoalFormProps> = ({
         <Divider sx={{ mb: 3 }} />
 
         <form onSubmit={handleSubmit}>
-          <Grid container spacing={3}>
+          <GridContainer spacing={3}>
             {/* Título */}
-            <Grid item xs={12}>
+            <GridItem xs={12}>
               <TextField
                 fullWidth
                 label="Título da Meta"
@@ -248,183 +250,242 @@ export const SmartGoalForm: React.FC<GoalFormProps> = ({
                 value={formData.title}
                 onChange={handleTextChange}
                 error={!!errors.title}
-                helperText={errors.title || 'Título objetivo e claro da meta'}
-                required
+                helperText={errors.title || 'Digite um título claro e específico para a meta'}
               />
-            </Grid>
+            </GridItem>
 
             {/* Descrição */}
-            <Grid item xs={12}>
+            <GridItem xs={12}>
               <TextField
                 fullWidth
-                label="Descrição"
+                label="Descrição Geral"
                 name="description"
                 value={formData.description}
                 onChange={handleTextChange}
                 multiline
                 rows={2}
-                helperText="Breve descrição da meta (opcional)"
+                helperText="Descreva brevemente o objetivo desta meta"
               />
-            </Grid>
+            </GridItem>
 
-            {/* Domínio */}
-            <Grid item xs={12} md={6}>
-              <FormControl fullWidth error={!!errors.domain} required>
-                <InputLabel id="domain-label">Domínio Educacional</InputLabel>
+            {/* Domínio e Prioridade */}
+            <GridItem xs={12} sm={6}>
+              <FormControl fullWidth error={!!errors.domain}>
+                <InputLabel id="domain-label">Domínio</InputLabel>
                 <Select
                   labelId="domain-label"
+                  id="domain"
                   name="domain"
                   value={formData.domain}
-                  onChange={(e) => handleSelectChange(e as any, 'domain')}
-                  label="Domínio Educacional"
+                  onChange={e => handleSelectChange(e as any, 'domain')}
+                  label="Domínio"
                 >
                   {DOMAINS.map(domain => (
-                    <MenuItem key={domain} value={domain}>
+                    <MenuItemWrapper key={domain} value={domain}>
                       {domain}
-                    </MenuItem>
+                    </MenuItemWrapper>
                   ))}
                 </Select>
                 {errors.domain && <FormHelperText>{errors.domain}</FormHelperText>}
               </FormControl>
-            </Grid>
+            </GridItem>
 
-            {/* Prioridade */}
-            <Grid item xs={12} md={6}>
+            <GridItem xs={12} sm={6}>
               <FormControl fullWidth>
                 <InputLabel id="priority-label">Prioridade</InputLabel>
                 <Select
                   labelId="priority-label"
+                  id="priority"
                   name="priority"
                   value={formData.priority}
-                  onChange={(e) => handleSelectChange(e as any, 'priority')}
+                  onChange={e => handleSelectChange(e as any, 'priority')}
                   label="Prioridade"
                 >
-                  <MenuItem value="baixa">Baixa</MenuItem>
-                  <MenuItem value="média">Média</MenuItem>
-                  <MenuItem value="alta">Alta</MenuItem>
-                  <MenuItem value="crítica">Crítica</MenuItem>
+                  <MenuItemWrapper value="crítica">Crítica</MenuItemWrapper>
+                  <MenuItemWrapper value="alta">Alta</MenuItemWrapper>
+                  <MenuItemWrapper value="média">Média</MenuItemWrapper>
+                  <MenuItemWrapper value="baixa">Baixa</MenuItemWrapper>
                 </Select>
               </FormControl>
-            </Grid>
+            </GridItem>
 
-            {/* Seção: Específica */}
-            <Grid item xs={12}>
-              <Typography variant="h6" gutterBottom sx={{ mt: 2, color: 'primary.main' }}>
-                S - Específica
-              </Typography>
+            {/* Detalhes específicos */}
+            <GridItem xs={12}>
               <TextField
                 fullWidth
-                label="Detalhes específicos"
+                label="Detalhes Específicos"
                 name="specificDetails"
                 value={formData.specificDetails}
                 onChange={handleTextChange}
                 multiline
                 rows={3}
                 error={!!errors.specificDetails}
-                helperText={errors.specificDetails || 'Descreva detalhadamente o que se pretende alcançar'}
-                required
+                helperText={
+                  errors.specificDetails ||
+                  'Descreva detalhadamente o que deve ser alcançado, com critérios específicos e mensuráveis'
+                }
               />
-            </Grid>
+            </GridItem>
 
-            {/* Seção: Mensurável */}
-            <Grid item xs={12}>
-              <Typography variant="h6" gutterBottom sx={{ mt: 2, color: 'primary.main' }}>
-                M - Mensurável
-              </Typography>
+            {/* Valores e Unidade */}
+            <GridItem xs={12} sm={4}>
+              <TextField
+                fullWidth
+                label="Valor Inicial"
+                name="initialValue"
+                type="number"
+                value={formData.initialValue}
+                onChange={handleTextChange}
+                error={!!errors.initialValue}
+                helperText={errors.initialValue}
+                InputProps={{
+                  endAdornment: formData.unit ? (
+                    <InputAdornment position="end">{formData.unit}</InputAdornment>
+                  ) : null,
+                }}
+              />
+            </GridItem>
 
-              <Grid container spacing={2}>
-                <Grid item xs={12} sm={4}>
-                  <TextField
-                    fullWidth
-                    label="Valor Inicial"
-                    name="initialValue"
-                    type="number"
-                    value={formData.initialValue}
-                    onChange={handleTextChange}
-                    error={!!errors.initialValue}
-                    helperText={errors.initialValue}
-                    required
-                  />
-                </Grid>
+            <GridItem xs={12} sm={4}>
+              <TextField
+                fullWidth
+                label="Valor Alvo"
+                name="targetValue"
+                type="number"
+                value={formData.targetValue}
+                onChange={handleTextChange}
+                error={!!errors.targetValue}
+                helperText={errors.targetValue}
+                InputProps={{
+                  endAdornment: formData.unit ? (
+                    <InputAdornment position="end">{formData.unit}</InputAdornment>
+                  ) : null,
+                }}
+              />
+            </GridItem>
 
-                <Grid item xs={12} sm={4}>
-                  <TextField
-                    fullWidth
-                    label="Valor Alvo"
-                    name="targetValue"
-                    type="number"
-                    value={formData.targetValue}
-                    onChange={handleTextChange}
-                    error={!!errors.targetValue}
-                    helperText={errors.targetValue}
-                    required
-                  />
-                </Grid>
+            <GridItem xs={12} sm={4}>
+              <TextField
+                fullWidth
+                label="Unidade de Medida"
+                name="unit"
+                value={formData.unit}
+                onChange={handleTextChange}
+                error={!!errors.unit}
+                helperText={errors.unit || 'Ex: %, pontos, palavras por minuto'}
+              />
+            </GridItem>
 
-                <Grid item xs={12} sm={4}>
-                  <TextField
-                    fullWidth
-                    label="Unidade de Medida"
-                    name="unit"
-                    value={formData.unit}
-                    onChange={handleTextChange}
-                    placeholder="ex: pontos, %"
-                    error={!!errors.unit}
-                    helperText={errors.unit || 'Ex: palavras por minuto, % acertos'}
-                    required
-                  />
-                </Grid>
-              </Grid>
-            </Grid>
+            {/* Datas */}
+            <GridItem xs={12} sm={6}>
+              <DatePicker
+                label="Data de Início"
+                value={formData.startDate}
+                onChange={date => handleDateChange(date, 'startDate')}
+                slotProps={{
+                  textField: {
+                    fullWidth: true,
+                    error: !!errors.startDate,
+                    helperText: errors.startDate,
+                  },
+                }}
+              />
+            </GridItem>
 
-            {/* Seção: Atingível */}
-            <Grid item xs={12}>
-              <Typography variant="h6" gutterBottom sx={{ mt: 2, color: 'primary.main' }}>
-                A - Atingível
-              </Typography>
+            <GridItem xs={12} sm={6}>
+              <DatePicker
+                label="Data Alvo"
+                value={formData.targetDate}
+                onChange={date => handleDateChange(date, 'targetDate')}
+                slotProps={{
+                  textField: {
+                    fullWidth: true,
+                    error: !!errors.targetDate,
+                    helperText: errors.targetDate,
+                  },
+                }}
+              />
+            </GridItem>
 
-              <Paper
-                variant="outlined"
-                sx={{ p: 2, mb: 2, borderColor: errors.achievementSteps ? 'error.main' : 'divider' }}
-              >
-                <Typography variant="subtitle2" gutterBottom>
-                  Passos para atingir a meta:
-                </Typography>
-
-                {formData.achievementSteps.map((step, index) => (
-                  <Box key={index} sx={{ display: 'flex', mb: 1 }}>
-                    <TextField
-                      fullWidth
-                      label={`Passo ${index + 1}`}
-                      value={step}
-                      onChange={(e) => handleStepChange(index, e.target.value)}
-                      sx={{ mr: 1 }}
-                    />
-                    <IconButton
-                      color="error"
-                      onClick={() => removeStep(index)}
-                      disabled={formData.achievementSteps.length === 1}
-                    >
-                      <DeleteIcon />
-                    </IconButton>
-                  </Box>
-                ))}
-
-                <Button
-                  startIcon={<AddIcon />}
-                  onClick={addStep}
-                  variant="outlined"
-                  size="small"
-                  sx={{ mt: 1 }}
+            {/* Status da Meta */}
+            <GridItem xs={12}>
+              <FormControl fullWidth>
+                <InputLabel id="status-label">Status</InputLabel>
+                <Select
+                  labelId="status-label"
+                  id="status"
+                  name="status"
+                  value={formData.status}
+                  onChange={e => handleSelectChange(e as any, 'status')}
+                  label="Status"
                 >
-                  Adicionar Passo
-                </Button>
+                  <MenuItemWrapper value="não iniciada">Não Iniciada</MenuItemWrapper>
+                  <MenuItemWrapper value="em andamento">Em Andamento</MenuItemWrapper>
+                  <MenuItemWrapper value="atrasada">Atrasada</MenuItemWrapper>
+                  <MenuItemWrapper value="concluída">Concluída</MenuItemWrapper>
+                  <MenuItemWrapper value="cancelada">Cancelada</MenuItemWrapper>
+                </Select>
+              </FormControl>
+            </GridItem>
 
-                {errors.achievementSteps && (
-                  <FormHelperText error>{errors.achievementSteps}</FormHelperText>
-                )}
-              </Paper>
+            {/* Relevância */}
+            <GridItem xs={12}>
+              <TextField
+                fullWidth
+                label="Relevância"
+                name="relevance"
+                value={formData.relevance}
+                onChange={handleTextChange}
+                multiline
+                rows={3}
+                error={!!errors.relevance}
+                helperText={
+                  errors.relevance ||
+                  'Explique por que esta meta é importante e como se relaciona com o desenvolvimento educacional do aluno'
+                }
+              />
+            </GridItem>
 
+            {/* Passos para alcançar a meta */}
+            <GridItem xs={12}>
+              <Typography variant="subtitle1" gutterBottom>
+                Passos para alcançar a meta
+              </Typography>
+              {errors.achievementSteps && (
+                <FormHelperText error>{errors.achievementSteps}</FormHelperText>
+              )}
+              {formData.achievementSteps.map((step, index) => (
+                <Box key={index} sx={{ display: 'flex', mb: 2 }}>
+                  <TextField
+                    fullWidth
+                    label={`Passo ${index + 1}`}
+                    value={step}
+                    onChange={e => handleStepChange(index, e.target.value)}
+                    size="small"
+                    sx={{ mr: 1 }}
+                  />
+                  <IconButton
+                    color="error"
+                    onClick={() => removeStep(index)}
+                    disabled={formData.achievementSteps.length === 1}
+                  >
+                    <DeleteIcon />
+                  </IconButton>
+                </Box>
+              ))}
+              <Button
+                startIcon={<AddIcon />}
+                onClick={addStep}
+                variant="outlined"
+                size="small"
+                sx={{ mt: 1 }}
+              >
+                Adicionar passo
+              </Button>
+            </GridItem>
+
+            {/* Habilidades */}
+            <GridItem xs={12}>
               <Autocomplete
                 multiple
                 freeSolo
@@ -437,102 +498,46 @@ export const SmartGoalForm: React.FC<GoalFormProps> = ({
                       variant="outlined"
                       label={option}
                       {...getTagProps({ index })}
+                      key={option}
                     />
                   ))
                 }
-                renderInput={(params) => (
+                renderInput={params => (
                   <TextField
                     {...params}
-                    label="Habilidades relacionadas"
+                    label="Habilidades a serem desenvolvidas"
                     placeholder="Digite e pressione Enter"
-                    helperText="Adicione habilidades a serem desenvolvidas"
+                    helperText="Digite as habilidades que serão desenvolvidas e pressione Enter"
                   />
                 )}
               />
-            </Grid>
+            </GridItem>
 
-            {/* Seção: Relevante */}
-            <Grid item xs={12}>
-              <Typography variant="h6" gutterBottom sx={{ mt: 2, color: 'primary.main' }}>
-                R - Relevante
-              </Typography>
-              <TextField
-                fullWidth
-                label="Relevância"
-                name="relevance"
-                value={formData.relevance}
-                onChange={handleTextChange}
-                multiline
-                rows={2}
-                error={!!errors.relevance}
-                helperText={errors.relevance || 'Por que esta meta é importante para o aluno?'}
-                required
+            {/* Intervenções relacionadas */}
+            <GridItem xs={12}>
+              <Autocomplete
+                multiple
+                options={interventionsLibrary}
+                value={formData.interventions}
+                onChange={handleInterventionsChange}
+                renderTags={(value, getTagProps) =>
+                  value.map((option, index) => (
+                    <Chip label={option} {...getTagProps({ index })} key={option} />
+                  ))
+                }
+                renderInput={params => (
+                  <TextField
+                    {...params}
+                    label="Intervenções Relacionadas"
+                    placeholder="Selecione ou digite novas intervenções"
+                  />
+                )}
+                freeSolo
               />
-            </Grid>
-
-            {/* Seção: Temporal */}
-            <Grid item xs={12}>
-              <Typography variant="h6" gutterBottom sx={{ mt: 2, color: 'primary.main' }}>
-                T - Temporal
-              </Typography>
-
-              <Grid container spacing={2}>
-                <Grid item xs={12} sm={6}>
-                  <DatePicker
-                    label="Data de Início"
-                    value={formData.startDate}
-                    onChange={(date) => handleDateChange(date, 'startDate')}
-                    slotProps={{
-                      textField: {
-                        fullWidth: true,
-                        error: !!errors.startDate,
-                        helperText: errors.startDate,
-                        required: true
-                      }
-                    }}
-                  />
-                </Grid>
-
-                <Grid item xs={12} sm={6}>
-                  <DatePicker
-                    label="Data Alvo (Conclusão)"
-                    value={formData.targetDate}
-                    onChange={(date) => handleDateChange(date, 'targetDate')}
-                    slotProps={{
-                      textField: {
-                        fullWidth: true,
-                        error: !!errors.targetDate,
-                        helperText: errors.targetDate,
-                        required: true
-                      }
-                    }}
-                  />
-                </Grid>
-              </Grid>
-            </Grid>
-
-            {/* Status da Meta */}
-            <Grid item xs={12} sm={6}>
-              <FormControl fullWidth>
-                <InputLabel id="status-label">Status</InputLabel>
-                <Select
-                  labelId="status-label"
-                  name="status"
-                  value={formData.status}
-                  onChange={(e) => handleSelectChange(e as any, 'status')}
-                  label="Status"
-                >
-                  <MenuItem value="não iniciada">Não Iniciada</MenuItem>
-                  <MenuItem value="em andamento">Em Andamento</MenuItem>
-                  <MenuItem value="atrasada">Atrasada</MenuItem>
-                  <MenuItem value="concluída">Concluída</MenuItem>
-                  <MenuItem value="cancelada">Cancelada</MenuItem>
-                </Select>
-              </FormControl>
-            </Grid>
+            </GridItem>
 
             {/* Responsáveis */}
-            <Grid item xs={12} sm={6}>
+            <GridItem xs={12}>
               <Autocomplete
                 multiple
                 freeSolo
@@ -540,94 +545,30 @@ export const SmartGoalForm: React.FC<GoalFormProps> = ({
                 value={formData.responsibleUsers}
                 onChange={handleResponsibleChange}
                 renderTags={(value, getTagProps) =>
-                  value.map((option, index) => (
-                    <Chip
-                      variant="outlined"
-                      label={option}
-                      {...getTagProps({ index })}
-                    />
-                  ))
+                  value.map((option, index) => <Chip label={option} {...getTagProps({ index })} />)
                 }
-                renderInput={(params) => (
+                renderInput={params => (
                   <TextField
                     {...params}
                     label="Responsáveis"
-                    placeholder="Adicione responsáveis"
+                    placeholder="Digite os nomes dos responsáveis"
                   />
                 )}
               />
-            </Grid>
+            </GridItem>
 
-            {/* Intervenções Relacionadas */}
-            <Grid item xs={12}>
-              <Typography variant="h6" gutterBottom sx={{ mt: 2 }}>
-                Intervenções Relacionadas
-              </Typography>
-
-              <Autocomplete
-                multiple
-                options={interventionsLibrary.map(i => i.id)}
-                getOptionLabel={(optionId) => {
-                  const intervention = interventionsLibrary.find(i => i.id === optionId);
-                  return intervention ? intervention.title : '';
-                }}
-                value={formData.interventions}
-                onChange={handleInterventionsChange}
-                renderInput={(params) => (
-                  <TextField
-                    {...params}
-                    label="Intervenções"
-                    placeholder="Selecione intervenções relacionadas"
-                  />
-                )}
-                renderOption={(props, optionId) => {
-                  const intervention = interventionsLibrary.find(i => i.id === optionId);
-                  if (!intervention) return null;
-
-                  return (
-                    <ListItem {...props}>
-                      <Box sx={{ mr: 2 }}>
-                        <Chip
-                          label={intervention.tier}
-                          size="small"
-                          color={
-                            intervention.tier === 'Tier 1' ? 'success' :
-                            intervention.tier === 'Tier 2' ? 'warning' : 'error'
-                          }
-                        />
-                      </Box>
-                      <Box>
-                        <Typography variant="body2">{intervention.title}</Typography>
-                        <Typography variant="caption" color="text.secondary">
-                          {intervention.domain} • {intervention.duration}
-                        </Typography>
-                      </Box>
-                    </ListItem>
-                  );
-                }}
-              />
-            </Grid>
-
-            {/* Botões de ação */}
-            <Grid item xs={12}>
-              <Divider sx={{ my: 2 }} />
-              <Box sx={{ display: 'flex', justifyContent: 'flex-end', gap: 2, mt: 3 }}>
-                <Button
-                  variant="outlined"
-                  onClick={onCancel}
-                >
+            {/* Botões */}
+            <GridItem xs={12}>
+              <Box sx={{ display: 'flex', justifyContent: 'flex-end', gap: 2, mt: 2 }}>
+                <Button variant="outlined" onClick={onCancel}>
                   Cancelar
                 </Button>
-                <Button
-                  variant="contained"
-                  type="submit"
-                  color="primary"
-                >
+                <Button variant="contained" type="submit" color="primary">
                   {initialData?.id ? 'Atualizar Meta' : 'Criar Meta'}
                 </Button>
               </Box>
-            </Grid>
-          </Grid>
+            </GridItem>
+          </GridContainer>
         </form>
       </Paper>
     </LocalizationProvider>

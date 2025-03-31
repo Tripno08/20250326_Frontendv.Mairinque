@@ -1,5 +1,5 @@
-#!/usr/bin/env sh
-. "$(dirname -- "$0")/_/husky.sh"
+#!/bin/sh
+. "$(dirname "$0")/_/husky.sh"
 
 echo '🏗️👷 Estilizando, testando e construindo seu projeto antes de commitar'
 
@@ -49,3 +49,5 @@ npm run test ||
 
 # Se chegarmos aqui, commit pode prosseguir
 echo '✅✅ Você ganhou dessa vez... Estou permitindo o commit ✅✅'
+
+npm run lint

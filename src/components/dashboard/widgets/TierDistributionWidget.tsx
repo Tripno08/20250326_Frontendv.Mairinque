@@ -48,12 +48,7 @@ export const TierDistributionWidget: React.FC<TierDistributionWidgetProps> = ({
   };
 
   return (
-    <WidgetBase
-      widget={widget}
-      title="Distribuição por Nível"
-      isLoading={isLoading}
-      error={error}
-    >
+    <WidgetBase widget={widget} title="Distribuição por Nível" isLoading={isLoading} error={error}>
       <Box sx={{ height: '100%', width: '100%', p: 2 }}>
         <ResponsiveContainer width="100%" height="100%">
           <PieChart>
@@ -76,4 +71,4 @@ export const TierDistributionWidget: React.FC<TierDistributionWidgetProps> = ({
       </Box>
     </WidgetBase>
   );
-}; 
+};

@@ -1,6 +1,15 @@
 import React from 'react';
 import { Box, Typography } from '@mui/material';
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import {
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  Legend,
+  ResponsiveContainer,
+} from 'recharts';
 import { WidgetBase } from './WidgetBase';
 import { ProgressData, Benchmark, ProgressGoal } from '@/types/dashboard';
 
@@ -59,10 +68,7 @@ export const ProgressMonitoringWidget: React.FC<ProgressMonitoringWidgetProps> =
         <ResponsiveContainer width="100%" height="100%">
           <LineChart data={data}>
             <CartesianGrid strokeDasharray="3 3" />
-            <XAxis
-              dataKey="date"
-              tickFormatter={(date) => new Date(date).toLocaleDateString()}
-            />
+            <XAxis dataKey="date" tickFormatter={date => new Date(date).toLocaleDateString()} />
             <YAxis domain={[0, 100]} />
             <Tooltip content={<CustomTooltip />} />
             <Legend />
@@ -106,4 +112,4 @@ export const ProgressMonitoringWidget: React.FC<ProgressMonitoringWidgetProps> =
       </Box>
     </WidgetBase>
   );
-}; 
+};

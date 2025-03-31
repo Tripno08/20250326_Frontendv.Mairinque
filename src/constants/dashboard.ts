@@ -157,4 +157,4 @@ export const BREAKPOINTS = {
 export const ORIENTATIONS = {
   PORTRAIT: 'portrait',
   LANDSCAPE: 'landscape',
-} as const; 
+} as const;

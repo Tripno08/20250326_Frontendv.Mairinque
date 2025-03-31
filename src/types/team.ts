@@ -11,7 +11,7 @@ export enum TeamRole {
   PSYCHOLOGIST = 'psychologist',
   SOCIAL_WORKER = 'social_worker',
   ADMIN = 'admin',
-  OTHER = 'other'
+  OTHER = 'other',
 }
 
 export enum Specialty {
@@ -22,7 +22,7 @@ export enum Specialty {
   SOCIAL_EMOTIONAL = 'social_emotional',
   SPEECH = 'speech',
   OCCUPATIONAL_THERAPY = 'occupational_therapy',
-  GENERAL = 'general'
+  GENERAL = 'general',
 }
 
 // Tipo para disponibilidade de horário
@@ -51,7 +51,7 @@ export interface TeamMember {
 export enum InterventionTier {
   TIER1 = 1,
   TIER2 = 2,
-  TIER3 = 3
+  TIER3 = 3,
 }
 
 // Status de caso
@@ -61,7 +61,7 @@ export enum CaseStatus {
   IN_PROGRESS = 'in_progress',
   UNDER_REVIEW = 'under_review',
   COMPLETED = 'completed',
-  CLOSED = 'closed'
+  CLOSED = 'closed',
 }
 
 // Interface para caso atribuído
@@ -227,6 +227,8 @@ export interface TeamCommunicationProps {
   style?: React.CSSProperties;
   teamId: string;
   members?: TeamMember[];
-  onMessageSend?: (message: Omit<TeamMessage, 'id' | 'timestamp' | 'isRead'>) => Promise<TeamMessage | void>;
+  onMessageSend?: (
+    message: Omit<TeamMessage, 'id' | 'timestamp' | 'isRead'>
+  ) => Promise<TeamMessage | void>;
   onMessageRead?: (messageId: string) => Promise<boolean | void>;
 }

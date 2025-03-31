@@ -1,0 +1,50 @@
+# Auto detect text files and perform LF normalization
+* text=auto
+
+# JSX and TSX files
+*.jsx text
+*.tsx text
+
+# TypeScript files
+*.ts text
+
+# CSS files
+*.css text
+
+# JSON files
+*.json text
+
+# Markdown files
+*.md text diff=markdown
+
+# Documentation
+*.txt text
+
+# Configs
+.env* text
+.gitattributes text
+.gitignore text
+.prettierrc text
+.eslintrc.json text
+tsconfig.json text
+jest.config.js text
+babel.config.js text
+
+# Dependencies
+package.json text
+package-lock.json text
+yarn.lock text
+
+# Build outputs
+*.js text
+*.js.map text
+*.d.ts text
+
+# Test coverage
+coverage/* text
+
+# IDE
+.vscode/* text
+.idea/* text
+*.sublime-project text
+*.sublime-workspace text

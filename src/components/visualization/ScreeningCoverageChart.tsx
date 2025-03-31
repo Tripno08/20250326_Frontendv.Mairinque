@@ -12,7 +12,7 @@ import {
   Pie,
   PieChart,
   Label,
-  LabelList
+  LabelList,
 } from 'recharts';
 import {
   Box,
@@ -24,17 +24,17 @@ import {
   Grid,
   Stack,
   Chip,
-  CircularProgress
+  CircularProgress,
 } from '@mui/material';
 import { BarChartOutlined, PieChartOutlined, DonutLargeOutlined } from '@mui/icons-material';
 import { ScreeningCoverageChartProps } from '@/types/visualization';
 
 // Constantes para cores
 const COLORS = {
-  screened: '#4CAF50',  // Verde
-  pending: '#FFC107',   // Amarelo
-  missed: '#F44336',    // Vermelho
-  background: '#f5f5f5' // Cinza claro para fundo
+  screened: '#4CAF50', // Verde
+  pending: '#FFC107', // Amarelo
+  missed: '#F44336', // Vermelho
+  background: '#f5f5f5', // Cinza claro para fundo
 };
 
 export const ScreeningCoverageChart: React.FC<ScreeningCoverageChartProps> = ({
@@ -45,7 +45,7 @@ export const ScreeningCoverageChart: React.FC<ScreeningCoverageChartProps> = ({
   className,
   style,
   width = 700,
-  height = 400
+  height = 400,
 }) => {
   const theme = useTheme();
   const [chartType, setChartType] = useState<'bar' | 'pie' | 'donut'>('bar');
@@ -57,7 +57,7 @@ export const ScreeningCoverageChart: React.FC<ScreeningCoverageChartProps> = ({
     pending: period.pending,
     missed: period.missed,
     total: period.total,
-    percentage: period.percentage
+    percentage: period.percentage,
   }));
 
   // Dados para a visualização de pizza (agregados)
@@ -65,13 +65,13 @@ export const ScreeningCoverageChart: React.FC<ScreeningCoverageChartProps> = ({
     screened: data.reduce((sum, item) => sum + item.screened, 0),
     pending: data.reduce((sum, item) => sum + item.pending, 0),
     missed: data.reduce((sum, item) => sum + item.missed, 0),
-    total: data.reduce((sum, item) => sum + item.total, 0)
+    total: data.reduce((sum, item) => sum + item.total, 0),
   };
 
   const pieData = [
     { name: 'Rastreados', value: totalData.screened, color: COLORS.screened },
     { name: 'Pendentes', value: totalData.pending, color: COLORS.pending },
-    { name: 'Perdidos', value: totalData.missed, color: COLORS.missed }
+    { name: 'Perdidos', value: totalData.missed, color: COLORS.missed },
   ];
 
   // Cálculo das estatísticas gerais
@@ -80,7 +80,7 @@ export const ScreeningCoverageChart: React.FC<ScreeningCoverageChartProps> = ({
   // Manipuladores de eventos
   const handleChartTypeChange = (
     _: React.MouseEvent<HTMLElement>,
-    newType: 'bar' | 'pie' | 'donut' | null,
+    newType: 'bar' | 'pie' | 'donut' | null
   ) => {
     if (newType !== null) {
       setChartType(newType);
@@ -109,7 +109,7 @@ export const ScreeningCoverageChart: React.FC<ScreeningCoverageChartProps> = ({
             p: 2,
             bgcolor: 'background.paper',
             boxShadow: theme.shadows[3],
-            borderRadius: 1
+            borderRadius: 1,
           }}
         >
           <Typography variant="subtitle2" sx={{ fontWeight: 'bold', mb: 1 }}>
@@ -118,13 +118,16 @@ export const ScreeningCoverageChart: React.FC<ScreeningCoverageChartProps> = ({
 
           <Stack spacing={1}>
             <Typography variant="body2">
-              <strong>Rastreados:</strong> {data.screened} ({Math.round((data.screened / data.total) * 100)}%)
+              <strong>Rastreados:</strong> {data.screened} (
+              {Math.round((data.screened / data.total) * 100)}%)
             </Typography>
             <Typography variant="body2">
-              <strong>Pendentes:</strong> {data.pending} ({Math.round((data.pending / data.total) * 100)}%)
+              <strong>Pendentes:</strong> {data.pending} (
+              {Math.round((data.pending / data.total) * 100)}%)
             </Typography>
             <Typography variant="body2">
-              <strong>Perdidos:</strong> {data.missed} ({Math.round((data.missed / data.total) * 100)}%)
+              <strong>Perdidos:</strong> {data.missed} (
+              {Math.round((data.missed / data.total) * 100)}%)
             </Typography>
             <Typography variant="body2">
               <strong>Total:</strong> {data.total}
@@ -177,9 +180,7 @@ export const ScreeningCoverageChart: React.FC<ScreeningCoverageChartProps> = ({
                 outerRadius={120}
                 fill="#8884d8"
                 dataKey="value"
-                label={({ name, percent }: any) =>
-                  `${name}: ${(percent * 100).toFixed(0)}%`
-                }
+                label={({ name, percent }: any) => `${name}: ${(percent * 100).toFixed(0)}%`}
               >
                 {pieData.map((entry, index) => (
                   <Cell key={`cell-${index}`} fill={entry.color} />
@@ -203,9 +204,7 @@ export const ScreeningCoverageChart: React.FC<ScreeningCoverageChartProps> = ({
                 outerRadius={120}
                 fill="#8884d8"
                 dataKey="value"
-                label={({ name, percent }: any) =>
-                  `${name}: ${(percent * 100).toFixed(0)}%`
-                }
+                label={({ name, percent }: any) => `${name}: ${(percent * 100).toFixed(0)}%`}
               >
                 {pieData.map((entry, index) => (
                   <Cell key={`cell-${index}`} fill={entry.color} />
@@ -238,7 +237,7 @@ export const ScreeningCoverageChart: React.FC<ScreeningCoverageChartProps> = ({
         height: `${height}px`,
         display: 'flex',
         flexDirection: 'column',
-        ...(style || {})
+        ...(style || {}),
       }}
       className={className || undefined}
     >
@@ -266,9 +265,7 @@ export const ScreeningCoverageChart: React.FC<ScreeningCoverageChartProps> = ({
 
       <Grid container spacing={2}>
         <Grid item xs={12} md={chartType === 'bar' ? 12 : 8}>
-          <Box sx={{ height: height - 120, width: '100%' }}>
-            {renderChart()}
-          </Box>
+          <Box sx={{ height: height - 120, width: '100%' }}>{renderChart()}</Box>
         </Grid>
 
         {(chartType === 'pie' || chartType === 'donut') && (
@@ -282,7 +279,7 @@ export const ScreeningCoverageChart: React.FC<ScreeningCoverageChartProps> = ({
                   position: 'relative',
                   width: 120,
                   height: 120,
-                  mx: 'auto'
+                  mx: 'auto',
                 }}
               >
                 <CircularProgress

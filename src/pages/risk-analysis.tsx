@@ -22,7 +22,10 @@ const RiskAnalysisPage: React.FC = () => {
     <>
       <Head>
         <title>Análise de Risco Acadêmico | Innerview</title>
-        <meta name="description" content="Dashboard para análise de risco acadêmico e identificação precoce de dificuldades" />
+        <meta
+          name="description"
+          content="Dashboard para análise de risco acadêmico e identificação precoce de dificuldades"
+        />
       </Head>
 
       <Container maxWidth="xl" sx={{ py: 4 }}>

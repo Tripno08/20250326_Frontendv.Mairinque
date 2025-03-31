@@ -7,7 +7,7 @@ import {
   Card,
   CardContent,
   CardHeader,
-  Divider
+  Divider,
 } from '@mui/material';
 import {
   BarChart,
@@ -21,14 +21,9 @@ import {
   PieChart,
   Pie,
   Cell,
-  Label
+  Label,
 } from 'recharts';
-import {
-  TeamMember,
-  TeamCase,
-  CaseDistributionChartProps,
-  InterventionTier
-} from '@/types/team';
+import { TeamMember, TeamCase, CaseDistributionChartProps, InterventionTier } from '@/types/team';
 import { useCaseAssignments } from '@/hooks/useTeam';
 
 /**
@@ -43,7 +38,7 @@ export const CaseDistributionChart: React.FC<CaseDistributionChartProps> = ({
   width = 800,
   height = 500,
   showLegend = true,
-  title = 'Distribuição de Casos'
+  title = 'Distribuição de Casos',
 }) => {
   const theme = useTheme();
 
@@ -54,30 +49,32 @@ export const CaseDistributionChart: React.FC<CaseDistributionChartProps> = ({
   const TIER_COLORS = {
     1: '#4CAF50', // Verde para Tier 1
     2: '#FFC107', // Amarelo para Tier 2
-    3: '#F44336'  // Vermelho para Tier 3
+    3: '#F44336', // Vermelho para Tier 3
   };
 
   // Calcular dados para o gráfico de barras de distribuição de casos
   const barChartData = useMemo(() => {
     if (!members.length || !cases.length) return [];
 
-    return members.map(member => {
-      // Encontrar casos atribuídos a este membro
-      const memberCases = cases.filter(c => c.assignedTo?.includes(member.id) || false);
+    return members
+      .map(member => {
+        // Encontrar casos atribuídos a este membro
+        const memberCases = cases.filter(c => c.assignedTo?.includes(member.id) || false);
 
-      // Contar casos por tier
-      const tier1Count = memberCases.filter(c => c.tier === InterventionTier.TIER1).length;
-      const tier2Count = memberCases.filter(c => c.tier === InterventionTier.TIER2).length;
-      const tier3Count = memberCases.filter(c => c.tier === InterventionTier.TIER3).length;
+        // Contar casos por tier
+        const tier1Count = memberCases.filter(c => c.tier === InterventionTier.TIER1).length;
+        const tier2Count = memberCases.filter(c => c.tier === InterventionTier.TIER2).length;
+        const tier3Count = memberCases.filter(c => c.tier === InterventionTier.TIER3).length;
 
-      return {
-        name: member.name,
-        tier1: tier1Count,
-        tier2: tier2Count,
-        tier3: tier3Count,
-        total: memberCases.length
-      };
-    }).sort((a, b) => b.total - a.total); // Ordenar por total de casos (decrescente)
+        return {
+          name: member.name,
+          tier1: tier1Count,
+          tier2: tier2Count,
+          tier3: tier3Count,
+          total: memberCases.length,
+        };
+      })
+      .sort((a, b) => b.total - a.total); // Ordenar por total de casos (decrescente)
   }, [members, cases]);
 
   // Calcular distribuição total por tier
@@ -91,7 +88,7 @@ export const CaseDistributionChart: React.FC<CaseDistributionChartProps> = ({
     return [
       { name: 'Tier 1', value: tier1Count, color: TIER_COLORS[1] },
       { name: 'Tier 2', value: tier2Count, color: TIER_COLORS[2] },
-      { name: 'Tier 3', value: tier3Count, color: TIER_COLORS[3] }
+      { name: 'Tier 3', value: tier3Count, color: TIER_COLORS[3] },
     ];
   }, [cases, TIER_COLORS]);
 
@@ -111,7 +108,10 @@ export const CaseDistributionChart: React.FC<CaseDistributionChartProps> = ({
           <Divider />
           <CardContent sx={{ pt: 1 }}>
             {payload.map((entry: any, index: number) => (
-              <Box key={`tooltip-${index}`} sx={{ display: 'flex', justifyContent: 'space-between', mb: 0.5 }}>
+              <Box
+                key={`tooltip-${index}`}
+                sx={{ display: 'flex', justifyContent: 'space-between', mb: 0.5 }}
+              >
                 <Box sx={{ display: 'flex', alignItems: 'center' }}>
                   <Box
                     sx={{
@@ -119,7 +119,7 @@ export const CaseDistributionChart: React.FC<CaseDistributionChartProps> = ({
                       height: 12,
                       borderRadius: '50%',
                       bgcolor: entry.color,
-                      mr: 1
+                      mr: 1,
                     }}
                   />
                   <Typography variant="body2">{entry.name}:</Typography>
@@ -131,8 +131,12 @@ export const CaseDistributionChart: React.FC<CaseDistributionChartProps> = ({
             ))}
             <Divider sx={{ my: 1 }} />
             <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-              <Typography variant="body2" fontWeight="bold">Total:</Typography>
-              <Typography variant="body2" fontWeight="bold">{total}</Typography>
+              <Typography variant="body2" fontWeight="bold">
+                Total:
+              </Typography>
+              <Typography variant="body2" fontWeight="bold">
+                {total}
+              </Typography>
             </Box>
           </CardContent>
         </Card>
@@ -149,7 +153,7 @@ export const CaseDistributionChart: React.FC<CaseDistributionChartProps> = ({
         p: 3,
         width: width,
         height: height,
-        ...style
+        ...style,
       }}
       className={className}
     >
@@ -158,7 +162,9 @@ export const CaseDistributionChart: React.FC<CaseDistributionChartProps> = ({
       </Typography>
 
       {isLoading ? (
-        <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '80%' }}>
+        <Box
+          sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '80%' }}
+        >
           <Typography>Carregando dados...</Typography>
         </Box>
       ) : (
@@ -169,38 +175,15 @@ export const CaseDistributionChart: React.FC<CaseDistributionChartProps> = ({
               Distribuição por Membro
             </Typography>
             <ResponsiveContainer width="100%" height="90%">
-              <BarChart
-                data={barChartData}
-                margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
-              >
+              <BarChart data={barChartData} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis dataKey="name" />
                 <YAxis label={{ value: 'Número de Casos', angle: -90, position: 'insideLeft' }} />
                 <Tooltip content={<CustomTooltip />} />
-                {showLegend && (
-                  <Legend
-                    verticalAlign="top"
-                    height={36}
-                  />
-                )}
-                <Bar
-                  dataKey="tier1"
-                  name="Tier 1"
-                  stackId="a"
-                  fill={TIER_COLORS[1]}
-                />
-                <Bar
-                  dataKey="tier2"
-                  name="Tier 2"
-                  stackId="a"
-                  fill={TIER_COLORS[2]}
-                />
-                <Bar
-                  dataKey="tier3"
-                  name="Tier 3"
-                  stackId="a"
-                  fill={TIER_COLORS[3]}
-                />
+                {showLegend && <Legend verticalAlign="top" height={36} />}
+                <Bar dataKey="tier1" name="Tier 1" stackId="a" fill={TIER_COLORS[1]} />
+                <Bar dataKey="tier2" name="Tier 2" stackId="a" fill={TIER_COLORS[2]} />
+                <Bar dataKey="tier3" name="Tier 3" stackId="a" fill={TIER_COLORS[3]} />
               </BarChart>
             </ResponsiveContainer>
           </Box>

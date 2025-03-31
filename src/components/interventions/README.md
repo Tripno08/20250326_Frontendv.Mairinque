@@ -13,8 +13,8 @@ import { InterventionCard } from './InterventionCard';
 
 <InterventionCard
   intervention={intervention}
-  onClick={(intervention) => console.log(intervention)}
-/>
+  onClick={intervention => console.log(intervention)}
+/>;
 ```
 
 #### Props
@@ -32,8 +32,8 @@ import { InterventionGallery } from './InterventionGallery';
 
 <InterventionGallery
   interventions={interventions}
-  onInterventionSelect={(intervention) => console.log(intervention)}
-/>
+  onInterventionSelect={intervention => console.log(intervention)}
+/>;
 ```
 
 #### Props

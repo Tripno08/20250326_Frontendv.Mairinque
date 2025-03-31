@@ -1,7 +1,12 @@
 import { ReactNode } from 'react';
+import { IntegrationMetrics, IntegrationEvent } from './integrations';
 
 // Tipos básicos
-export type WidgetType = 'tier-distribution' | 'domain-summary' | 'assessment-coverage' | 'progress-monitoring';
+export type WidgetType =
+  | 'tier-distribution'
+  | 'domain-summary'
+  | 'assessment-coverage'
+  | 'progress-monitoring';
 
 export interface Position {
   x: number;
@@ -190,4 +195,24 @@ export interface LayoutUtils {
   compactLayout: (layout: DashboardLayout) => DashboardLayout;
   exportLayout: (layout: DashboardLayout) => string;
   importLayout: (json: string) => DashboardLayout | null;
-} 
+}
+
+export type IntegrationType = 'lti' | 'microsoft' | 'google' | 'webhook';
+export type IntegrationStatusType = 'active' | 'inactive' | 'error' | 'pending';
+
+export interface IntegrationStatus {
+  type: IntegrationType;
+  status: IntegrationStatusType;
+  metrics: IntegrationMetrics;
+  lastEvent?: IntegrationEvent;
+}
+
+export interface DashboardMetrics {
+  totalIntegrations: number;
+  activeIntegrations: number;
+  errorIntegrations: number;
+  averageSuccessRate: number;
+  totalEvents: number;
+  totalErrors: number;
+  lastUpdate: string;
+}

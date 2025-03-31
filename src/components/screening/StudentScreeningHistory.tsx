@@ -18,7 +18,7 @@ import {
   InputLabel,
   Select,
   MenuItem,
-  TextField
+  TextField,
 } from '@mui/material';
 import { useScreeningAdministrations } from '../../hooks/useScreening';
 import { ScreeningAdministration } from '../../types/screening';
@@ -57,9 +57,7 @@ const getStatusLabel = (status: string) => {
   }
 };
 
-export const StudentScreeningHistory: React.FC<StudentScreeningHistoryProps> = ({
-  studentId
-}) => {
+export const StudentScreeningHistory: React.FC<StudentScreeningHistoryProps> = ({ studentId }) => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [filters, setFilters] = useState<{
@@ -70,7 +68,7 @@ export const StudentScreeningHistory: React.FC<StudentScreeningHistoryProps> = (
 
   const { administrations, loading, error } = useScreeningAdministrations({
     studentId,
-    ...filters
+    ...filters,
   });
 
   const handleChangePage = (event: unknown, newPage: number) => {
@@ -108,7 +106,7 @@ export const StudentScreeningHistory: React.FC<StudentScreeningHistoryProps> = (
             <Select
               value={filters.status || ''}
               label="Status"
-              onChange={(e) => handleFilterChange('status', e.target.value)}
+              onChange={e => handleFilterChange('status', e.target.value)}
             >
               <MenuItem value="">Todos</MenuItem>
               <MenuItem value="pending">Pendente</MenuItem>
@@ -125,7 +123,9 @@ export const StudentScreeningHistory: React.FC<StudentScreeningHistoryProps> = (
             label="Data Inicial"
             type="date"
             value={filters.startDate ? new Date(filters.startDate).toISOString().split('T')[0] : ''}
-            onChange={(e) => handleFilterChange('startDate', e.target.value ? new Date(e.target.value) : undefined)}
+            onChange={e =>
+              handleFilterChange('startDate', e.target.value ? new Date(e.target.value) : undefined)
+            }
             InputLabelProps={{ shrink: true }}
           />
         </Grid>
@@ -136,7 +136,9 @@ export const StudentScreeningHistory: React.FC<StudentScreeningHistoryProps> = (
             label="Data Final"
             type="date"
             value={filters.endDate ? new Date(filters.endDate).toISOString().split('T')[0] : ''}
-            onChange={(e) => handleFilterChange('endDate', e.target.value ? new Date(e.target.value) : undefined)}
+            onChange={e =>
+              handleFilterChange('endDate', e.target.value ? new Date(e.target.value) : undefined)
+            }
             InputLabelProps={{ shrink: true }}
           />
         </Grid>
@@ -156,12 +158,10 @@ export const StudentScreeningHistory: React.FC<StudentScreeningHistoryProps> = (
           <TableBody>
             {administrations
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-              .map((administration) => (
+              .map(administration => (
                 <TableRow key={administration.id}>
                   <TableCell>{administration.instrumentId}</TableCell>
-                  <TableCell>
-                    {new Date(administration.startDate).toLocaleString()}
-                  </TableCell>
+                  <TableCell>{new Date(administration.startDate).toLocaleString()}</TableCell>
                   <TableCell>
                     {administration.endDate
                       ? new Date(administration.endDate).toLocaleString()
@@ -174,9 +174,7 @@ export const StudentScreeningHistory: React.FC<StudentScreeningHistoryProps> = (
                       size="small"
                     />
                   </TableCell>
-                  <TableCell>
-                    {administration.responses.length}
-                  </TableCell>
+                  <TableCell>{administration.responses.length}</TableCell>
                 </TableRow>
               ))}
           </TableBody>

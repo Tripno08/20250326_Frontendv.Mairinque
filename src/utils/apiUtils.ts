@@ -13,19 +13,19 @@ const createApiClient = (baseURL: string): AxiosInstance => {
 
   // Interceptor para adicionar token de autenticação
   client.interceptors.request.use(
-    (config) => {
+    config => {
       const token = localStorage.getItem('auth_token');
       if (token) {
         config.headers.Authorization = `Bearer ${token}`;
       }
       return config;
     },
-    (error) => Promise.reject(error)
+    error => Promise.reject(error)
   );
 
   // Interceptor para tratamento de erros
   client.interceptors.response.use(
-    (response) => response,
+    response => response,
     (error: AxiosError) => {
       if (error.response?.status === 401) {
         // Token expirado ou inválido
@@ -131,12 +131,4 @@ const del = async <T>(
   }
 };
 
-export {
-  createApiClient,
-  get,
-  post,
-  put,
-  del,
-  processApiResponse,
-  processApiError,
-}; 
+export { createApiClient, get, post, put, del, processApiResponse, processApiError };

@@ -29,7 +29,7 @@ import {
   TableHead,
   TableRow,
   TablePagination,
-  useTheme
+  useTheme,
 } from '@mui/material';
 import {
   Add as AddIcon,
@@ -41,13 +41,13 @@ import {
   CheckCircle as CheckCircleIcon,
   Cancel as CancelIcon,
   Pending as PendingIcon,
-  Visibility as VisibilityIcon
+  Visibility as VisibilityIcon,
 } from '@mui/icons-material';
 import { useScreeningAdministration, useScreeningAdministrations } from '../../hooks/useScreening';
 import {
   ScreeningAdministration,
   ScreeningAdministrationManagerProps,
-  ScreeningStatus
+  ScreeningStatus,
 } from '../../types/screening';
 import { screeningService } from '../../services/screeningService';
 import { Notification } from '../common/Notification';
@@ -98,10 +98,11 @@ const getStatusIcon = (status: ScreeningStatus) => {
 
 export const ScreeningAdministrationManager: React.FC<ScreeningAdministrationManagerProps> = ({
   onAdministrationCreate,
-  onAdministrationUpdate
+  onAdministrationUpdate,
 }) => {
   const theme = useTheme();
-  const [selectedAdministration, setSelectedAdministration] = useState<ScreeningAdministration | null>(null);
+  const [selectedAdministration, setSelectedAdministration] =
+    useState<ScreeningAdministration | null>(null);
   const [createDialogOpen, setCreateDialogOpen] = useState(false);
   const [editDialogOpen, setEditDialogOpen] = useState(false);
   const [detailsDialogOpen, setDetailsDialogOpen] = useState(false);
@@ -122,7 +123,7 @@ export const ScreeningAdministrationManager: React.FC<ScreeningAdministrationMan
     endDate: null,
     status: 'pending',
     responses: [],
-    notes: ''
+    notes: '',
   });
   const [notification, setNotification] = useState<{
     open: boolean;
@@ -131,11 +132,22 @@ export const ScreeningAdministrationManager: React.FC<ScreeningAdministrationMan
   }>({
     open: false,
     message: '',
-    severity: 'info'
+    severity: 'info',
   });
 
-  const { loading: loadingAdministration, error: errorAdministration, createAdministration, updateAdministration, deleteAdministration } = useScreeningAdministration();
-  const { administrations, loading: loadingList, error: errorList, refetch } = useScreeningAdministrations(filters);
+  const {
+    loading: loadingAdministration,
+    error: errorAdministration,
+    createAdministration,
+    updateAdministration,
+    deleteAdministration,
+  } = useScreeningAdministration();
+  const {
+    administrations,
+    loading: loadingList,
+    error: errorList,
+    refetch,
+  } = useScreeningAdministrations(filters);
 
   const handleChangePage = (event: unknown, newPage: number) => {
     setPage(newPage);
@@ -153,21 +165,25 @@ export const ScreeningAdministrationManager: React.FC<ScreeningAdministrationMan
 
   const handleCreate = async () => {
     try {
-      await createAdministration(formData as Omit<ScreeningAdministration, 'id' | 'createdAt' | 'updatedAt'>);
-      onAdministrationCreate(formData as Omit<ScreeningAdministration, 'id' | 'createdAt' | 'updatedAt'>);
+      await createAdministration(
+        formData as Omit<ScreeningAdministration, 'id' | 'createdAt' | 'updatedAt'>
+      );
+      onAdministrationCreate(
+        formData as Omit<ScreeningAdministration, 'id' | 'createdAt' | 'updatedAt'>
+      );
       setCreateDialogOpen(false);
       resetForm();
       setNotification({
         open: true,
         message: 'Administração criada com sucesso',
-        severity: 'success'
+        severity: 'success',
       });
     } catch (err) {
       console.error('Erro ao criar administração:', err);
       setNotification({
         open: true,
         message: 'Erro ao criar administração',
-        severity: 'error'
+        severity: 'error',
       });
     }
   };
@@ -183,14 +199,14 @@ export const ScreeningAdministrationManager: React.FC<ScreeningAdministrationMan
       setNotification({
         open: true,
         message: 'Administração atualizada com sucesso',
-        severity: 'success'
+        severity: 'success',
       });
     } catch (err) {
       console.error('Erro ao atualizar administração:', err);
       setNotification({
         open: true,
         message: 'Erro ao atualizar administração',
-        severity: 'error'
+        severity: 'error',
       });
     }
   };
@@ -204,7 +220,7 @@ export const ScreeningAdministrationManager: React.FC<ScreeningAdministrationMan
       endDate: null,
       status: 'pending',
       responses: [],
-      notes: ''
+      notes: '',
     });
   };
 
@@ -225,14 +241,14 @@ export const ScreeningAdministrationManager: React.FC<ScreeningAdministrationMan
       setNotification({
         open: true,
         message: 'Administração excluída com sucesso',
-        severity: 'success'
+        severity: 'success',
       });
     } catch (err) {
       console.error('Erro ao excluir administração:', err);
       setNotification({
         open: true,
         message: 'Erro ao excluir administração',
-        severity: 'error'
+        severity: 'error',
       });
     }
   };
@@ -305,7 +321,7 @@ export const ScreeningAdministrationManager: React.FC<ScreeningAdministrationMan
         <TableBody>
           {administrations
             .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-            .map((administration) => (
+            .map(administration => (
               <TableRow key={administration.id}>
                 <TableCell>{administration.instrumentId}</TableCell>
                 <TableCell>{administration.studentId}</TableCell>
@@ -363,33 +379,35 @@ export const ScreeningAdministrationManager: React.FC<ScreeningAdministrationMan
           <TextField
             label="ID do Instrumento"
             value={formData.instrumentId}
-            onChange={(e) => setFormData({ ...formData, instrumentId: e.target.value })}
+            onChange={e => setFormData({ ...formData, instrumentId: e.target.value })}
             fullWidth
           />
           <TextField
             label="ID do Aluno"
             value={formData.studentId}
-            onChange={(e) => setFormData({ ...formData, studentId: e.target.value })}
+            onChange={e => setFormData({ ...formData, studentId: e.target.value })}
             fullWidth
           />
           <TextField
             label="ID do Administrador"
             value={formData.administratorId}
-            onChange={(e) => setFormData({ ...formData, administratorId: e.target.value })}
+            onChange={e => setFormData({ ...formData, administratorId: e.target.value })}
             fullWidth
           />
           <TextField
             label="Data de Início"
             type="datetime-local"
-            value={formData.startDate ? new Date(formData.startDate).toISOString().slice(0, 16) : ''}
-            onChange={(e) => setFormData({ ...formData, startDate: new Date(e.target.value) })}
+            value={
+              formData.startDate ? new Date(formData.startDate).toISOString().slice(0, 16) : ''
+            }
+            onChange={e => setFormData({ ...formData, startDate: new Date(e.target.value) })}
             fullWidth
             InputLabelProps={{ shrink: true }}
           />
           <TextField
             label="Notas"
             value={formData.notes}
-            onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
+            onChange={e => setFormData({ ...formData, notes: e.target.value })}
             fullWidth
             multiline
             rows={4}
@@ -406,38 +424,35 @@ export const ScreeningAdministrationManager: React.FC<ScreeningAdministrationMan
   );
 
   const renderEditDialog = () => (
-    <Dialog
-      open={editDialogOpen}
-      onClose={() => setEditDialogOpen(false)}
-      maxWidth="sm"
-      fullWidth
-    >
+    <Dialog open={editDialogOpen} onClose={() => setEditDialogOpen(false)} maxWidth="sm" fullWidth>
       <DialogTitle>Editar Administração</DialogTitle>
       <DialogContent>
         <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, mt: 2 }}>
           <TextField
             label="ID do Instrumento"
             value={formData.instrumentId}
-            onChange={(e) => setFormData({ ...formData, instrumentId: e.target.value })}
+            onChange={e => setFormData({ ...formData, instrumentId: e.target.value })}
             fullWidth
           />
           <TextField
             label="ID do Aluno"
             value={formData.studentId}
-            onChange={(e) => setFormData({ ...formData, studentId: e.target.value })}
+            onChange={e => setFormData({ ...formData, studentId: e.target.value })}
             fullWidth
           />
           <TextField
             label="ID do Administrador"
             value={formData.administratorId}
-            onChange={(e) => setFormData({ ...formData, administratorId: e.target.value })}
+            onChange={e => setFormData({ ...formData, administratorId: e.target.value })}
             fullWidth
           />
           <TextField
             label="Data de Início"
             type="datetime-local"
-            value={formData.startDate ? new Date(formData.startDate).toISOString().slice(0, 16) : ''}
-            onChange={(e) => setFormData({ ...formData, startDate: new Date(e.target.value) })}
+            value={
+              formData.startDate ? new Date(formData.startDate).toISOString().slice(0, 16) : ''
+            }
+            onChange={e => setFormData({ ...formData, startDate: new Date(e.target.value) })}
             fullWidth
             InputLabelProps={{ shrink: true }}
           />
@@ -445,7 +460,7 @@ export const ScreeningAdministrationManager: React.FC<ScreeningAdministrationMan
             label="Data de Término"
             type="datetime-local"
             value={formData.endDate ? new Date(formData.endDate).toISOString().slice(0, 16) : ''}
-            onChange={(e) => setFormData({ ...formData, endDate: new Date(e.target.value) })}
+            onChange={e => setFormData({ ...formData, endDate: new Date(e.target.value) })}
             fullWidth
             InputLabelProps={{ shrink: true }}
           />
@@ -453,7 +468,12 @@ export const ScreeningAdministrationManager: React.FC<ScreeningAdministrationMan
             label="Status"
             select
             value={formData.status}
-            onChange={(e) => setFormData({ ...formData, status: e.target.value as ScreeningAdministration['status'] })}
+            onChange={e =>
+              setFormData({
+                ...formData,
+                status: e.target.value as ScreeningAdministration['status'],
+              })
+            }
             SelectProps={{ native: true }}
           >
             <option value="pending">Pendente</option>
@@ -464,7 +484,7 @@ export const ScreeningAdministrationManager: React.FC<ScreeningAdministrationMan
           <TextField
             label="Notas"
             value={formData.notes}
-            onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
+            onChange={e => setFormData({ ...formData, notes: e.target.value })}
             fullWidth
             multiline
             rows={4}
@@ -483,9 +503,7 @@ export const ScreeningAdministrationManager: React.FC<ScreeningAdministrationMan
   return (
     <Box sx={{ p: 3 }}>
       <Box sx={{ mb: 3, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <Typography variant="h5">
-          Administrações de Rastreio
-        </Typography>
+        <Typography variant="h5">Administrações de Rastreio</Typography>
         <Button
           variant="contained"
           startIcon={<AddIcon />}
@@ -501,7 +519,7 @@ export const ScreeningAdministrationManager: React.FC<ScreeningAdministrationMan
             fullWidth
             label="ID do Estudante"
             value={filters.studentId || ''}
-            onChange={(e) => handleFilterChange('studentId', e.target.value)}
+            onChange={e => handleFilterChange('studentId', e.target.value)}
           />
         </Grid>
         <Grid item xs={12} sm={6} md={3}>
@@ -509,7 +527,7 @@ export const ScreeningAdministrationManager: React.FC<ScreeningAdministrationMan
             fullWidth
             label="ID do Administrador"
             value={filters.administratorId || ''}
-            onChange={(e) => handleFilterChange('administratorId', e.target.value)}
+            onChange={e => handleFilterChange('administratorId', e.target.value)}
           />
         </Grid>
         <Grid item xs={12} sm={6} md={3}>
@@ -518,7 +536,7 @@ export const ScreeningAdministrationManager: React.FC<ScreeningAdministrationMan
             <Select
               value={filters.status || ''}
               label="Status"
-              onChange={(e) => handleFilterChange('status', e.target.value)}
+              onChange={e => handleFilterChange('status', e.target.value)}
             >
               <MenuItem value="">Todos</MenuItem>
               <MenuItem value="pending">Pendente</MenuItem>
@@ -534,7 +552,9 @@ export const ScreeningAdministrationManager: React.FC<ScreeningAdministrationMan
             label="Data Inicial"
             type="date"
             value={filters.startDate ? new Date(filters.startDate).toISOString().split('T')[0] : ''}
-            onChange={(e) => handleFilterChange('startDate', e.target.value ? new Date(e.target.value) : undefined)}
+            onChange={e =>
+              handleFilterChange('startDate', e.target.value ? new Date(e.target.value) : undefined)
+            }
             InputLabelProps={{ shrink: true }}
           />
         </Grid>

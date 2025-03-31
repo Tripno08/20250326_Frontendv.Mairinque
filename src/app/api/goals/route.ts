@@ -13,17 +13,12 @@ export async function GET(request: NextRequest) {
     const studentId = searchParams.get('studentId');
 
     // Buscar dados de acordo com os parâmetros
-    const goals = studentId
-      ? await getStudentGoals(studentId)
-      : await getAllGoals();
+    const goals = studentId ? await getStudentGoals(studentId) : await getAllGoals();
 
     return NextResponse.json(goals);
   } catch (error) {
     console.error('Erro ao buscar metas:', error);
-    return NextResponse.json(
-      { error: 'Erro ao buscar metas' },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: 'Erro ao buscar metas' }, { status: 500 });
   }
 }
 
@@ -38,10 +33,7 @@ export async function POST(request: NextRequest) {
 
     // Validar dados
     if (!data.title || !data.specificDetails || !data.startDate || !data.targetDate) {
-      return NextResponse.json(
-        { error: 'Dados incompletos' },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: 'Dados incompletos' }, { status: 400 });
     }
 
     // Criar meta
@@ -50,9 +42,6 @@ export async function POST(request: NextRequest) {
     return NextResponse.json(newGoal, { status: 201 });
   } catch (error) {
     console.error('Erro ao criar meta:', error);
-    return NextResponse.json(
-      { error: 'Erro ao criar meta' },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: 'Erro ao criar meta' }, { status: 500 });
   }
 }

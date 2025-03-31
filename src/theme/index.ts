@@ -2,78 +2,149 @@ import { createTheme } from '@mui/material/styles';
 
 export const theme = createTheme({
   palette: {
+    mode: 'light',
     primary: {
-      main: '#1976d2',
-      light: '#42a5f5',
-      dark: '#1565c0',
+      main: '#3B82F6',
+      light: '#60A5FA',
+      dark: '#2563EB',
+      contrastText: '#FFFFFF',
     },
     secondary: {
-      main: '#9c27b0',
-      light: '#ba68c8',
-      dark: '#7b1fa2',
-    },
-    error: {
-      main: '#d32f2f',
-      light: '#ef5350',
-      dark: '#c62828',
-    },
-    warning: {
-      main: '#ed6c02',
-      light: '#ff9800',
-      dark: '#e65100',
-    },
-    info: {
-      main: '#0288d1',
-      light: '#03a9f4',
-      dark: '#01579b',
+      main: '#8B5CF6',
+      light: '#A78BFA',
+      dark: '#7C3AED',
+      contrastText: '#FFFFFF',
     },
     success: {
-      main: '#2e7d32',
-      light: '#4caf50',
-      dark: '#1b5e20',
+      main: '#10B981',
+      light: '#34D399',
+      dark: '#059669',
+      contrastText: '#FFFFFF',
+    },
+    warning: {
+      main: '#F59E0B',
+      light: '#FBBF24',
+      dark: '#D97706',
+      contrastText: '#FFFFFF',
+    },
+    error: {
+      main: '#EF4444',
+      light: '#F87171',
+      dark: '#DC2626',
+      contrastText: '#FFFFFF',
     },
     background: {
-      default: '#f5f5f5',
-      paper: '#ffffff',
+      default: '#F9FAFB',
+      paper: '#FFFFFF',
+    },
+    text: {
+      primary: '#111827',
+      secondary: '#6B7280',
+    },
+    divider: '#E5E7EB',
+    grey: {
+      50: '#F9FAFB',
+      100: '#F3F4F6',
+      200: '#E5E7EB',
+      300: '#D1D5DB',
+      400: '#9CA3AF',
+      500: '#6B7280',
+      600: '#4B5563',
+      700: '#374151',
+      800: '#1F2937',
+      900: '#111827',
     },
   },
   typography: {
-    fontFamily: [
-      '-apple-system',
-      'BlinkMacSystemFont',
-      '"Segoe UI"',
-      'Roboto',
-      '"Helvetica Neue"',
-      'Arial',
-      'sans-serif',
-      '"Apple Color Emoji"',
-      '"Segoe UI Emoji"',
-      '"Segoe UI Symbol"',
-    ].join(','),
+    fontFamily: '"Inter", "Roboto", "Helvetica", "Arial", sans-serif',
+    fontSize: 14,
+    fontWeightLight: 300,
+    fontWeightRegular: 400,
+    fontWeightMedium: 500,
+    fontWeightBold: 700,
+    h1: {
+      fontSize: '2.5rem',
+      fontWeight: 700,
+    },
+    h2: {
+      fontSize: '2rem',
+      fontWeight: 700,
+    },
+    h3: {
+      fontSize: '1.75rem',
+      fontWeight: 700,
+    },
+    h4: {
+      fontSize: '1.5rem',
+      fontWeight: 700,
+    },
+    h5: {
+      fontSize: '1.25rem',
+      fontWeight: 700,
+    },
+    h6: {
+      fontSize: '1rem',
+      fontWeight: 700,
+    },
+    subtitle1: {
+      fontSize: '1rem',
+      fontWeight: 500,
+    },
+    subtitle2: {
+      fontSize: '0.875rem',
+      fontWeight: 500,
+    },
+    body1: {
+      fontSize: '1rem',
+      fontWeight: 400,
+    },
+    body2: {
+      fontSize: '0.875rem',
+      fontWeight: 400,
+    },
+    button: {
+      fontSize: '0.875rem',
+      fontWeight: 500,
+      textTransform: 'none',
+    },
+    caption: {
+      fontSize: '0.75rem',
+      fontWeight: 400,
+    },
+    overline: {
+      fontSize: '0.75rem',
+      fontWeight: 500,
+    },
   },
-  components: {
-    MuiPaper: {
-      styleOverrides: {
-        root: {
-          borderRadius: 8,
-          boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.1)',
-        },
-      },
-    },
-    MuiButton: {
-      styleOverrides: {
-        root: {
-          textTransform: 'none',
-          borderRadius: 8,
-        },
-      },
-    },
-    MuiIconButton: {
-      styleOverrides: {
-        root: {
-          borderRadius: 8,
-        },
-      },
-    },
+  shape: {
+    borderRadius: 8,
   },
-}); 
+  shadows: [
+    'none',
+    '0 1px 2px 0 rgba(0, 0, 0, 0.05)',
+    '0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)',
+    '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
+    '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)',
+    '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)',
+    '0 25px 50px -12px rgba(0, 0, 0, 0.25)',
+    '0 30px 60px -12px rgba(0, 0, 0, 0.25)',
+    '0 35px 70px -12px rgba(0, 0, 0, 0.25)',
+    '0 40px 80px -12px rgba(0, 0, 0, 0.25)',
+    '0 45px 90px -12px rgba(0, 0, 0, 0.25)',
+    '0 50px 100px -12px rgba(0, 0, 0, 0.25)',
+    '0 55px 110px -12px rgba(0, 0, 0, 0.25)',
+    '0 60px 120px -12px rgba(0, 0, 0, 0.25)',
+    '0 65px 130px -12px rgba(0, 0, 0, 0.25)',
+    '0 70px 140px -12px rgba(0, 0, 0, 0.25)',
+    '0 75px 150px -12px rgba(0, 0, 0, 0.25)',
+    '0 80px 160px -12px rgba(0, 0, 0, 0.25)',
+    '0 85px 170px -12px rgba(0, 0, 0, 0.25)',
+    '0 90px 180px -12px rgba(0, 0, 0, 0.25)',
+    '0 95px 190px -12px rgba(0, 0, 0, 0.25)',
+    '0 100px 200px -12px rgba(0, 0, 0, 0.25)',
+    '0 105px 210px -12px rgba(0, 0, 0, 0.25)',
+    '0 110px 220px -12px rgba(0, 0, 0, 0.25)',
+    '0 115px 230px -12px rgba(0, 0, 0, 0.25)',
+  ],
+  spacing: 8,
+});

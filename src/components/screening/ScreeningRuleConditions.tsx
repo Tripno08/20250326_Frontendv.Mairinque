@@ -18,7 +18,7 @@ import {
   CardContent,
   Tooltip,
   Chip,
-  Stack
+  Stack,
 } from '@mui/material';
 import {
   Add as AddIcon,
@@ -26,7 +26,7 @@ import {
   Delete as DeleteIcon,
   Assessment as AssessmentIcon,
   Warning as WarningIcon,
-  Notifications as NotificationsIcon
+  Notifications as NotificationsIcon,
 } from '@mui/icons-material';
 import {
   ScreeningRuleCondition,
@@ -34,8 +34,11 @@ import {
   ScreeningRuleConditionType,
   ScreeningRuleActionType,
   ScreeningRuleActionTarget,
-  ScreeningRuleOperator
+  ScreeningRuleOperator,
 } from '../../types/screening';
+import GridContainer from '@/components/GridContainer';
+import GridItem from '@/components/GridItem';
+import MenuItemWrapper from '@/components/MenuItemWrapper';
 
 interface ScreeningRuleConditionsProps {
   conditions: ScreeningRuleCondition[];
@@ -118,7 +121,7 @@ export const ScreeningRuleConditions: React.FC<ScreeningRuleConditionsProps> = (
   conditions,
   actions,
   onConditionsChange,
-  onActionsChange
+  onActionsChange,
 }) => {
   const [selectedCondition, setSelectedCondition] = useState<ScreeningRuleCondition | null>(null);
   const [selectedAction, setSelectedAction] = useState<ScreeningRuleAction | null>(null);
@@ -128,19 +131,19 @@ export const ScreeningRuleConditions: React.FC<ScreeningRuleConditionsProps> = (
     type: 'score',
     operator: 'equals',
     value: '',
-    instrumentId: ''
+    instrumentId: '',
   });
   const [actionFormData, setActionFormData] = useState<Partial<ScreeningRuleAction>>({
     type: 'notification',
     target: 'student',
     message: '',
-    data: {}
+    data: {},
   });
 
   const handleCreateCondition = () => {
     const newCondition: ScreeningRuleCondition = {
       id: Math.random().toString(36).substr(2, 9),
-      ...conditionFormData as Omit<ScreeningRuleCondition, 'id'>
+      ...(conditionFormData as Omit<ScreeningRuleCondition, 'id'>),
     };
     onConditionsChange([...conditions, newCondition]);
     setIsConditionDialogOpen(false);
@@ -148,16 +151,14 @@ export const ScreeningRuleConditions: React.FC<ScreeningRuleConditionsProps> = (
       type: 'score',
       operator: 'equals',
       value: '',
-      instrumentId: ''
+      instrumentId: '',
     });
   };
 
   const handleUpdateCondition = () => {
     if (!selectedCondition) return;
     const updatedConditions = conditions.map(condition =>
-      condition.id === selectedCondition.id
-        ? { ...condition, ...conditionFormData }
-        : condition
+      condition.id === selectedCondition.id ? { ...condition, ...conditionFormData } : condition
     );
     onConditionsChange(updatedConditions);
     setIsConditionDialogOpen(false);
@@ -166,7 +167,7 @@ export const ScreeningRuleConditions: React.FC<ScreeningRuleConditionsProps> = (
       type: 'score',
       operator: 'equals',
       value: '',
-      instrumentId: ''
+      instrumentId: '',
     });
   };
 
@@ -177,7 +178,7 @@ export const ScreeningRuleConditions: React.FC<ScreeningRuleConditionsProps> = (
   const handleCreateAction = () => {
     const newAction: ScreeningRuleAction = {
       id: Math.random().toString(36).substr(2, 9),
-      ...actionFormData as Omit<ScreeningRuleAction, 'id'>
+      ...(actionFormData as Omit<ScreeningRuleAction, 'id'>),
     };
     onActionsChange([...actions, newAction]);
     setIsActionDialogOpen(false);
@@ -185,16 +186,14 @@ export const ScreeningRuleConditions: React.FC<ScreeningRuleConditionsProps> = (
       type: 'notification',
       target: 'student',
       message: '',
-      data: {}
+      data: {},
     });
   };
 
   const handleUpdateAction = () => {
     if (!selectedAction) return;
     const updatedActions = actions.map(action =>
-      action.id === selectedAction.id
-        ? { ...action, ...actionFormData }
-        : action
+      action.id === selectedAction.id ? { ...action, ...actionFormData } : action
     );
     onActionsChange(updatedActions);
     setIsActionDialogOpen(false);
@@ -203,7 +202,7 @@ export const ScreeningRuleConditions: React.FC<ScreeningRuleConditionsProps> = (
       type: 'notification',
       target: 'student',
       message: '',
-      data: {}
+      data: {},
     });
   };
 
@@ -215,9 +214,7 @@ export const ScreeningRuleConditions: React.FC<ScreeningRuleConditionsProps> = (
     <Card key={condition.id}>
       <CardContent>
         <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-          <Typography variant="subtitle1">
-            {getConditionTypeLabel(condition.type)}
-          </Typography>
+          <Typography variant="subtitle1">{getConditionTypeLabel(condition.type)}</Typography>
           <Box>
             <Tooltip title="Editar">
               <IconButton
@@ -231,10 +228,7 @@ export const ScreeningRuleConditions: React.FC<ScreeningRuleConditionsProps> = (
               </IconButton>
             </Tooltip>
             <Tooltip title="Excluir">
-              <IconButton
-                color="error"
-                onClick={() => handleDeleteCondition(condition.id)}
-              >
+              <IconButton color="error" onClick={() => handleDeleteCondition(condition.id)}>
                 <DeleteIcon />
               </IconButton>
             </Tooltip>
@@ -265,9 +259,7 @@ export const ScreeningRuleConditions: React.FC<ScreeningRuleConditionsProps> = (
     <Card key={action.id}>
       <CardContent>
         <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-          <Typography variant="subtitle1">
-            {getActionTypeLabel(action.type)}
-          </Typography>
+          <Typography variant="subtitle1">{getActionTypeLabel(action.type)}</Typography>
           <Box>
             <Tooltip title="Editar">
               <IconButton
@@ -281,10 +273,7 @@ export const ScreeningRuleConditions: React.FC<ScreeningRuleConditionsProps> = (
               </IconButton>
             </Tooltip>
             <Tooltip title="Excluir">
-              <IconButton
-                color="error"
-                onClick={() => handleDeleteAction(action.id)}
-              >
+              <IconButton color="error" onClick={() => handleDeleteAction(action.id)}>
                 <DeleteIcon />
               </IconButton>
             </Tooltip>
@@ -315,9 +304,7 @@ export const ScreeningRuleConditions: React.FC<ScreeningRuleConditionsProps> = (
       maxWidth="sm"
       fullWidth
     >
-      <DialogTitle>
-        {selectedCondition ? 'Editar Condição' : 'Nova Condição'}
-      </DialogTitle>
+      <DialogTitle>{selectedCondition ? 'Editar Condição' : 'Nova Condição'}</DialogTitle>
       <DialogContent>
         <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, mt: 2 }}>
           <FormControl fullWidth>
@@ -325,12 +312,17 @@ export const ScreeningRuleConditions: React.FC<ScreeningRuleConditionsProps> = (
             <Select
               value={conditionFormData.type}
               label="Tipo"
-              onChange={(e) => setConditionFormData(prev => ({ ...prev, type: e.target.value as ScreeningRuleConditionType }))}
+              onChange={e =>
+                setConditionFormData(prev => ({
+                  ...prev,
+                  type: e.target.value as ScreeningRuleConditionType,
+                }))
+              }
             >
-              <MenuItem value="score">Pontuação</MenuItem>
-              <MenuItem value="frequency">Frequência</MenuItem>
-              <MenuItem value="attendance">Presença</MenuItem>
-              <MenuItem value="behavior">Comportamento</MenuItem>
+              <MenuItemWrapper value="score">Pontuação</MenuItemWrapper>
+              <MenuItemWrapper value="frequency">Frequência</MenuItemWrapper>
+              <MenuItemWrapper value="attendance">Presença</MenuItemWrapper>
+              <MenuItemWrapper value="behavior">Comportamento</MenuItemWrapper>
             </Select>
           </FormControl>
 
@@ -339,23 +331,28 @@ export const ScreeningRuleConditions: React.FC<ScreeningRuleConditionsProps> = (
             <Select
               value={conditionFormData.operator}
               label="Operador"
-              onChange={(e) => setConditionFormData(prev => ({ ...prev, operator: e.target.value as ScreeningRuleOperator }))}
+              onChange={e =>
+                setConditionFormData(prev => ({
+                  ...prev,
+                  operator: e.target.value as ScreeningRuleOperator,
+                }))
+              }
             >
-              <MenuItem value="equals">Igual a</MenuItem>
-              <MenuItem value="notEquals">Diferente de</MenuItem>
-              <MenuItem value="greaterThan">Maior que</MenuItem>
-              <MenuItem value="lessThan">Menor que</MenuItem>
-              <MenuItem value="greaterThanOrEqual">Maior ou igual a</MenuItem>
-              <MenuItem value="lessThanOrEqual">Menor ou igual a</MenuItem>
-              <MenuItem value="contains">Contém</MenuItem>
-              <MenuItem value="notContains">Não contém</MenuItem>
+              <MenuItemWrapper value="equals">Igual a</MenuItemWrapper>
+              <MenuItemWrapper value="notEquals">Diferente de</MenuItemWrapper>
+              <MenuItemWrapper value="greaterThan">Maior que</MenuItemWrapper>
+              <MenuItemWrapper value="lessThan">Menor que</MenuItemWrapper>
+              <MenuItemWrapper value="greaterThanOrEqual">Maior ou igual a</MenuItemWrapper>
+              <MenuItemWrapper value="lessThanOrEqual">Menor ou igual a</MenuItemWrapper>
+              <MenuItemWrapper value="contains">Contém</MenuItemWrapper>
+              <MenuItemWrapper value="notContains">Não contém</MenuItemWrapper>
             </Select>
           </FormControl>
 
           <TextField
             label="Valor"
             value={conditionFormData.value}
-            onChange={(e) => setConditionFormData(prev => ({ ...prev, value: e.target.value }))}
+            onChange={e => setConditionFormData(prev => ({ ...prev, value: e.target.value }))}
             fullWidth
           />
 
@@ -363,7 +360,9 @@ export const ScreeningRuleConditions: React.FC<ScreeningRuleConditionsProps> = (
             <TextField
               label="ID do Instrumento"
               value={conditionFormData.instrumentId}
-              onChange={(e) => setConditionFormData(prev => ({ ...prev, instrumentId: e.target.value }))}
+              onChange={e =>
+                setConditionFormData(prev => ({ ...prev, instrumentId: e.target.value }))
+              }
               fullWidth
             />
           )}
@@ -388,9 +387,7 @@ export const ScreeningRuleConditions: React.FC<ScreeningRuleConditionsProps> = (
       maxWidth="sm"
       fullWidth
     >
-      <DialogTitle>
-        {selectedAction ? 'Editar Ação' : 'Nova Ação'}
-      </DialogTitle>
+      <DialogTitle>{selectedAction ? 'Editar Ação' : 'Nova Ação'}</DialogTitle>
       <DialogContent>
         <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, mt: 2 }}>
           <FormControl fullWidth>
@@ -398,12 +395,17 @@ export const ScreeningRuleConditions: React.FC<ScreeningRuleConditionsProps> = (
             <Select
               value={actionFormData.type}
               label="Tipo"
-              onChange={(e) => setActionFormData(prev => ({ ...prev, type: e.target.value as ScreeningRuleActionType }))}
+              onChange={e =>
+                setActionFormData(prev => ({
+                  ...prev,
+                  type: e.target.value as ScreeningRuleActionType,
+                }))
+              }
             >
-              <MenuItem value="notification">Notificação</MenuItem>
-              <MenuItem value="referral">Encaminhamento</MenuItem>
-              <MenuItem value="intervention">Intervenção</MenuItem>
-              <MenuItem value="assessment">Avaliação</MenuItem>
+              <MenuItemWrapper value="notification">Notificação</MenuItemWrapper>
+              <MenuItemWrapper value="referral">Encaminhamento</MenuItemWrapper>
+              <MenuItemWrapper value="intervention">Intervenção</MenuItemWrapper>
+              <MenuItemWrapper value="assessment">Avaliação</MenuItemWrapper>
             </Select>
           </FormControl>
 
@@ -412,20 +414,25 @@ export const ScreeningRuleConditions: React.FC<ScreeningRuleConditionsProps> = (
             <Select
               value={actionFormData.target}
               label="Destinatário"
-              onChange={(e) => setActionFormData(prev => ({ ...prev, target: e.target.value as ScreeningRuleActionTarget }))}
+              onChange={e =>
+                setActionFormData(prev => ({
+                  ...prev,
+                  target: e.target.value as ScreeningRuleActionTarget,
+                }))
+              }
             >
-              <MenuItem value="student">Aluno</MenuItem>
-              <MenuItem value="teacher">Professor</MenuItem>
-              <MenuItem value="parent">Responsável</MenuItem>
-              <MenuItem value="counselor">Orientador</MenuItem>
-              <MenuItem value="principal">Diretor</MenuItem>
+              <MenuItemWrapper value="student">Aluno</MenuItemWrapper>
+              <MenuItemWrapper value="teacher">Professor</MenuItemWrapper>
+              <MenuItemWrapper value="parent">Responsável</MenuItemWrapper>
+              <MenuItemWrapper value="counselor">Orientador</MenuItemWrapper>
+              <MenuItemWrapper value="principal">Diretor</MenuItemWrapper>
             </Select>
           </FormControl>
 
           <TextField
             label="Mensagem"
             value={actionFormData.message}
-            onChange={(e) => setActionFormData(prev => ({ ...prev, message: e.target.value }))}
+            onChange={e => setActionFormData(prev => ({ ...prev, message: e.target.value }))}
             fullWidth
             multiline
             rows={3}
@@ -446,12 +453,12 @@ export const ScreeningRuleConditions: React.FC<ScreeningRuleConditionsProps> = (
 
   return (
     <Box sx={{ p: 3 }}>
-      <Grid container spacing={3}>
-        <Grid item xs={12} md={6}>
-          <Box sx={{ mb: 2, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <Typography variant="h6">
-              Condições
-            </Typography>
+      <GridContainer spacing={3}>
+        <GridItem xs={12} md={6}>
+          <Box
+            sx={{ mb: 2, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}
+          >
+            <Typography variant="h6">Condições</Typography>
             <Button
               variant="contained"
               startIcon={<AddIcon />}
@@ -461,16 +468,14 @@ export const ScreeningRuleConditions: React.FC<ScreeningRuleConditionsProps> = (
             </Button>
           </Box>
 
-          <Grid container spacing={2}>
-            {conditions.map(renderConditionCard)}
-          </Grid>
-        </Grid>
+          <GridContainer spacing={2}>{conditions.map(renderConditionCard)}</GridContainer>
+        </GridItem>
 
-        <Grid item xs={12} md={6}>
-          <Box sx={{ mb: 2, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <Typography variant="h6">
-              Ações
-            </Typography>
+        <GridItem xs={12} md={6}>
+          <Box
+            sx={{ mb: 2, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}
+          >
+            <Typography variant="h6">Ações</Typography>
             <Button
               variant="contained"
               startIcon={<AddIcon />}
@@ -480,11 +485,9 @@ export const ScreeningRuleConditions: React.FC<ScreeningRuleConditionsProps> = (
             </Button>
           </Box>
 
-          <Grid container spacing={2}>
-            {actions.map(renderActionCard)}
-          </Grid>
-        </Grid>
-      </Grid>
+          <GridContainer spacing={2}>{actions.map(renderActionCard)}</GridContainer>
+        </GridItem>
+      </GridContainer>
 
       {renderConditionDialog()}
       {renderActionDialog()}

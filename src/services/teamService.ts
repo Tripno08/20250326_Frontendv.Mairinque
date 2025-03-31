@@ -8,7 +8,8 @@ import {
   TeamFilters,
   CaseStatus,
   InterventionTier,
-  TeamRole
+  TeamRole,
+  Specialty,
 } from '@/types/team';
 
 // Dados mockados para desenvolvimento
@@ -22,7 +23,7 @@ const mockTeams: Team[] = [
     caseIds: ['1', '2', '3'],
     dateCreated: '2024-01-15T10:00:00Z',
     dateModified: '2024-03-28T14:30:00Z',
-    isActive: true
+    isActive: true,
   },
   {
     id: '2',
@@ -33,8 +34,8 @@ const mockTeams: Team[] = [
     caseIds: ['4', '5', '6'],
     dateCreated: '2024-02-10T09:00:00Z',
     dateModified: '2024-03-15T11:20:00Z',
-    isActive: true
-  }
+    isActive: true,
+  },
 ];
 
 const mockMembers: TeamMember[] = [
@@ -43,33 +44,33 @@ const mockMembers: TeamMember[] = [
     name: 'Ana Silva',
     email: 'ana.silva@innerview.edu.br',
     role: TeamRole.COORDINATOR,
-    specialties: ['reading', 'writing'],
+    specialties: [Specialty.READING, Specialty.WRITING],
     availability: [
       { weekday: 1, startTime: '08:00', endTime: '17:00' },
       { weekday: 3, startTime: '08:00', endTime: '17:00' },
-      { weekday: 5, startTime: '08:00', endTime: '12:00' }
+      { weekday: 5, startTime: '08:00', endTime: '12:00' },
     ],
     maxCaseload: 15,
     currentCaseload: 8,
     avatar: 'https://randomuser.me/api/portraits/women/1.jpg',
     bio: 'Especialista em alfabetização com 10 anos de experiência',
-    isActive: true
+    isActive: true,
   },
   {
     id: '2',
     name: 'Carlos Mendes',
     email: 'carlos.mendes@innerview.edu.br',
     role: TeamRole.SPECIALIST,
-    specialties: ['math'],
+    specialties: [Specialty.MATH],
     availability: [
       { weekday: 2, startTime: '09:00', endTime: '18:00' },
-      { weekday: 4, startTime: '09:00', endTime: '18:00' }
+      { weekday: 4, startTime: '09:00', endTime: '18:00' },
     ],
     maxCaseload: 12,
     currentCaseload: 6,
     avatar: 'https://randomuser.me/api/portraits/men/1.jpg',
     bio: 'Especialista em matemática com foco em intervenções Tier 2',
-    isActive: true
+    isActive: true,
   },
   // Adicione mais membros mock conforme necessário
 ];
@@ -87,8 +88,11 @@ const mockCases: TeamCase[] = [
     dateModified: '2024-03-25T14:15:00Z',
     assignedTo: ['1', '3'],
     domains: ['reading', 'comprehension'],
-    notes: ['Avaliação inicial realizada em 25/02/2024', 'Iniciou programa de fluência em 01/03/2024'],
-    documents: ['https://docs.innerview.edu.br/case1/assessment.pdf']
+    notes: [
+      'Avaliação inicial realizada em 25/02/2024',
+      'Iniciou programa de fluência em 01/03/2024',
+    ],
+    documents: ['https://docs.innerview.edu.br/case1/assessment.pdf'],
   },
   {
     id: '2',
@@ -102,7 +106,7 @@ const mockCases: TeamCase[] = [
     dateModified: '2024-03-20T11:30:00Z',
     assignedTo: ['2', '4'],
     domains: ['math', 'problem_solving'],
-    notes: ['Avaliação diagnóstica realizada em 26/02/2024']
+    notes: ['Avaliação diagnóstica realizada em 26/02/2024'],
   },
   // Adicione mais casos mock conforme necessário
 ];
@@ -113,21 +117,23 @@ const mockMessages: TeamMessage[] = [
     sender: '1',
     recipients: ['2', '3', '4'],
     subject: 'Próxima reunião da equipe',
-    content: 'Olá, equipe! Nossa próxima reunião será sexta-feira às 14h. Vamos discutir os casos 1 e 2.',
+    content:
+      'Olá, equipe! Nossa próxima reunião será sexta-feira às 14h. Vamos discutir os casos 1 e 2.',
     timestamp: '2024-03-27T10:00:00Z',
     isRead: true,
-    priority: 'normal'
+    priority: 'normal',
   },
   {
     id: '2',
     sender: '2',
     recipients: ['1'],
     subject: 'Dúvida sobre caso 1',
-    content: 'Ana, preciso de sua orientação sobre a abordagem de fluência de leitura para o João Pedro.',
+    content:
+      'Ana, preciso de sua orientação sobre a abordagem de fluência de leitura para o João Pedro.',
     timestamp: '2024-03-28T09:45:00Z',
     isRead: false,
     caseId: '1',
-    priority: 'important'
+    priority: 'important',
   },
   // Adicione mais mensagens mock conforme necessário
 ];
@@ -145,7 +151,7 @@ const mockMeetings: TeamMeeting[] = [
     attendees: ['1', '2', '3', '4'],
     caseIds: ['1', '2'],
     agenda: '1. Análise de progresso\n2. Ajustes nos planos de intervenção\n3. Próximos passos',
-    status: 'scheduled'
+    status: 'scheduled',
   },
   {
     id: '2',
@@ -157,7 +163,7 @@ const mockMeetings: TeamMeeting[] = [
     meetingUrl: 'https://meet.innerview.edu.br/room123',
     attendees: ['1', '2', '5'],
     caseIds: ['3'],
-    status: 'scheduled'
+    status: 'scheduled',
   },
   // Adicione mais reuniões mock conforme necessário
 ];
@@ -171,12 +177,12 @@ const mockMetrics: Record<string, TeamMetrics> = {
       [CaseStatus.IN_PROGRESS]: 5,
       [CaseStatus.UNDER_REVIEW]: 1,
       [CaseStatus.COMPLETED]: 2,
-      [CaseStatus.CLOSED]: 1
+      [CaseStatus.CLOSED]: 1,
     },
     casesByTier: {
       [InterventionTier.TIER1]: 4,
       [InterventionTier.TIER2]: 6,
-      [InterventionTier.TIER3]: 2
+      [InterventionTier.TIER3]: 2,
     },
     averageResolutionTime: 21.5, // em dias
     memberPerformance: [
@@ -184,17 +190,17 @@ const mockMetrics: Record<string, TeamMetrics> = {
         memberId: '1',
         casesAssigned: 8,
         casesCompleted: 3,
-        averageResolutionTime: 18.2
+        averageResolutionTime: 18.2,
       },
       {
         memberId: '2',
         casesAssigned: 6,
         casesCompleted: 2,
-        averageResolutionTime: 23.7
-      }
+        averageResolutionTime: 23.7,
+      },
     ],
     meetingsPerMonth: 4,
-    interventionEffectiveness: 76 // percentual
+    interventionEffectiveness: 76, // percentual
   },
   '2': {
     totalCases: 9,
@@ -204,12 +210,12 @@ const mockMetrics: Record<string, TeamMetrics> = {
       [CaseStatus.IN_PROGRESS]: 3,
       [CaseStatus.UNDER_REVIEW]: 1,
       [CaseStatus.COMPLETED]: 1,
-      [CaseStatus.CLOSED]: 1
+      [CaseStatus.CLOSED]: 1,
     },
     casesByTier: {
       [InterventionTier.TIER1]: 2,
       [InterventionTier.TIER2]: 5,
-      [InterventionTier.TIER3]: 2
+      [InterventionTier.TIER3]: 2,
     },
     averageResolutionTime: 24.3, // em dias
     memberPerformance: [
@@ -217,18 +223,18 @@ const mockMetrics: Record<string, TeamMetrics> = {
         memberId: '5',
         casesAssigned: 7,
         casesCompleted: 2,
-        averageResolutionTime: 22.1
+        averageResolutionTime: 22.1,
       },
       {
         memberId: '6',
         casesAssigned: 5,
         casesCompleted: 1,
-        averageResolutionTime: 28.5
-      }
+        averageResolutionTime: 28.5,
+      },
     ],
     meetingsPerMonth: 3,
-    interventionEffectiveness: 68 // percentual
-  }
+    interventionEffectiveness: 68, // percentual
+  },
 };
 
 // Simula delay de API
@@ -254,13 +260,16 @@ export class TeamService {
       id: `team_${Date.now()}`,
       ...teamData,
       dateCreated: new Date().toISOString(),
-      dateModified: new Date().toISOString()
+      dateModified: new Date().toISOString(),
     };
     mockTeams.push(newTeam);
     return { ...newTeam };
   }
 
-  async updateTeam(teamId: string, teamData: Partial<Omit<Team, 'id' | 'dateCreated'>>): Promise<Team | null> {
+  async updateTeam(
+    teamId: string,
+    teamData: Partial<Omit<Team, 'id' | 'dateCreated'>>
+  ): Promise<Team | null> {
     await delay(500);
     const index = mockTeams.findIndex(t => t.id === teamId);
     if (index === -1) return null;
@@ -268,7 +277,7 @@ export class TeamService {
     mockTeams[index] = {
       ...mockTeams[index],
       ...teamData,
-      dateModified: new Date().toISOString()
+      dateModified: new Date().toISOString(),
     };
     return { ...mockTeams[index] };
   }
@@ -297,14 +306,17 @@ export class TeamService {
     return member ? { ...member } : null;
   }
 
-  async addMemberToTeam(teamId: string, memberData: Omit<TeamMember, 'id'>): Promise<TeamMember | null> {
+  async addMemberToTeam(
+    teamId: string,
+    memberData: Omit<TeamMember, 'id'>
+  ): Promise<TeamMember | null> {
     await delay(500);
     const teamIndex = mockTeams.findIndex(t => t.id === teamId);
     if (teamIndex === -1) return null;
 
     const newMember: TeamMember = {
       id: `member_${Date.now()}`,
-      ...memberData
+      ...memberData,
     };
 
     mockMembers.push(newMember);
@@ -314,14 +326,17 @@ export class TeamService {
     return { ...newMember };
   }
 
-  async updateTeamMember(memberId: string, memberData: Partial<Omit<TeamMember, 'id'>>): Promise<TeamMember | null> {
+  async updateTeamMember(
+    memberId: string,
+    memberData: Partial<Omit<TeamMember, 'id'>>
+  ): Promise<TeamMember | null> {
     await delay(400);
     const index = mockMembers.findIndex(m => m.id === memberId);
     if (index === -1) return null;
 
     mockMembers[index] = {
       ...mockMembers[index],
-      ...memberData
+      ...memberData,
     };
 
     return { ...mockMembers[index] };
@@ -402,13 +417,15 @@ export class TeamService {
       .map(m => ({ ...m }));
   }
 
-  async sendMessage(message: Omit<TeamMessage, 'id' | 'timestamp' | 'isRead'>): Promise<TeamMessage> {
+  async sendMessage(
+    message: Omit<TeamMessage, 'id' | 'timestamp' | 'isRead'>
+  ): Promise<TeamMessage> {
     await delay(500);
     const newMessage: TeamMessage = {
       id: `msg_${Date.now()}`,
       ...message,
       timestamp: new Date().toISOString(),
-      isRead: false
+      isRead: false,
     };
 
     mockMessages.push(newMessage);
@@ -440,7 +457,7 @@ export class TeamService {
     await delay(600);
     const newMeeting: TeamMeeting = {
       id: `meeting_${Date.now()}`,
-      ...meetingData
+      ...meetingData,
     };
 
     mockMeetings.push(newMeeting);
@@ -448,9 +465,49 @@ export class TeamService {
   }
 
   // Métodos para métricas
-  async getTeamMetrics(teamId: string): Promise<TeamMetrics | null> {
-    await delay(700);
-    return mockMetrics[teamId] ? { ...mockMetrics[teamId] } : null;
+  async getTeamMetrics(
+    teamId: string,
+    options?: { startDate: string; endDate: string }
+  ): Promise<TeamMetrics> {
+    // Em um ambiente real, aqui faria uma chamada à API
+    // Por enquanto, retornamos dados mockados
+
+    // Simula um pequeno atraso para simular chamada de rede
+    await new Promise(resolve => setTimeout(resolve, 500));
+
+    return {
+      totalCases: 48,
+      casesByStatus: {
+        [CaseStatus.OPEN]: 5,
+        [CaseStatus.ASSIGNED]: 8,
+        [CaseStatus.IN_PROGRESS]: 15,
+        [CaseStatus.UNDER_REVIEW]: 12,
+        [CaseStatus.COMPLETED]: 6,
+        [CaseStatus.CLOSED]: 2,
+      },
+      casesByTier: {
+        [InterventionTier.TIER1]: 18,
+        [InterventionTier.TIER2]: 23,
+        [InterventionTier.TIER3]: 7,
+      },
+      averageResolutionTime: 14.5,
+      memberPerformance: [
+        {
+          memberId: '1',
+          casesAssigned: 10,
+          casesCompleted: 8,
+          averageResolutionTime: 12,
+        },
+        {
+          memberId: '2',
+          casesAssigned: 12,
+          casesCompleted: 9,
+          averageResolutionTime: 15,
+        },
+      ],
+      meetingsPerMonth: 4,
+      interventionEffectiveness: 75,
+    };
   }
 
   // Método para filtragem
@@ -473,10 +530,11 @@ export class TeamService {
 
     if (filters.searchTerm) {
       const term = filters.searchTerm.toLowerCase();
-      filteredMembers = filteredMembers.filter(m =>
-        m.name.toLowerCase().includes(term) ||
-        m.email.toLowerCase().includes(term) ||
-        (m.bio && m.bio.toLowerCase().includes(term))
+      filteredMembers = filteredMembers.filter(
+        m =>
+          m.name.toLowerCase().includes(term) ||
+          m.email.toLowerCase().includes(term) ||
+          (m.bio && m.bio.toLowerCase().includes(term))
       );
     }
 

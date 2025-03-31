@@ -129,7 +129,12 @@ describe('MeetingDashboard', () => {
       },
     ];
 
-    render(<MeetingDashboard meetings={meetingsWithDifferentDates} onMeetingSelect={mockOnMeetingSelect} />);
+    render(
+      <MeetingDashboard
+        meetings={meetingsWithDifferentDates}
+        onMeetingSelect={mockOnMeetingSelect}
+      />
+    );
 
     const meetingTitles = screen.getAllByRole('heading', { level: 6 });
     expect(meetingTitles[0]).toHaveTextContent('Reunião 2');
@@ -158,7 +163,12 @@ describe('MeetingDashboard', () => {
       },
     ];
 
-    render(<MeetingDashboard meetings={meetingsWithDifferentDueDates} onMeetingSelect={mockOnMeetingSelect} />);
+    render(
+      <MeetingDashboard
+        meetings={meetingsWithDifferentDueDates}
+        onMeetingSelect={mockOnMeetingSelect}
+      />
+    );
 
     const decisionDescriptions = screen.getAllByText(/Decisão/);
     expect(decisionDescriptions[0]).toHaveTextContent('Decisão 2');

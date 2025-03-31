@@ -18,10 +18,10 @@ const mockInterventions: Intervention[] = [
     effectiveness: {
       rating: 4.5,
       studies: 12,
-      description: 'Efetiva para melhorar fluência'
+      description: 'Efetiva para melhorar fluência',
     },
     imageUrl: '/images/test.jpg',
-    tags: ['Leitura', 'Fluência']
+    tags: ['Leitura', 'Fluência'],
   },
   {
     id: '2',
@@ -36,11 +36,11 @@ const mockInterventions: Intervention[] = [
     effectiveness: {
       rating: 4.0,
       studies: 8,
-      description: 'Efetiva para melhorar interações'
+      description: 'Efetiva para melhorar interações',
     },
     imageUrl: '/images/social.jpg',
-    tags: ['Habilidades Sociais', 'Comunicação']
-  }
+    tags: ['Habilidades Sociais', 'Comunicação'],
+  },
 ];
 
 const mockEmptyPlan: InterventionPlan = {
@@ -60,7 +60,7 @@ const mockPlanWithItems: InterventionPlan = {
       id: 'item-1',
       intervention: mockInterventions[0],
       position: 0,
-    }
+    },
   ],
 };
 

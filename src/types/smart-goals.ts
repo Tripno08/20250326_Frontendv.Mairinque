@@ -57,8 +57,8 @@ export interface SmartGoal {
   responsibleUsers: string[];
 }
 
-export interface SmartGoalFormData extends Omit<SmartGoal,
-  'id' | 'measurement' | 'createdAt' | 'updatedAt' | 'interventions'> {
+export interface SmartGoalFormData
+  extends Omit<SmartGoal, 'id' | 'measurement' | 'createdAt' | 'updatedAt' | 'interventions'> {
   initialValue: number;
   targetValue: number;
   unit: string;

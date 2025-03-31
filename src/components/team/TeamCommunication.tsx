@@ -29,7 +29,7 @@ import {
   Alert,
   Tab,
   Tabs,
-  useTheme
+  useTheme,
 } from '@mui/material';
 import {
   Send as SendIcon,
@@ -38,11 +38,14 @@ import {
   Delete as DeleteIcon,
   Flag as FlagIcon,
   ChatBubble as ChatBubbleIcon,
-  Email as EmailIcon
+  Email as EmailIcon,
 } from '@mui/icons-material';
 import { TeamMessage, TeamMember, TeamCommunicationProps } from '@/types/team';
 import { teamService } from '@/services/teamService';
 import { format, parseISO, isToday, isYesterday } from 'date-fns';
+import GridItem from '@/components/GridItem';
+import GridContainer from '@/components/GridContainer';
+import ListItemWrapper from '@/components/ListItemWrapper';
 
 /**
  * Componente para comunicação entre membros da equipe
@@ -53,7 +56,7 @@ export const TeamCommunication: React.FC<TeamCommunicationProps> = ({
   teamId,
   members = [],
   onMessageSend,
-  onMessageRead
+  onMessageRead,
 }) => {
   const theme = useTheme();
 
@@ -95,7 +98,8 @@ export const TeamCommunication: React.FC<TeamCommunicationProps> = ({
     setIsSending(true);
     try {
       // Mock do usuário atual (em uma implementação real, viria do contexto de autenticação)
-      const currentUserId = members && members.length > 0 && members[0]?.id ? members[0].id : 'user_1';
+      const currentUserId =
+        members && members.length > 0 && members[0]?.id ? members[0].id : 'user_1';
 
       const messageData = {
         sender: currentUserId,
@@ -104,16 +108,16 @@ export const TeamCommunication: React.FC<TeamCommunicationProps> = ({
         content,
         priority,
         timestamp: new Date().toISOString(),
-        isRead: false
+        isRead: false,
       };
 
       // Usar a função de callback se fornecida, caso contrário, usar o serviço diretamente
-      let newMessage;
+      let newMessage: TeamMessage | undefined = undefined;
       if (onMessageSend) {
         const result = await onMessageSend(messageData);
         // Se onMessageSend retornar uma mensagem, usá-la, caso contrário, usar a que foi enviada
         if (result) {
-          newMessage = result;
+          newMessage = result as TeamMessage;
         }
       } else {
         newMessage = await teamService.sendMessage(messageData);
@@ -121,7 +125,7 @@ export const TeamCommunication: React.FC<TeamCommunicationProps> = ({
 
       // Atualizar a lista de mensagens localmente
       if (newMessage) {
-        setMessages(prev => [newMessage, ...prev]);
+        setMessages(prev => [newMessage as TeamMessage, ...prev]);
 
         // Resetar o formulário
         setSubject('');
@@ -152,9 +156,7 @@ export const TeamCommunication: React.FC<TeamCommunicationProps> = ({
       if (success) {
         // Atualizar a lista de mensagens localmente
         setMessages(prev =>
-          prev.map(message =>
-            message.id === messageId ? { ...message, isRead: true } : message
-          )
+          prev.map(message => (message.id === messageId ? { ...message, isRead: true } : message))
         );
       }
     } catch (err) {
@@ -184,7 +186,8 @@ export const TeamCommunication: React.FC<TeamCommunicationProps> = ({
   // Filtrar mensagens com base na aba ativa
   const filteredMessages = messages.filter(message => {
     // Mock do usuário atual (em uma implementação real, viria do contexto de autenticação)
-    const currentUserId = members && members.length > 0 && members[0]?.id ? members[0].id : 'user_1';
+    const currentUserId =
+      members && members.length > 0 && members[0]?.id ? members[0].id : 'user_1';
 
     // 0: Recebidas, 1: Enviadas, 2: Todas
     if (activeTab === 0) {
@@ -199,7 +202,8 @@ export const TeamCommunication: React.FC<TeamCommunicationProps> = ({
   // Contagem de mensagens não lidas
   const unreadCount = messages.filter(message => {
     // Mock do usuário atual (em uma implementação real, viria do contexto de autenticação)
-    const currentUserId = members && members.length > 0 && members[0]?.id ? members[0].id : 'user_1';
+    const currentUserId =
+      members && members.length > 0 && members[0]?.id ? members[0].id : 'user_1';
 
     return message.recipients.includes(currentUserId) && !message.isRead;
   }).length;
@@ -207,13 +211,14 @@ export const TeamCommunication: React.FC<TeamCommunicationProps> = ({
   // Renderizar mensagem individual
   const renderMessage = (message: TeamMessage) => {
     // Mock do usuário atual (em uma implementação real, viria do contexto de autenticação)
-    const currentUserId = members && members.length > 0 && members[0]?.id ? members[0].id : 'user_1';
+    const currentUserId =
+      members && members.length > 0 && members[0]?.id ? members[0].id : 'user_1';
     const isReceived = message.recipients.includes(currentUserId);
     const isUnread = isReceived && !message.isRead;
     const senderName = getMemberName(message.sender);
 
     // Cor baseada na prioridade
-    let priorityColor = theme.palette.info.main; // normal
+    let priorityColor = theme.palette.primary.light; // normal (usando primary.light em vez de info)
     if (message.priority === 'important') {
       priorityColor = theme.palette.warning.main;
     } else if (message.priority === 'urgent') {
@@ -221,7 +226,7 @@ export const TeamCommunication: React.FC<TeamCommunicationProps> = ({
     }
 
     return (
-      <ListItem
+      <ListItemWrapper
         key={message.id}
         sx={{
           mb: 1,
@@ -229,8 +234,8 @@ export const TeamCommunication: React.FC<TeamCommunicationProps> = ({
           borderLeft: isUnread ? `4px solid ${theme.palette.primary.main}` : 'none',
           borderRadius: 1,
           '&:hover': {
-            bgcolor: 'rgba(0, 0, 0, 0.08)'
-          }
+            bgcolor: 'rgba(0, 0, 0, 0.08)',
+          },
         }}
       >
         <ListItemAvatar>
@@ -244,7 +249,7 @@ export const TeamCommunication: React.FC<TeamCommunicationProps> = ({
                     height: 8,
                     borderRadius: '50%',
                     bgcolor: priorityColor,
-                    border: `1px solid ${theme.palette.background.paper}`
+                    border: `1px solid ${theme.palette.background.paper}`,
                   }}
                 />
               ) : undefined
@@ -260,25 +265,20 @@ export const TeamCommunication: React.FC<TeamCommunicationProps> = ({
                 {message.subject}
               </Typography>
               {isUnread && (
-                <Chip
-                  label="Não lida"
-                  size="small"
-                  color="primary"
-                  sx={{ ml: 1, height: 20 }}
-                />
+                <Chip label="Não lida" size="small" color="primary" sx={{ ml: 1, height: 20 }} />
               )}
             </Box>
           }
           secondary={
             <>
               <Typography variant="body2" component="span" color="text.secondary">
-                De: {senderName} | Para: {message.recipients.map(id => getMemberName(id)).join(', ')}
+                De: {senderName} | Para:{' '}
+                {message.recipients.map(id => getMemberName(id)).join(', ')}
               </Typography>
               <Typography variant="body2" component="div" sx={{ mt: 1 }}>
                 {message.content.length > 100
                   ? `${message.content.substring(0, 100)}...`
-                  : message.content
-                }
+                  : message.content}
               </Typography>
               <Typography variant="caption" color="text.secondary" component="div" sx={{ mt: 0.5 }}>
                 {formatMessageDate(message.timestamp)}
@@ -293,16 +293,18 @@ export const TeamCommunication: React.FC<TeamCommunicationProps> = ({
             </IconButton>
           )}
         </ListItemSecondaryAction>
-      </ListItem>
+      </ListItemWrapper>
     );
   };
 
   return (
     <Box
-      sx={{
-        width: '100%',
-        ...(style || {})
-      } as any}
+      sx={
+        {
+          width: '100%',
+          ...(style || {}),
+        } as any
+      }
       className={className}
     >
       <Paper sx={{ p: 3, mb: 3 }}>
@@ -310,13 +312,14 @@ export const TeamCommunication: React.FC<TeamCommunicationProps> = ({
           Comunicação da Equipe
         </Typography>
         <Typography variant="body1" paragraph>
-          Troque mensagens com outros membros da equipe para coordenar intervenções e discutir casos.
+          Troque mensagens com outros membros da equipe para coordenar intervenções e discutir
+          casos.
         </Typography>
       </Paper>
 
-      <Grid container spacing={3}>
+      <GridContainer spacing={3}>
         {/* Formulário de envio de mensagens */}
-        <Grid item xs={12} md={5}>
+        <GridItem xs={12} md={5}>
           <Paper sx={{ p: 3 }}>
             <Typography variant="h6" gutterBottom>
               Nova Mensagem
@@ -327,7 +330,7 @@ export const TeamCommunication: React.FC<TeamCommunicationProps> = ({
                 label="Assunto"
                 margin="normal"
                 value={subject}
-                onChange={(e) => setSubject(e.target.value)}
+                onChange={e => setSubject(e.target.value)}
                 required
               />
 
@@ -337,17 +340,23 @@ export const TeamCommunication: React.FC<TeamCommunicationProps> = ({
                   labelId="recipients-label"
                   multiple
                   value={selectedRecipients}
-                  onChange={(e) => setSelectedRecipients(typeof e.target.value === 'string' ? [e.target.value] : e.target.value as string[])}
+                  onChange={e =>
+                    setSelectedRecipients(
+                      typeof e.target.value === 'string'
+                        ? [e.target.value]
+                        : (e.target.value as string[])
+                    )
+                  }
                   input={<OutlinedInput label="Destinatários" />}
-                  renderValue={(selected) => (
+                  renderValue={selected => (
                     <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
-                      {(selected as string[]).map((value) => (
+                      {(selected as string[]).map(value => (
                         <Chip key={value} label={getMemberName(value)} size="small" />
                       ))}
                     </Box>
                   )}
                 >
-                  {members.map((member) => (
+                  {members.map(member => (
                     <MenuItem key={member.id} value={member.id}>
                       <Checkbox checked={selectedRecipients.indexOf(member.id) > -1} />
                       <ListItemText primary={member.name} secondary={member.role} />
@@ -361,7 +370,7 @@ export const TeamCommunication: React.FC<TeamCommunicationProps> = ({
                 <Select
                   labelId="priority-label"
                   value={priority}
-                  onChange={(e) => setPriority(e.target.value as 'normal' | 'important' | 'urgent')}
+                  onChange={e => setPriority(e.target.value as 'normal' | 'important' | 'urgent')}
                   label="Prioridade"
                 >
                   <MenuItem value="normal">Normal</MenuItem>
@@ -377,21 +386,19 @@ export const TeamCommunication: React.FC<TeamCommunicationProps> = ({
                 multiline
                 rows={6}
                 value={content}
-                onChange={(e) => setContent(e.target.value)}
+                onChange={e => setContent(e.target.value)}
                 required
               />
 
               <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 2 }}>
-                <Button
-                  variant="outlined"
-                  startIcon={<AttachFileIcon />}
-                  disabled
-                >
+                <Button variant="outlined" startIcon={<AttachFileIcon />} disabled>
                   Anexar
                 </Button>
                 <Button
                   variant="contained"
-                  endIcon={isSending ? <CircularProgress size={20} color="inherit" /> : <SendIcon />}
+                  endIcon={
+                    isSending ? <CircularProgress size={20} color="inherit" /> : <SendIcon />
+                  }
                   onClick={handleSendMessage}
                   disabled={isSending || !subject || !content || selectedRecipients.length === 0}
                 >
@@ -400,10 +407,10 @@ export const TeamCommunication: React.FC<TeamCommunicationProps> = ({
               </Box>
             </Box>
           </Paper>
-        </Grid>
+        </GridItem>
 
         {/* Lista de mensagens */}
-        <Grid item xs={12} md={7}>
+        <GridItem xs={12} md={7}>
           <Paper sx={{ p: 3 }}>
             <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
               <Tabs
@@ -467,13 +474,11 @@ export const TeamCommunication: React.FC<TeamCommunicationProps> = ({
                 </Typography>
               </Box>
             ) : (
-              <List>
-                {filteredMessages.map(message => renderMessage(message))}
-              </List>
+              <List>{filteredMessages.map(message => renderMessage(message))}</List>
             )}
           </Paper>
-        </Grid>
-      </Grid>
+        </GridItem>
+      </GridContainer>
     </Box>
   );
 };

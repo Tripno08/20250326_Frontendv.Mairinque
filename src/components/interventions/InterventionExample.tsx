@@ -5,7 +5,8 @@ const mockInterventions: Intervention[] = [
   {
     id: '1',
     title: 'Prática de Leitura Guiada',
-    description: 'Intervenção estruturada para melhorar a fluência e compreensão leitora através de leitura em pares e feedback imediato.',
+    description:
+      'Intervenção estruturada para melhorar a fluência e compreensão leitora através de leitura em pares e feedback imediato.',
     tier: 'Tier 2',
     domain: 'Acadêmico',
     evidenceLevel: 'Alta Evidência',
@@ -16,20 +17,21 @@ const mockInterventions: Intervention[] = [
       'Estabelecer objetivos de leitura',
       'Realizar leitura em pares',
       'Fornecer feedback construtivo',
-      'Registrar progresso'
+      'Registrar progresso',
     ],
     effectiveness: {
       rating: 4.5,
       studies: 12,
-      description: 'Efetiva para melhorar fluência e compreensão leitora'
+      description: 'Efetiva para melhorar fluência e compreensão leitora',
     },
     imageUrl: '/images/interventions/guided-reading.jpg',
-    tags: ['Leitura', 'Fluência', 'Compreensão']
+    tags: ['Leitura', 'Fluência', 'Compreensão'],
   },
   {
     id: '2',
     title: 'Treinamento de Habilidades Sociais',
-    description: 'Programa estruturado para desenvolver habilidades sociais básicas e avançadas em ambiente controlado.',
+    description:
+      'Programa estruturado para desenvolver habilidades sociais básicas e avançadas em ambiente controlado.',
     tier: 'Tier 2',
     domain: 'Social',
     evidenceLevel: 'Média Evidência',
@@ -40,20 +42,21 @@ const mockInterventions: Intervention[] = [
       'Demonstrar comportamento adequado',
       'Praticar em pares',
       'Fornecer feedback',
-      'Aplicar em contexto natural'
+      'Aplicar em contexto natural',
     ],
     effectiveness: {
       rating: 4.0,
       studies: 8,
-      description: 'Efetiva para melhorar interações sociais'
+      description: 'Efetiva para melhorar interações sociais',
     },
     imageUrl: '/images/interventions/social-skills.jpg',
-    tags: ['Habilidades Sociais', 'Comunicação', 'Interação']
+    tags: ['Habilidades Sociais', 'Comunicação', 'Interação'],
   },
   {
     id: '3',
     title: 'Regulação Emocional',
-    description: 'Técnicas de mindfulness e regulação emocional para gerenciar emoções e comportamentos.',
+    description:
+      'Técnicas de mindfulness e regulação emocional para gerenciar emoções e comportamentos.',
     tier: 'Tier 1',
     domain: 'Emocional',
     evidenceLevel: 'Alta Evidência',
@@ -64,16 +67,16 @@ const mockInterventions: Intervention[] = [
       'Praticar respiração consciente',
       'Usar técnicas de grounding',
       'Aplicar estratégias de regulação',
-      'Refletir sobre experiência'
+      'Refletir sobre experiência',
     ],
     effectiveness: {
       rating: 4.8,
       studies: 15,
-      description: 'Altamente efetiva para regulação emocional'
+      description: 'Altamente efetiva para regulação emocional',
     },
     imageUrl: '/images/interventions/emotional-regulation.jpg',
-    tags: ['Mindfulness', 'Regulação Emocional', 'Autocontrole']
-  }
+    tags: ['Mindfulness', 'Regulação Emocional', 'Autocontrole'],
+  },
 ];
 
 export function InterventionExample() {

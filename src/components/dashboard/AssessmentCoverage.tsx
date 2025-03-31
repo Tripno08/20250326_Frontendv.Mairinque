@@ -1,15 +1,15 @@
-import React from 'react'
-import { Box, CircularProgress, Typography, Paper, LinearProgress } from '@mui/material'
+import React from 'react';
+import { Box, CircularProgress, Typography, Paper, LinearProgress } from '@mui/material';
 
 interface AssessmentCoverageData {
-  total: number
-  assessed: number
+  total: number;
+  assessed: number;
 }
 
 interface AssessmentCoverageProps {
-  data: AssessmentCoverageData
-  isLoading?: boolean
-  error?: string
+  data: AssessmentCoverageData;
+  isLoading?: boolean;
+  error?: string;
 }
 
 export const AssessmentCoverage: React.FC<AssessmentCoverageProps> = ({
@@ -17,14 +17,14 @@ export const AssessmentCoverage: React.FC<AssessmentCoverageProps> = ({
   isLoading = false,
   error,
 }) => {
-  const percentage = data.total > 0 ? (data.assessed / data.total) * 100 : 0
+  const percentage = data.total > 0 ? (data.assessed / data.total) * 100 : 0;
 
   if (isLoading) {
     return (
       <Box display="flex" justifyContent="center" alignItems="center" minHeight={300}>
         <CircularProgress />
       </Box>
-    )
+    );
   }
 
   if (error) {
@@ -32,7 +32,7 @@ export const AssessmentCoverage: React.FC<AssessmentCoverageProps> = ({
       <Box display="flex" justifyContent="center" alignItems="center" minHeight={300}>
         <Typography color="error">{error}</Typography>
       </Box>
-    )
+    );
   }
 
   return (
@@ -79,5 +79,5 @@ export const AssessmentCoverage: React.FC<AssessmentCoverageProps> = ({
         </Box>
       </Box>
     </Paper>
-  )
-}
+  );
+};

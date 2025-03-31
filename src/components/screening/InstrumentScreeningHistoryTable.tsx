@@ -17,7 +17,7 @@ import {
   TableRow,
   TablePagination,
   TableSortLabel,
-  Chip
+  Chip,
 } from '@mui/material';
 import { useScreeningAdministrations } from '../../hooks/useScreening';
 import { ScreeningAdministration } from '../../types/screening';
@@ -60,7 +60,7 @@ const getStatusLabel = (status: string) => {
 };
 
 export const InstrumentScreeningHistoryTable: React.FC<InstrumentScreeningHistoryTableProps> = ({
-  instrumentId
+  instrumentId,
 }) => {
   const [filters, setFilters] = useState<{
     status?: ScreeningAdministration['status'];
@@ -74,7 +74,7 @@ export const InstrumentScreeningHistoryTable: React.FC<InstrumentScreeningHistor
 
   const { administrations, loading, error } = useScreeningAdministrations({
     instrumentId,
-    ...filters
+    ...filters,
   });
 
   const handleFilterChange = (field: keyof typeof filters, value: any) => {
@@ -121,10 +121,7 @@ export const InstrumentScreeningHistoryTable: React.FC<InstrumentScreeningHistor
   }
 
   const sortedData = sortData([...administrations]);
-  const paginatedData = sortedData.slice(
-    page * rowsPerPage,
-    page * rowsPerPage + rowsPerPage
-  );
+  const paginatedData = sortedData.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
 
   return (
     <Box>
@@ -139,7 +136,7 @@ export const InstrumentScreeningHistoryTable: React.FC<InstrumentScreeningHistor
             <Select
               value={filters.status || ''}
               label="Status"
-              onChange={(e) => handleFilterChange('status', e.target.value)}
+              onChange={e => handleFilterChange('status', e.target.value)}
             >
               <MenuItem value="">Todos</MenuItem>
               <MenuItem value="pending">Pendente</MenuItem>
@@ -156,7 +153,9 @@ export const InstrumentScreeningHistoryTable: React.FC<InstrumentScreeningHistor
             label="Data Inicial"
             type="date"
             value={filters.startDate ? new Date(filters.startDate).toISOString().split('T')[0] : ''}
-            onChange={(e) => handleFilterChange('startDate', e.target.value ? new Date(e.target.value) : undefined)}
+            onChange={e =>
+              handleFilterChange('startDate', e.target.value ? new Date(e.target.value) : undefined)
+            }
             InputLabelProps={{ shrink: true }}
           />
         </Grid>
@@ -167,7 +166,9 @@ export const InstrumentScreeningHistoryTable: React.FC<InstrumentScreeningHistor
             label="Data Final"
             type="date"
             value={filters.endDate ? new Date(filters.endDate).toISOString().split('T')[0] : ''}
-            onChange={(e) => handleFilterChange('endDate', e.target.value ? new Date(e.target.value) : undefined)}
+            onChange={e =>
+              handleFilterChange('endDate', e.target.value ? new Date(e.target.value) : undefined)
+            }
             InputLabelProps={{ shrink: true }}
           />
         </Grid>
@@ -226,17 +227,13 @@ export const InstrumentScreeningHistoryTable: React.FC<InstrumentScreeningHistor
             </TableRow>
           </TableHead>
           <TableBody>
-            {paginatedData.map((administration) => (
+            {paginatedData.map(administration => (
               <TableRow key={administration.id}>
                 <TableCell>{administration.studentId}</TableCell>
                 <TableCell>{administration.administratorId}</TableCell>
+                <TableCell>{new Date(administration.startDate).toLocaleString()}</TableCell>
                 <TableCell>
-                  {new Date(administration.startDate).toLocaleString()}
-                </TableCell>
-                <TableCell>
-                  {administration.endDate
-                    ? new Date(administration.endDate).toLocaleString()
-                    : '-'}
+                  {administration.endDate ? new Date(administration.endDate).toLocaleString() : '-'}
                 </TableCell>
                 <TableCell>
                   <Chip
@@ -245,9 +242,7 @@ export const InstrumentScreeningHistoryTable: React.FC<InstrumentScreeningHistor
                     size="small"
                   />
                 </TableCell>
-                <TableCell>
-                  {administration.responses.length}
-                </TableCell>
+                <TableCell>{administration.responses.length}</TableCell>
               </TableRow>
             ))}
           </TableBody>

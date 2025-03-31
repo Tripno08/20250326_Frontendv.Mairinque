@@ -15,7 +15,7 @@ import {
   Chip,
   IconButton,
   Tooltip,
-  Collapse
+  Collapse,
 } from '@mui/material';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
@@ -79,7 +79,7 @@ const StudentRiskTable: React.FC<StudentRiskTableProps> = ({
 
       // Ordenação especial para tendências
       if (orderBy === 'changeTrend') {
-        const trendOrder = { 'improving': 0, 'stable': 1, 'worsening': 2 };
+        const trendOrder = { improving: 0, stable: 1, worsening: 2 };
         aValue = trendOrder[a.changeTrend];
         bValue = trendOrder[b.changeTrend];
       }
@@ -106,7 +106,7 @@ const StudentRiskTable: React.FC<StudentRiskTableProps> = ({
           alignItems: 'center',
           justifyContent: 'center',
           height: 400,
-          p: 2
+          p: 2,
         }}
       >
         <CircularProgress size={40} />
@@ -124,7 +124,7 @@ const StudentRiskTable: React.FC<StudentRiskTableProps> = ({
           alignItems: 'center',
           justifyContent: 'center',
           height: 400,
-          p: 2
+          p: 2,
         }}
       >
         <Typography color="text.secondary">Nenhum dado de estudante disponível</Typography>
@@ -183,7 +183,7 @@ const StudentRiskTable: React.FC<StudentRiskTableProps> = ({
             </TableRow>
           </TableHead>
           <TableBody>
-            {paginatedData.map((student) => (
+            {paginatedData.map(student => (
               <React.Fragment key={student.id}>
                 <TableRow
                   hover
@@ -194,12 +194,16 @@ const StudentRiskTable: React.FC<StudentRiskTableProps> = ({
                     <IconButton
                       aria-label="expandir linha"
                       size="small"
-                      onClick={(e) => {
+                      onClick={e => {
                         e.stopPropagation();
                         handleExpandClick(student.id);
                       }}
                     >
-                      {expandedId === student.id ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+                      {expandedId === student.id ? (
+                        <KeyboardArrowUpIcon />
+                      ) : (
+                        <KeyboardArrowDownIcon />
+                      )}
                     </IconButton>
                   </TableCell>
                   <TableCell component="th" scope="row">
@@ -215,7 +219,13 @@ const StudentRiskTable: React.FC<StudentRiskTableProps> = ({
                   <TableCell align="right">
                     <Typography
                       fontWeight="bold"
-                      color={student.riskScore < 50 ? 'error' : student.riskScore < 70 ? 'warning.main' : 'success.main'}
+                      color={
+                        student.riskScore < 50
+                          ? 'error'
+                          : student.riskScore < 70
+                            ? 'warning.main'
+                            : 'success.main'
+                      }
                     >
                       {student.riskScore}
                     </Typography>
@@ -238,15 +248,12 @@ const StudentRiskTable: React.FC<StudentRiskTableProps> = ({
                         variant="outlined"
                       />
                     ) : (
-                      <Chip
-                        label="Estável"
-                        color="default"
-                        size="small"
-                        variant="outlined"
-                      />
+                      <Chip label="Estável" color="default" size="small" variant="outlined" />
                     )}
                   </TableCell>
-                  <TableCell>{new Date(student.lastAssessment).toLocaleDateString('pt-BR')}</TableCell>
+                  <TableCell>
+                    {new Date(student.lastAssessment).toLocaleDateString('pt-BR')}
+                  </TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={7}>
@@ -274,10 +281,13 @@ const StudentRiskTable: React.FC<StudentRiskTableProps> = ({
                                     <Typography
                                       fontWeight="bold"
                                       color={
-                                        data.status === 'critical' ? 'error' :
-                                        data.status === 'at-risk' ? 'warning.main' :
-                                        data.status === 'on-track' ? 'primary.main' :
-                                        'success.main'
+                                        data.status === 'critical'
+                                          ? 'error'
+                                          : data.status === 'at-risk'
+                                            ? 'warning.main'
+                                            : data.status === 'on-track'
+                                              ? 'primary.main'
+                                              : 'success.main'
                                       }
                                     >
                                       {data.score}
@@ -287,16 +297,22 @@ const StudentRiskTable: React.FC<StudentRiskTableProps> = ({
                                 <TableCell>
                                   <Chip
                                     label={
-                                      data.status === 'critical' ? 'Crítico' :
-                                      data.status === 'at-risk' ? 'Em Risco' :
-                                      data.status === 'on-track' ? 'Adequado' :
-                                      'Acima da Média'
+                                      data.status === 'critical'
+                                        ? 'Crítico'
+                                        : data.status === 'at-risk'
+                                          ? 'Em Risco'
+                                          : data.status === 'on-track'
+                                            ? 'Adequado'
+                                            : 'Acima da Média'
                                     }
                                     color={
-                                      data.status === 'critical' ? 'error' :
-                                      data.status === 'at-risk' ? 'warning' :
-                                      data.status === 'on-track' ? 'primary' :
-                                      'success'
+                                      data.status === 'critical'
+                                        ? 'error'
+                                        : data.status === 'at-risk'
+                                          ? 'warning'
+                                          : data.status === 'on-track'
+                                            ? 'primary'
+                                            : 'success'
                                     }
                                     size="small"
                                   />

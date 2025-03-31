@@ -79,4 +79,4 @@ export const isServerError = (error: unknown): boolean => {
     return error.response?.status >= 500;
   }
   return false;
-}; 
+};

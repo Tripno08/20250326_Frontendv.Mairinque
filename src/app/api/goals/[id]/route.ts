@@ -17,19 +17,13 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
     const goal = await getGoalById(id);
 
     if (!goal) {
-      return NextResponse.json(
-        { error: 'Meta não encontrada' },
-        { status: 404 }
-      );
+      return NextResponse.json({ error: 'Meta não encontrada' }, { status: 404 });
     }
 
     return NextResponse.json(goal);
   } catch (error) {
     console.error('Erro ao buscar meta:', error);
-    return NextResponse.json(
-      { error: 'Erro ao buscar meta' },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: 'Erro ao buscar meta' }, { status: 500 });
   }
 }
 
@@ -44,28 +38,19 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
 
     // Validar dados
     if (!data.title || !data.specificDetails || !data.startDate || !data.targetDate) {
-      return NextResponse.json(
-        { error: 'Dados incompletos' },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: 'Dados incompletos' }, { status: 400 });
     }
 
     const updatedGoal = await updateGoal(id, data);
 
     if (!updatedGoal) {
-      return NextResponse.json(
-        { error: 'Meta não encontrada' },
-        { status: 404 }
-      );
+      return NextResponse.json({ error: 'Meta não encontrada' }, { status: 404 });
     }
 
     return NextResponse.json(updatedGoal);
   } catch (error) {
     console.error('Erro ao atualizar meta:', error);
-    return NextResponse.json(
-      { error: 'Erro ao atualizar meta' },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: 'Erro ao atualizar meta' }, { status: 500 });
   }
 }
 
@@ -80,18 +65,12 @@ export async function DELETE(request: NextRequest, { params }: RouteParams) {
     const success = await deleteGoal(id);
 
     if (!success) {
-      return NextResponse.json(
-        { error: 'Meta não encontrada' },
-        { status: 404 }
-      );
+      return NextResponse.json({ error: 'Meta não encontrada' }, { status: 404 });
     }
 
     return NextResponse.json({ success: true });
   } catch (error) {
     console.error('Erro ao excluir meta:', error);
-    return NextResponse.json(
-      { error: 'Erro ao excluir meta' },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: 'Erro ao excluir meta' }, { status: 500 });
   }
 }

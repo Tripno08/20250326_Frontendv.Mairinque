@@ -18,10 +18,13 @@ import {
   InputLabel,
   Select,
   MenuItem,
-  TextField
+  TextField,
 } from '@mui/material';
 import { useScreeningAdministrations } from '../../hooks/useScreening';
 import { ScreeningAdministration } from '../../types/screening';
+import GridContainer from '@/components/GridContainer';
+import GridItem from '@/components/GridItem';
+import MenuItemWrapper from '@/components/MenuItemWrapper';
 
 interface AdministratorScreeningHistoryProps {
   administratorId: string;
@@ -58,7 +61,7 @@ const getStatusLabel = (status: string) => {
 };
 
 export const AdministratorScreeningHistory: React.FC<AdministratorScreeningHistoryProps> = ({
-  administratorId
+  administratorId,
 }) => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
@@ -70,7 +73,7 @@ export const AdministratorScreeningHistory: React.FC<AdministratorScreeningHisto
 
   const { administrations, loading, error } = useScreeningAdministrations({
     administratorId,
-    ...filters
+    ...filters,
   });
 
   const handleChangePage = (event: unknown, newPage: number) => {
@@ -101,46 +104,50 @@ export const AdministratorScreeningHistory: React.FC<AdministratorScreeningHisto
         Histórico de Administrações
       </Typography>
 
-      <Grid container spacing={2} sx={{ mb: 3 }}>
-        <Grid item xs={12} sm={6} md={4}>
+      <GridContainer spacing={2} sx={{ mb: 3 }}>
+        <GridItem xs={12} sm={6} md={4}>
           <FormControl fullWidth>
             <InputLabel>Status</InputLabel>
             <Select
               value={filters.status || ''}
               label="Status"
-              onChange={(e) => handleFilterChange('status', e.target.value)}
+              onChange={e => handleFilterChange('status', e.target.value)}
             >
-              <MenuItem value="">Todos</MenuItem>
-              <MenuItem value="pending">Pendente</MenuItem>
-              <MenuItem value="in_progress">Em Andamento</MenuItem>
-              <MenuItem value="completed">Concluído</MenuItem>
-              <MenuItem value="cancelled">Cancelado</MenuItem>
+              <MenuItemWrapper value="">Todos</MenuItemWrapper>
+              <MenuItemWrapper value="pending">Pendente</MenuItemWrapper>
+              <MenuItemWrapper value="in_progress">Em Andamento</MenuItemWrapper>
+              <MenuItemWrapper value="completed">Concluído</MenuItemWrapper>
+              <MenuItemWrapper value="cancelled">Cancelado</MenuItemWrapper>
             </Select>
           </FormControl>
-        </Grid>
+        </GridItem>
 
-        <Grid item xs={12} sm={6} md={4}>
+        <GridItem xs={12} sm={6} md={4}>
           <TextField
             fullWidth
             label="Data Inicial"
             type="date"
             value={filters.startDate ? new Date(filters.startDate).toISOString().split('T')[0] : ''}
-            onChange={(e) => handleFilterChange('startDate', e.target.value ? new Date(e.target.value) : undefined)}
+            onChange={e =>
+              handleFilterChange('startDate', e.target.value ? new Date(e.target.value) : undefined)
+            }
             InputLabelProps={{ shrink: true }}
           />
-        </Grid>
+        </GridItem>
 
-        <Grid item xs={12} sm={6} md={4}>
+        <GridItem xs={12} sm={6} md={4}>
           <TextField
             fullWidth
             label="Data Final"
             type="date"
             value={filters.endDate ? new Date(filters.endDate).toISOString().split('T')[0] : ''}
-            onChange={(e) => handleFilterChange('endDate', e.target.value ? new Date(e.target.value) : undefined)}
+            onChange={e =>
+              handleFilterChange('endDate', e.target.value ? new Date(e.target.value) : undefined)
+            }
             InputLabelProps={{ shrink: true }}
           />
-        </Grid>
-      </Grid>
+        </GridItem>
+      </GridContainer>
 
       <TableContainer component={Paper}>
         <Table>
@@ -157,13 +164,11 @@ export const AdministratorScreeningHistory: React.FC<AdministratorScreeningHisto
           <TableBody>
             {administrations
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-              .map((administration) => (
+              .map(administration => (
                 <TableRow key={administration.id}>
                   <TableCell>{administration.instrumentId}</TableCell>
                   <TableCell>{administration.studentId}</TableCell>
-                  <TableCell>
-                    {new Date(administration.startDate).toLocaleString()}
-                  </TableCell>
+                  <TableCell>{new Date(administration.startDate).toLocaleString()}</TableCell>
                   <TableCell>
                     {administration.endDate
                       ? new Date(administration.endDate).toLocaleString()
@@ -176,9 +181,7 @@ export const AdministratorScreeningHistory: React.FC<AdministratorScreeningHisto
                       size="small"
                     />
                   </TableCell>
-                  <TableCell>
-                    {administration.responses.length}
-                  </TableCell>
+                  <TableCell>{administration.responses.length}</TableCell>
                 </TableRow>
               ))}
           </TableBody>

@@ -9,10 +9,12 @@ import {
   Typography,
   Grid,
   Chip,
-  Divider
+  Divider,
 } from '@mui/material';
 import { ScreeningAdministration } from '../../types/screening';
 import { ScreeningResponses } from './ScreeningResponses';
+import GridContainer from '@/components/GridContainer';
+import GridItem from '@/components/GridItem';
 
 interface ScreeningAdministrationDetailsProps {
   administration: ScreeningAdministration;
@@ -53,7 +55,7 @@ const getStatusLabel = (status: string) => {
 export const ScreeningAdministrationDetails: React.FC<ScreeningAdministrationDetailsProps> = ({
   administration,
   open,
-  onClose
+  onClose,
 }) => {
   const [responsesDialogOpen, setResponsesDialogOpen] = useState(false);
 
@@ -62,8 +64,8 @@ export const ScreeningAdministrationDetails: React.FC<ScreeningAdministrationDet
       <Dialog open={open} onClose={onClose} maxWidth="md" fullWidth>
         <DialogTitle>Detalhes da Administração</DialogTitle>
         <DialogContent>
-          <Grid container spacing={3}>
-            <Grid item xs={12}>
+          <GridContainer spacing={3}>
+            <GridItem xs={12}>
               <Box display="flex" justifyContent="space-between" alignItems="center">
                 <Typography variant="h6">{administration.instrumentId}</Typography>
                 <Chip
@@ -72,66 +74,64 @@ export const ScreeningAdministrationDetails: React.FC<ScreeningAdministrationDet
                   size="small"
                 />
               </Box>
-            </Grid>
+            </GridItem>
 
-            <Grid item xs={12}>
+            <GridItem xs={12}>
               <Divider />
-            </Grid>
+            </GridItem>
 
-            <Grid item xs={12} sm={6}>
+            <GridItem xs={12} sm={6}>
               <Typography variant="subtitle2" color="textSecondary">
                 Estudante
               </Typography>
               <Typography variant="body1">{administration.studentId}</Typography>
-            </Grid>
+            </GridItem>
 
-            <Grid item xs={12} sm={6}>
+            <GridItem xs={12} sm={6}>
               <Typography variant="subtitle2" color="textSecondary">
                 Administrador
               </Typography>
               <Typography variant="body1">{administration.administratorId}</Typography>
-            </Grid>
+            </GridItem>
 
-            <Grid item xs={12} sm={6}>
+            <GridItem xs={12} sm={6}>
               <Typography variant="subtitle2" color="textSecondary">
                 Data de Início
               </Typography>
               <Typography variant="body1">
                 {new Date(administration.startDate).toLocaleString()}
               </Typography>
-            </Grid>
+            </GridItem>
 
-            <Grid item xs={12} sm={6}>
+            <GridItem xs={12} sm={6}>
               <Typography variant="subtitle2" color="textSecondary">
                 Data de Término
               </Typography>
               <Typography variant="body1">
-                {administration.endDate
-                  ? new Date(administration.endDate).toLocaleString()
-                  : '-'}
+                {administration.endDate ? new Date(administration.endDate).toLocaleString() : '-'}
               </Typography>
-            </Grid>
+            </GridItem>
 
             {administration.notes && (
               <>
-                <Grid item xs={12}>
+                <GridItem xs={12}>
                   <Divider />
-                </Grid>
+                </GridItem>
 
-                <Grid item xs={12}>
+                <GridItem xs={12}>
                   <Typography variant="subtitle2" color="textSecondary">
                     Notas
                   </Typography>
                   <Typography variant="body1">{administration.notes}</Typography>
-                </Grid>
+                </GridItem>
               </>
             )}
 
-            <Grid item xs={12}>
+            <GridItem xs={12}>
               <Divider />
-            </Grid>
+            </GridItem>
 
-            <Grid item xs={12}>
+            <GridItem xs={12}>
               <Box display="flex" justifyContent="space-between" alignItems="center">
                 <Typography variant="subtitle2" color="textSecondary">
                   Respostas
@@ -147,8 +147,8 @@ export const ScreeningAdministrationDetails: React.FC<ScreeningAdministrationDet
               <Typography variant="body1">
                 {administration.responses.length} respostas registradas
               </Typography>
-            </Grid>
-          </Grid>
+            </GridItem>
+          </GridContainer>
         </DialogContent>
         <DialogActions>
           <Button onClick={onClose}>Fechar</Button>

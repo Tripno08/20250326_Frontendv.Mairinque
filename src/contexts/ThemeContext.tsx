@@ -1,58 +1,45 @@
-import React, { createContext, useContext, useState, useMemo } from 'react'
-import { ThemeProvider as MuiThemeProvider } from '@mui/material/styles'
-import CssBaseline from '@mui/material/CssBaseline'
-import { theme } from '@/styles/theme'
+import React, { createContext, useContext, useState, useMemo, ReactNode } from 'react';
+import { ThemeProvider as MuiThemeProvider } from '@mui/material/styles';
+import { CssBaseline } from '@mui/material';
+import theme from '@/styles/theme';
 
 interface ThemeContextType {
-  isDarkMode: boolean
-  toggleTheme: () => void
+  toggleColorMode: () => void;
+  isDarkMode: boolean;
 }
 
 const ThemeContext = createContext<ThemeContextType>({
+  toggleColorMode: () => {},
   isDarkMode: false,
-  toggleTheme: () => {},
-})
-
-export const useTheme = () => useContext(ThemeContext)
+});
 
 interface ThemeProviderProps {
-  children: React.ReactNode
+  children: ReactNode;
 }
 
 export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
-  const [isDarkMode, setIsDarkMode] = useState(false)
+  const [isDarkMode, setIsDarkMode] = useState(false);
 
-  const toggleTheme = () => {
-    setIsDarkMode((prev) => !prev)
-  }
+  const toggleColorMode = () => {
+    setIsDarkMode(prevMode => !prevMode);
+  };
 
-  const currentTheme = useMemo(() => {
-    if (isDarkMode) {
-      return {
-        ...theme,
-        palette: {
-          ...theme.palette,
-          mode: 'dark',
-          background: {
-            default: '#121212',
-            paper: '#1e1e1e',
-          },
-          text: {
-            primary: '#ffffff',
-            secondary: 'rgba(255, 255, 255, 0.7)',
-          },
-        },
-      }
-    }
-    return theme
-  }, [isDarkMode])
+  const contextValue = useMemo(
+    () => ({
+      toggleColorMode,
+      isDarkMode,
+    }),
+    [isDarkMode]
+  );
 
   return (
-    <ThemeContext.Provider value={{ isDarkMode, toggleTheme }}>
-      <MuiThemeProvider theme={currentTheme}>
+    <ThemeContext.Provider value={contextValue}>
+      <MuiThemeProvider theme={theme}>
         <CssBaseline />
         {children}
       </MuiThemeProvider>
     </ThemeContext.Provider>
-  )
-} 
+  );
+};
+
+export const useThemeContext = () => useContext(ThemeContext);

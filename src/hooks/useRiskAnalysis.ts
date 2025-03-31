@@ -7,7 +7,7 @@ import {
   RiskDistributionData,
   RiskFactorData,
   EarlyWarningIndicator,
-  RiskAnalysisFilters
+  RiskAnalysisFilters,
 } from '@/types/risk-analysis';
 import { riskAnalysisService } from '@/services/riskAnalysisService';
 
@@ -27,9 +27,7 @@ export const useStudentRiskData = () => {
       let filteredData = [...result];
 
       if (filters.grades && filters.grades.length > 0) {
-        filteredData = filteredData.filter(student =>
-          filters.grades?.includes(student.grade)
-        );
+        filteredData = filteredData.filter(student => filters.grades?.includes(student.grade));
       }
 
       if (filters.riskLevels && filters.riskLevels.length > 0) {
@@ -48,7 +46,9 @@ export const useStudentRiskData = () => {
       setData(filteredData);
       setError(null);
     } catch (err) {
-      setError(err instanceof Error ? err : new Error('Erro ao buscar dados de risco dos estudantes'));
+      setError(
+        err instanceof Error ? err : new Error('Erro ao buscar dados de risco dos estudantes')
+      );
     } finally {
       setIsLoading(false);
     }
@@ -74,7 +74,9 @@ export const useRiskTrendData = (period: string = '6m') => {
       setData(result);
       setError(null);
     } catch (err) {
-      setError(err instanceof Error ? err : new Error('Erro ao buscar dados de tendência de risco'));
+      setError(
+        err instanceof Error ? err : new Error('Erro ao buscar dados de tendência de risco')
+      );
     } finally {
       setIsLoading(false);
     }
@@ -152,7 +154,9 @@ export const useRiskDistributionData = () => {
       setData(result);
       setError(null);
     } catch (err) {
-      setError(err instanceof Error ? err : new Error('Erro ao buscar dados de distribuição de risco'));
+      setError(
+        err instanceof Error ? err : new Error('Erro ao buscar dados de distribuição de risco')
+      );
     } finally {
       setIsLoading(false);
     }
@@ -204,7 +208,9 @@ export const useEarlyWarningIndicators = () => {
       setData(result);
       setError(null);
     } catch (err) {
-      setError(err instanceof Error ? err : new Error('Erro ao buscar indicadores de alerta precoce'));
+      setError(
+        err instanceof Error ? err : new Error('Erro ao buscar indicadores de alerta precoce')
+      );
     } finally {
       setIsLoading(false);
     }
@@ -251,7 +257,7 @@ export const useRiskAnalysisDashboard = () => {
     riskPattern,
     riskDistribution,
     riskFactors,
-    earlyWarnings
+    earlyWarnings,
   ]);
 
   return {
@@ -265,6 +271,6 @@ export const useRiskAnalysisDashboard = () => {
     isLoading,
     filters: studentRisk.filters,
     setFilters: studentRisk.setFilters,
-    refetch: refetchAll
+    refetch: refetchAll,
   };
 };

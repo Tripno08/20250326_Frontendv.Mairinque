@@ -25,7 +25,9 @@ export const InterventionDropzone: React.FC<InterventionDropzoneProps> = ({
         padding: 2,
         borderRadius: 2,
         border: `2px dashed ${isOver ? theme.palette.primary.main : theme.palette.grey[300]}`,
-        backgroundColor: isOver ? theme.palette.primary.light + '20' : theme.palette.background.default,
+        backgroundColor: isOver
+          ? theme.palette.primary.light + '20'
+          : theme.palette.background.default,
         transition: 'all 0.2s ease',
         display: 'flex',
         flexDirection: 'column',
@@ -53,18 +55,12 @@ export const InterventionDropzone: React.FC<InterventionDropzoneProps> = ({
               mb: 1,
             }}
           />
-          <Typography
-            variant="body2"
-            color={isOver ? 'primary' : 'text.secondary'}
-            align="center"
-          >
+          <Typography variant="body2" color={isOver ? 'primary' : 'text.secondary'} align="center">
             {isOver ? 'Solte para adicionar' : 'Arraste intervenções para cá'}
           </Typography>
         </motion.div>
       ) : (
-        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-          {children}
-        </Box>
+        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>{children}</Box>
       )}
     </Box>
   );

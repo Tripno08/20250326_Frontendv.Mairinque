@@ -42,16 +42,14 @@ describe('DraggableIntervention', () => {
     effectiveness: {
       rating: 4.5,
       studies: 12,
-      description: 'Efetiva para melhorar fluência'
+      description: 'Efetiva para melhorar fluência',
     },
     imageUrl: '/images/test.jpg',
-    tags: ['Leitura', 'Fluência', 'Compreensão', 'Extras']
+    tags: ['Leitura', 'Fluência', 'Compreensão', 'Extras'],
   };
 
   it('renderiza corretamente o componente', () => {
-    render(
-      <DraggableIntervention intervention={mockIntervention} />
-    );
+    render(<DraggableIntervention intervention={mockIntervention} />);
 
     // Verifica se o título está presente
     expect(screen.getByText('Prática de Leitura Guiada')).toBeInTheDocument();
@@ -76,9 +74,7 @@ describe('DraggableIntervention', () => {
   });
 
   it('aplica estilo de isDragging quando true', () => {
-    render(
-      <DraggableIntervention intervention={mockIntervention} isDragging={true} />
-    );
+    render(<DraggableIntervention intervention={mockIntervention} isDragging={true} />);
 
     // Verifica se o estilo de opacidade está aplicado
     const element = screen.getByText('Prática de Leitura Guiada').closest('div');
@@ -86,9 +82,7 @@ describe('DraggableIntervention', () => {
   });
 
   it('aplica estilo de isOverlay quando true', () => {
-    render(
-      <DraggableIntervention intervention={mockIntervention} isOverlay={true} />
-    );
+    render(<DraggableIntervention intervention={mockIntervention} isOverlay={true} />);
 
     // Não conseguimos verificar diretamente os estilos do Framer Motion,
     // mas podemos verificar se o componente foi renderizado
@@ -101,13 +95,13 @@ describe('DraggableIntervention', () => {
       description: 'a'.repeat(150),
     };
 
-    render(
-      <DraggableIntervention intervention={interventionWithLongDescription} />
-    );
+    render(<DraggableIntervention intervention={interventionWithLongDescription} />);
 
     // Verifica se a descrição truncada está presente
     const description = screen.getByText(/a+\.\.\./);
     expect(description).toBeInTheDocument();
-    expect(description.textContent?.length).toBeLessThan(interventionWithLongDescription.description.length);
+    expect(description.textContent?.length).toBeLessThan(
+      interventionWithLongDescription.description.length
+    );
   });
 });

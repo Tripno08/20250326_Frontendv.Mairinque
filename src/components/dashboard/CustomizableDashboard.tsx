@@ -1,10 +1,6 @@
 import React from 'react';
 import { Box, IconButton, Paper, Typography } from '@mui/material';
-import {
-  Edit as EditIcon,
-  Save as SaveIcon,
-  Refresh as RefreshIcon,
-} from '@mui/icons-material';
+import { Edit as EditIcon, Save as SaveIcon, Refresh as RefreshIcon } from '@mui/icons-material';
 import { Responsive, WidthProvider } from 'react-grid-layout';
 import type { Layout } from 'react-grid-layout';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -23,14 +19,8 @@ export const CustomizableDashboard: React.FC<CustomizableDashboardProps> = ({
   isEditable: initialIsEditable = false,
   className,
 }) => {
-  const {
-    layout,
-    isEditing,
-    handleLayoutChange,
-    handleLayoutSave,
-    toggleEditMode,
-    resetLayout,
-  } = useCustomizableDashboard(defaultLayout, onLayoutChange, onLayoutSave);
+  const { layout, isEditing, handleLayoutChange, handleLayoutSave, toggleEditMode, resetLayout } =
+    useCustomizableDashboard(defaultLayout, onLayoutChange, onLayoutSave);
 
   const breakpoints = { lg: 1200, md: 996, sm: 768, xs: 480, xxs: 0 };
   const cols = { lg: 12, md: 10, sm: 6, xs: 4, xxs: 2 };
@@ -38,10 +28,10 @@ export const CustomizableDashboard: React.FC<CustomizableDashboardProps> = ({
   const handleLayoutUpdate = (currentLayout: Layout[]) => {
     handleLayoutChange({
       ...layout,
-      widgets: currentLayout.map((item) => ({
+      widgets: currentLayout.map(item => ({
         id: item.i,
-        type: layout.widgets.find((w) => w.id === item.i)?.type || '',
-        title: layout.widgets.find((w) => w.id === item.i)?.title || '',
+        type: layout.widgets.find(w => w.id === item.i)?.type || '',
+        title: layout.widgets.find(w => w.id === item.i)?.title || '',
         x: item.x,
         y: item.y,
         w: item.w,
@@ -71,11 +61,7 @@ export const CustomizableDashboard: React.FC<CustomizableDashboardProps> = ({
           >
             {isEditing ? <SaveIcon /> : <EditIcon />}
           </IconButton>
-          <IconButton
-            onClick={resetLayout}
-            color="secondary"
-            aria-label="Resetar Layout"
-          >
+          <IconButton onClick={resetLayout} color="secondary" aria-label="Resetar Layout">
             <RefreshIcon />
           </IconButton>
         </Box>
@@ -83,13 +69,15 @@ export const CustomizableDashboard: React.FC<CustomizableDashboardProps> = ({
 
       <ResponsiveGridLayout
         className="layout"
-        layouts={{ lg: layout.widgets.map(widget => ({
-          i: widget.id,
-          x: widget.x,
-          y: widget.y,
-          w: widget.w,
-          h: widget.h,
-        })) }}
+        layouts={{
+          lg: layout.widgets.map(widget => ({
+            i: widget.id,
+            x: widget.x,
+            y: widget.y,
+            w: widget.w,
+            h: widget.h,
+          })),
+        }}
         breakpoints={breakpoints}
         cols={cols}
         rowHeight={100}
@@ -99,8 +87,8 @@ export const CustomizableDashboard: React.FC<CustomizableDashboardProps> = ({
         margin={[16, 16]}
         containerPadding={[16, 16]}
       >
-        {layout.widgets.map((widget) => {
-          const widgetConfig = widgets.find((w) => w.type === widget.type);
+        {layout.widgets.map(widget => {
+          const widgetConfig = widgets.find(w => w.type === widget.type);
           if (!widgetConfig) return null;
 
           return (

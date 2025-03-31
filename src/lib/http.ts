@@ -1,9 +1,9 @@
-import axios, { AxiosError, AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios'
+import axios, { AxiosError, AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
 
 interface ApiError {
-  message: string
-  code: string
-  details?: unknown
+  message: string;
+  code: string;
+  details?: unknown;
 }
 
 class HttpError extends Error {
@@ -12,13 +12,13 @@ class HttpError extends Error {
     public data: ApiError,
     public config: AxiosRequestConfig
   ) {
-    super(data.message)
-    this.name = 'HttpError'
+    super(data.message);
+    this.name = 'HttpError';
   }
 }
 
 class Http {
-  private instance: AxiosInstance
+  private instance: AxiosInstance;
 
   constructor() {
     this.instance = axios.create({
@@ -27,39 +27,39 @@ class Http {
       headers: {
         'Content-Type': 'application/json',
       },
-    })
+    });
 
-    this.setupInterceptors()
+    this.setupInterceptors();
   }
 
   private setupInterceptors() {
     this.instance.interceptors.request.use(
-      (config) => {
-        const token = localStorage.getItem('token')
+      config => {
+        const token = localStorage.getItem('token');
         if (token) {
-          config.headers.Authorization = `Bearer ${token}`
+          config.headers.Authorization = `Bearer ${token}`;
         }
-        return config
+        return config;
       },
-      (error) => {
-        return Promise.reject(error)
+      error => {
+        return Promise.reject(error);
       }
-    )
+    );
 
     this.instance.interceptors.response.use(
-      (response) => response,
-      (error) => {
+      response => response,
+      error => {
         if (error.response?.status === 401) {
-          localStorage.removeItem('token')
-          window.location.href = '/login'
+          localStorage.removeItem('token');
+          window.location.href = '/login';
         }
-        return Promise.reject(error)
+        return Promise.reject(error);
       }
-    )
+    );
   }
 
   async get<T>(url: string, config?: AxiosRequestConfig): Promise<AxiosResponse<T>> {
-    return this.instance.get<T>(url, config)
+    return this.instance.get<T>(url, config);
   }
 
   async post<T>(
@@ -67,7 +67,7 @@ class Http {
     data?: Record<string, unknown>,
     config?: AxiosRequestConfig
   ): Promise<AxiosResponse<T>> {
-    return this.instance.post<T>(url, data, config)
+    return this.instance.post<T>(url, data, config);
   }
 
   async put<T>(
@@ -75,7 +75,7 @@ class Http {
     data?: Record<string, unknown>,
     config?: AxiosRequestConfig
   ): Promise<AxiosResponse<T>> {
-    return this.instance.put<T>(url, data, config)
+    return this.instance.put<T>(url, data, config);
   }
 
   async patch<T>(
@@ -83,12 +83,12 @@ class Http {
     data?: Record<string, unknown>,
     config?: AxiosRequestConfig
   ): Promise<AxiosResponse<T>> {
-    return this.instance.patch<T>(url, data, config)
+    return this.instance.patch<T>(url, data, config);
   }
 
   async delete<T>(url: string, config?: AxiosRequestConfig): Promise<AxiosResponse<T>> {
-    return this.instance.delete<T>(url, config)
+    return this.instance.delete<T>(url, config);
   }
 }
 
-export const http = new Http() 
+export const http = new Http();

@@ -27,7 +27,7 @@ class AssessmentService {
     filters: AssessmentFilters
   ): Promise<PaginatedResponse<Assessment[]>> {
     const queryParams = new URLSearchParams();
-    
+
     if (filters.type) queryParams.append('type', filters.type);
     if (filters.status) queryParams.append('status', filters.status);
     if (filters.startDate) queryParams.append('startDate', filters.startDate);
@@ -102,4 +102,4 @@ class AssessmentService {
   }
 }
 
-export const assessmentService = AssessmentService.getInstance(); 
+export const assessmentService = AssessmentService.getInstance();

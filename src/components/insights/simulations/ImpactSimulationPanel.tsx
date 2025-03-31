@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react'
+import React, { useState, useEffect, useMemo } from 'react';
 import {
   Box,
   Typography,
@@ -17,8 +17,8 @@ import {
   useTheme,
   ToggleButtonGroup,
   ToggleButton,
-  Tooltip as MuiTooltip
-} from '@mui/material'
+  Tooltip as MuiTooltip,
+} from '@mui/material';
 import {
   BarChart,
   Bar,
@@ -30,14 +30,14 @@ import {
   ResponsiveContainer,
   LineChart,
   Line,
-  ReferenceLine
-} from 'recharts'
-import CompareArrowsIcon from '@mui/icons-material/CompareArrows'
-import TrendingUpIcon from '@mui/icons-material/TrendingUp'
-import TrendingDownIcon from '@mui/icons-material/TrendingDown'
-import HelpOutlineIcon from '@mui/icons-material/HelpOutline'
-import { motion, AnimatePresence } from 'framer-motion'
-import { ActionableInsight, ImpactSimulation } from '@/types/actionable-insights'
+  ReferenceLine,
+} from 'recharts';
+import CompareArrowsIcon from '@mui/icons-material/CompareArrows';
+import TrendingUpIcon from '@mui/icons-material/TrendingUp';
+import TrendingDownIcon from '@mui/icons-material/TrendingDown';
+import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
+import { motion, AnimatePresence } from 'framer-motion';
+import { ActionableInsight, ImpactSimulation } from '@/types/actionable-insights';
 
 // Dados simulados para simulação de impacto
 const generateSimulationFromInsight = (insight: ActionableInsight): ImpactSimulation => {
@@ -52,21 +52,21 @@ const generateSimulationFromInsight = (insight: ActionableInsight): ImpactSimula
           metric: 'Desempenho Acadêmico',
           currentValue: 65,
           projectedValue: 63,
-          percentChange: -3.1
+          percentChange: -3.1,
         },
         {
           metric: 'Engajamento',
           currentValue: 58,
           projectedValue: 55,
-          percentChange: -5.2
+          percentChange: -5.2,
         },
         {
           metric: 'Índice de Conclusão',
           currentValue: 78,
           projectedValue: 76,
-          percentChange: -2.6
-        }
-      ]
+          percentChange: -2.6,
+        },
+      ],
     },
     {
       id: `scenario-action-${insight.id}`,
@@ -77,61 +77,62 @@ const generateSimulationFromInsight = (insight: ActionableInsight): ImpactSimula
           metric: 'Desempenho Acadêmico',
           currentValue: 65,
           projectedValue: 72,
-          percentChange: 10.8
+          percentChange: 10.8,
         },
         {
           metric: 'Engajamento',
           currentValue: 58,
           projectedValue: 67,
-          percentChange: 15.5
+          percentChange: 15.5,
         },
         {
           metric: 'Índice de Conclusão',
           currentValue: 78,
           projectedValue: 84,
-          percentChange: 7.7
-        }
-      ]
+          percentChange: 7.7,
+        },
+      ],
     },
     {
       id: `scenario-alternative-${insight.id}`,
       name: 'Abordagem Alternativa',
-      description: 'Implementação de uma abordagem alternativa com foco em intervenções mais intensivas.',
+      description:
+        'Implementação de uma abordagem alternativa com foco em intervenções mais intensivas.',
       impactMetrics: [
         {
           metric: 'Desempenho Acadêmico',
           currentValue: 65,
           projectedValue: 69,
-          percentChange: 6.2
+          percentChange: 6.2,
         },
         {
           metric: 'Engajamento',
           currentValue: 58,
           projectedValue: 70,
-          percentChange: 20.7
+          percentChange: 20.7,
         },
         {
           metric: 'Índice de Conclusão',
           currentValue: 78,
           projectedValue: 81,
-          percentChange: 3.8
-        }
-      ]
-    }
-  ]
+          percentChange: 3.8,
+        },
+      ],
+    },
+  ];
 
   return {
     id: `simulation-${insight.id}`,
     title: `Simulação de Impacto: ${insight.title}`,
     description: `Simulação dos possíveis impactos ao lidar com: ${insight.description}`,
-    scenarios
-  }
-}
+    scenarios,
+  };
+};
 
 interface ImpactSimulationPanelProps {
-  insights: ActionableInsight[]
-  className?: string
-  style?: React.CSSProperties
+  insights: ActionableInsight[];
+  className?: string;
+  style?: React.CSSProperties;
 }
 
 /**
@@ -140,48 +141,45 @@ interface ImpactSimulationPanelProps {
 export const ImpactSimulationPanel: React.FC<ImpactSimulationPanelProps> = ({
   insights,
   className,
-  style
+  style,
 }) => {
-  const theme = useTheme()
-  const [selectedInsightIndex, setSelectedInsightIndex] = useState<number>(0)
-  const [selectedScenario, setSelectedScenario] = useState<string | null>(null)
-  const [comparisonView, setComparisonView] = useState<'bar' | 'line'>('bar')
+  const theme = useTheme();
+  const [selectedInsightIndex, setSelectedInsightIndex] = useState<number>(0);
+  const [selectedScenario, setSelectedScenario] = useState<string | null>(null);
+  const [comparisonView, setComparisonView] = useState<'bar' | 'line'>('bar');
 
   // Gera simulações para os insights
   const simulations = useMemo(() => {
-    return insights.slice(0, 5).map(insight => generateSimulationFromInsight(insight))
-  }, [insights])
+    return insights.slice(0, 5).map(insight => generateSimulationFromInsight(insight));
+  }, [insights]);
 
   // Seleciona o primeiro cenário por padrão
   useEffect(() => {
     if (simulations.length > 0 && simulations[selectedInsightIndex]?.scenarios.length > 0) {
-      setSelectedScenario(simulations[selectedInsightIndex].scenarios[0].id)
+      setSelectedScenario(simulations[selectedInsightIndex].scenarios[0].id);
     }
-  }, [simulations, selectedInsightIndex])
+  }, [simulations, selectedInsightIndex]);
 
   // Manipula a mudança de insight
   const handleInsightChange = (event: React.SyntheticEvent, newValue: number) => {
-    setSelectedInsightIndex(newValue)
+    setSelectedInsightIndex(newValue);
     // Atualiza o cenário selecionado para o primeiro do novo insight
     if (simulations[newValue]?.scenarios.length > 0) {
-      setSelectedScenario(simulations[newValue].scenarios[0].id)
+      setSelectedScenario(simulations[newValue].scenarios[0].id);
     }
-  }
+  };
 
   // Manipula a seleção de cenário
   const handleScenarioSelect = (scenarioId: string) => {
-    setSelectedScenario(scenarioId)
-  }
+    setSelectedScenario(scenarioId);
+  };
 
   // Manipula a mudança do tipo de visualização
-  const handleViewChange = (
-    event: React.MouseEvent<HTMLElement>,
-    newView: 'bar' | 'line',
-  ) => {
+  const handleViewChange = (event: React.MouseEvent<HTMLElement>, newView: 'bar' | 'line') => {
     if (newView !== null) {
-      setComparisonView(newView)
+      setComparisonView(newView);
     }
-  }
+  };
 
   // Se não houver simulações, exibe mensagem
   if (simulations.length === 0) {
@@ -191,40 +189,36 @@ export const ImpactSimulationPanel: React.FC<ImpactSimulationPanelProps> = ({
           Nenhum insight disponível para simulação de impacto.
         </Typography>
       </Paper>
-    )
+    );
   }
 
-  const currentSimulation = simulations[selectedInsightIndex]
-  const currentScenario = currentSimulation.scenarios.find(s => s.id === selectedScenario)
+  const currentSimulation = simulations[selectedInsightIndex];
+  const currentScenario = currentSimulation.scenarios.find(s => s.id === selectedScenario);
 
   // Prepara dados para comparação entre cenários
   const comparisonData = useMemo(() => {
-    if (!currentSimulation) return []
+    if (!currentSimulation) return [];
 
     // Extrai métricas únicas de todos os cenários
     const metrics = Array.from(
-      new Set(
-        currentSimulation.scenarios.flatMap(s =>
-          s.impactMetrics.map(m => m.metric)
-        )
-      )
-    )
+      new Set(currentSimulation.scenarios.flatMap(s => s.impactMetrics.map(m => m.metric)))
+    );
 
     // Cria dados para cada métrica
     return metrics.map(metric => {
-      const result: Record<string, any> = { metric }
+      const result: Record<string, any> = { metric };
 
       currentSimulation.scenarios.forEach(scenario => {
-        const metricData = scenario.impactMetrics.find(m => m.metric === metric)
+        const metricData = scenario.impactMetrics.find(m => m.metric === metric);
         if (metricData) {
-          result[`${scenario.name}_current`] = metricData.currentValue
-          result[`${scenario.name}_projected`] = metricData.projectedValue
+          result[`${scenario.name}_current`] = metricData.currentValue;
+          result[`${scenario.name}_projected`] = metricData.projectedValue;
         }
-      })
+      });
 
-      return result
-    })
-  }, [currentSimulation])
+      return result;
+    });
+  }, [currentSimulation]);
 
   return (
     <Box className={className} style={style}>
@@ -241,11 +235,7 @@ export const ImpactSimulationPanel: React.FC<ImpactSimulationPanelProps> = ({
           sx={{ borderBottom: 1, borderColor: 'divider' }}
         >
           {simulations.map((simulation, index) => (
-            <Tab
-              key={simulation.id}
-              label={`Simulação ${index + 1}`}
-              sx={{ minWidth: 120 }}
-            />
+            <Tab key={simulation.id} label={`Simulação ${index + 1}`} sx={{ minWidth: 120 }} />
           ))}
         </Tabs>
 
@@ -266,7 +256,7 @@ export const ImpactSimulationPanel: React.FC<ImpactSimulationPanelProps> = ({
               </Typography>
 
               <List sx={{ bgcolor: 'background.paper', borderRadius: 1 }}>
-                {currentSimulation.scenarios.map((scenario) => (
+                {currentSimulation.scenarios.map(scenario => (
                   <motion.div
                     key={scenario.id}
                     whileHover={{ scale: 1.01 }}
@@ -280,14 +270,15 @@ export const ImpactSimulationPanel: React.FC<ImpactSimulationPanelProps> = ({
                         mb: 1,
                         borderRadius: 1,
                         boxShadow: selectedScenario === scenario.id ? 2 : 0,
-                        bgcolor: selectedScenario === scenario.id ? 'action.selected' : 'background.paper',
+                        bgcolor:
+                          selectedScenario === scenario.id ? 'action.selected' : 'background.paper',
                       }}
                     >
                       <ListItemText
                         primary={scenario.name}
                         secondary={scenario.description}
                         primaryTypographyProps={{
-                          fontWeight: selectedScenario === scenario.id ? 'bold' : 'normal'
+                          fontWeight: selectedScenario === scenario.id ? 'bold' : 'normal',
                         }}
                       />
                     </ListItem>
@@ -297,7 +288,14 @@ export const ImpactSimulationPanel: React.FC<ImpactSimulationPanelProps> = ({
             </Grid>
 
             <Grid item xs={12} md={8}>
-              <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
+              <Box
+                sx={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                  mb: 2,
+                }}
+              >
                 <Typography variant="subtitle1" gutterBottom>
                   Projeção de Impacto
                 </Typography>
@@ -332,8 +330,16 @@ export const ImpactSimulationPanel: React.FC<ImpactSimulationPanelProps> = ({
                               <YAxis domain={[0, 100]} />
                               <Tooltip />
                               <Legend />
-                              <Bar dataKey="currentValue" name="Valor Atual" fill={theme.palette.grey[500]} />
-                              <Bar dataKey="projectedValue" name="Valor Projetado" fill={theme.palette.primary.main} />
+                              <Bar
+                                dataKey="currentValue"
+                                name="Valor Atual"
+                                fill={theme.palette.grey[500]}
+                              />
+                              <Bar
+                                dataKey="projectedValue"
+                                name="Valor Projetado"
+                                fill={theme.palette.primary.main}
+                              />
                             </BarChart>
                           </ResponsiveContainer>
                         ) : (
@@ -344,8 +350,18 @@ export const ImpactSimulationPanel: React.FC<ImpactSimulationPanelProps> = ({
                               <YAxis domain={[0, 100]} />
                               <Tooltip />
                               <Legend />
-                              <Line type="monotone" dataKey="currentValue" name="Valor Atual" stroke={theme.palette.grey[500]} />
-                              <Line type="monotone" dataKey="projectedValue" name="Valor Projetado" stroke={theme.palette.primary.main} />
+                              <Line
+                                type="monotone"
+                                dataKey="currentValue"
+                                name="Valor Atual"
+                                stroke={theme.palette.grey[500]}
+                              />
+                              <Line
+                                type="monotone"
+                                dataKey="projectedValue"
+                                name="Valor Projetado"
+                                stroke={theme.palette.primary.main}
+                              />
                             </LineChart>
                           </ResponsiveContainer>
                         )}
@@ -364,7 +380,14 @@ export const ImpactSimulationPanel: React.FC<ImpactSimulationPanelProps> = ({
                                   {metric.metric}
                                 </Typography>
 
-                                <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 1 }}>
+                                <Box
+                                  sx={{
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'space-between',
+                                    mb: 1,
+                                  }}
+                                >
                                   <Typography variant="body2" color="text.secondary">
                                     Atual:
                                   </Typography>
@@ -373,7 +396,14 @@ export const ImpactSimulationPanel: React.FC<ImpactSimulationPanelProps> = ({
                                   </Typography>
                                 </Box>
 
-                                <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 1 }}>
+                                <Box
+                                  sx={{
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'space-between',
+                                    mb: 1,
+                                  }}
+                                >
                                   <Typography variant="body2" color="text.secondary">
                                     Projetado:
                                   </Typography>
@@ -382,10 +412,22 @@ export const ImpactSimulationPanel: React.FC<ImpactSimulationPanelProps> = ({
                                   </Typography>
                                 </Box>
 
-                                <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end' }}>
+                                <Box
+                                  sx={{
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'flex-end',
+                                  }}
+                                >
                                   <Chip
                                     size="small"
-                                    icon={metric.percentChange > 0 ? <TrendingUpIcon /> : <TrendingDownIcon />}
+                                    icon={
+                                      metric.percentChange > 0 ? (
+                                        <TrendingUpIcon />
+                                      ) : (
+                                        <TrendingDownIcon />
+                                      )
+                                    }
                                     label={`${metric.percentChange > 0 ? '+' : ''}${metric.percentChange.toFixed(1)}%`}
                                     color={metric.percentChange > 0 ? 'success' : 'error'}
                                   />
@@ -415,5 +457,5 @@ export const ImpactSimulationPanel: React.FC<ImpactSimulationPanelProps> = ({
         </Box>
       </Paper>
     </Box>
-  )
-}
+  );
+};

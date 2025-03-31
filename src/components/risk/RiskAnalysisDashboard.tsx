@@ -17,7 +17,7 @@ import {
   Divider,
   IconButton,
   TextField,
-  InputAdornment
+  InputAdornment,
 } from '@mui/material';
 import RefreshIcon from '@mui/icons-material/Refresh';
 import FilterListIcon from '@mui/icons-material/FilterList';
@@ -57,7 +57,7 @@ const a11yProps = (index: number) => {
   };
 };
 
-const RiskAnalysisDashboard: React.FC<RiskAnalysisDashboardProps> = (props) => {
+const RiskAnalysisDashboard: React.FC<RiskAnalysisDashboardProps> = props => {
   const [tabValue, setTabValue] = useState(0);
   const [showFilters, setShowFilters] = useState(false);
   const [filters, setFilters] = useState<RiskAnalysisFilters>({});
@@ -76,7 +76,7 @@ const RiskAnalysisDashboard: React.FC<RiskAnalysisDashboardProps> = (props) => {
     earlyWarningIndicators = props.earlyWarningIndicators || [],
     isLoading = props.isLoading || false,
     refetch,
-    setFilters: setApiFilters
+    setFilters: setApiFilters,
   } = useRiskAnalysisDashboard();
 
   // Handlers
@@ -88,7 +88,7 @@ const RiskAnalysisDashboard: React.FC<RiskAnalysisDashboardProps> = (props) => {
     const newFilters: RiskAnalysisFilters = {
       grades: selectedGrades.length > 0 ? selectedGrades : undefined,
       riskLevels: selectedRiskLevels.length > 0 ? selectedRiskLevels : undefined,
-      searchTerm: searchTerm.length > 0 ? searchTerm : undefined
+      searchTerm: searchTerm.length > 0 ? searchTerm : undefined,
     };
 
     setApiFilters(newFilters);
@@ -114,7 +114,9 @@ const RiskAnalysisDashboard: React.FC<RiskAnalysisDashboardProps> = (props) => {
 
   const handleRiskLevelChange = (event: SelectChangeEvent<RiskLevel[]>) => {
     const value = event.target.value;
-    setSelectedRiskLevels(typeof value === 'string' ? [value as RiskLevel] : value as RiskLevel[]);
+    setSelectedRiskLevels(
+      typeof value === 'string' ? [value as RiskLevel] : (value as RiskLevel[])
+    );
   };
 
   // Obter grades distintas para filtro
@@ -124,7 +126,16 @@ const RiskAnalysisDashboard: React.FC<RiskAnalysisDashboardProps> = (props) => {
 
   return (
     <Box sx={{ width: '100%' }}>
-      <Box sx={{ borderBottom: 1, borderColor: 'divider', mb: 3, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+      <Box
+        sx={{
+          borderBottom: 1,
+          borderColor: 'divider',
+          mb: 3,
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+        }}
+      >
         <Box>
           <Typography variant="h4" component="h1" gutterBottom>
             Dashboard de Análise de Risco
@@ -198,15 +209,15 @@ const RiskAnalysisDashboard: React.FC<RiskAnalysisDashboardProps> = (props) => {
                   value={selectedGrades}
                   onChange={handleGradeChange}
                   label="Série"
-                  renderValue={(selected) => (
+                  renderValue={selected => (
                     <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
-                      {(selected as string[]).map((value) => (
+                      {(selected as string[]).map(value => (
                         <Chip key={value} label={value} size="small" />
                       ))}
                     </Box>
                   )}
                 >
-                  {availableGrades.map((grade) => (
+                  {availableGrades.map(grade => (
                     <MenuItem key={grade} value={grade}>
                       {grade}
                     </MenuItem>
@@ -225,16 +236,19 @@ const RiskAnalysisDashboard: React.FC<RiskAnalysisDashboardProps> = (props) => {
                   value={selectedRiskLevels}
                   onChange={handleRiskLevelChange}
                   label="Nível de Risco"
-                  renderValue={(selected) => (
+                  renderValue={selected => (
                     <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
-                      {(selected as RiskLevel[]).map((value) => (
+                      {(selected as RiskLevel[]).map(value => (
                         <Chip
                           key={value}
                           label={
-                            value === 'low' ? 'Baixo' :
-                            value === 'moderate' ? 'Moderado' :
-                            value === 'high' ? 'Alto' :
-                            'Severo'
+                            value === 'low'
+                              ? 'Baixo'
+                              : value === 'moderate'
+                                ? 'Moderado'
+                                : value === 'high'
+                                  ? 'Alto'
+                                  : 'Severo'
                           }
                           size="small"
                         />
@@ -261,11 +275,7 @@ const RiskAnalysisDashboard: React.FC<RiskAnalysisDashboardProps> = (props) => {
                   Aplicar
                 </Button>
 
-                <Button
-                  variant="outlined"
-                  onClick={handleResetFilters}
-                  size="small"
-                >
+                <Button variant="outlined" onClick={handleResetFilters} size="small">
                   Limpar
                 </Button>
               </Box>
@@ -298,7 +308,10 @@ const RiskAnalysisDashboard: React.FC<RiskAnalysisDashboardProps> = (props) => {
                   onDelete={() => {
                     const newGrades = selectedGrades.filter(g => g !== grade);
                     setSelectedGrades(newGrades);
-                    setApiFilters({ ...filters, grades: newGrades.length > 0 ? newGrades : undefined });
+                    setApiFilters({
+                      ...filters,
+                      grades: newGrades.length > 0 ? newGrades : undefined,
+                    });
                   }}
                 />
               ))}
@@ -307,16 +320,22 @@ const RiskAnalysisDashboard: React.FC<RiskAnalysisDashboardProps> = (props) => {
                 <Chip
                   key={level}
                   label={`Risco: ${
-                    level === 'low' ? 'Baixo' :
-                    level === 'moderate' ? 'Moderado' :
-                    level === 'high' ? 'Alto' :
-                    'Severo'
+                    level === 'low'
+                      ? 'Baixo'
+                      : level === 'moderate'
+                        ? 'Moderado'
+                        : level === 'high'
+                          ? 'Alto'
+                          : 'Severo'
                   }`}
                   size="small"
                   onDelete={() => {
                     const newLevels = selectedRiskLevels.filter(l => l !== level);
                     setSelectedRiskLevels(newLevels);
-                    setApiFilters({ ...filters, riskLevels: newLevels.length > 0 ? newLevels : undefined });
+                    setApiFilters({
+                      ...filters,
+                      riskLevels: newLevels.length > 0 ? newLevels : undefined,
+                    });
                   }}
                 />
               ))}
@@ -345,11 +364,7 @@ const RiskAnalysisDashboard: React.FC<RiskAnalysisDashboardProps> = (props) => {
             </Grid>
 
             <Grid item xs={12} md={8}>
-              <RiskTrendChart
-                data={riskTrendData}
-                title="Tendências de Risco"
-                height={300}
-              />
+              <RiskTrendChart data={riskTrendData} title="Tendências de Risco" height={300} />
             </Grid>
           </Grid>
 
@@ -394,8 +409,17 @@ const RiskAnalysisDashboard: React.FC<RiskAnalysisDashboardProps> = (props) => {
                       Indicadores que sinalizam potenciais dificuldades acadêmicas
                     </Typography>
 
-                    {earlyWarningIndicators.map((indicator) => (
-                      <Box key={indicator.id} sx={{ mb: 2, p: 2, border: '1px solid', borderColor: 'divider', borderRadius: 1 }}>
+                    {earlyWarningIndicators.map(indicator => (
+                      <Box
+                        key={indicator.id}
+                        sx={{
+                          mb: 2,
+                          p: 2,
+                          border: '1px solid',
+                          borderColor: 'divider',
+                          borderRadius: 1,
+                        }}
+                      >
                         <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 1 }}>
                           <Typography variant="subtitle1" fontWeight="bold">
                             {indicator.name}
@@ -403,14 +427,18 @@ const RiskAnalysisDashboard: React.FC<RiskAnalysisDashboardProps> = (props) => {
                           <Chip
                             size="small"
                             color={
-                              indicator.status === 'normal' ? 'success' :
-                              indicator.status === 'warning' ? 'warning' :
-                              'error'
+                              indicator.status === 'normal'
+                                ? 'success'
+                                : indicator.status === 'warning'
+                                  ? 'warning'
+                                  : 'error'
                             }
                             label={
-                              indicator.status === 'normal' ? 'Normal' :
-                              indicator.status === 'warning' ? 'Alerta' :
-                              'Crítico'
+                              indicator.status === 'normal'
+                                ? 'Normal'
+                                : indicator.status === 'warning'
+                                  ? 'Alerta'
+                                  : 'Crítico'
                             }
                           />
                         </Box>
@@ -419,9 +447,16 @@ const RiskAnalysisDashboard: React.FC<RiskAnalysisDashboardProps> = (props) => {
                           {indicator.description}
                         </Typography>
 
-                        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                        <Box
+                          sx={{
+                            display: 'flex',
+                            justifyContent: 'space-between',
+                            alignItems: 'center',
+                          }}
+                        >
                           <Typography variant="body2" color="text.secondary">
-                            Valor atual: <b>{indicator.currentValue}</b> (Limite: {indicator.threshold})
+                            Valor atual: <b>{indicator.currentValue}</b> (Limite:{' '}
+                            {indicator.threshold})
                           </Typography>
                           <Typography variant="body2">
                             Afeta {indicator.affectedStudents} estudantes
@@ -443,7 +478,14 @@ const RiskAnalysisDashboard: React.FC<RiskAnalysisDashboardProps> = (props) => {
 
                     {riskFactorData.map((factor, index) => (
                       <Box key={index} sx={{ mb: 2 }}>
-                        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 0.5 }}>
+                        <Box
+                          sx={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'space-between',
+                            mb: 0.5,
+                          }}
+                        >
                           <Box sx={{ display: 'flex', alignItems: 'center' }}>
                             <Typography variant="body1" fontWeight="medium">
                               {factor.factor}
@@ -452,16 +494,16 @@ const RiskAnalysisDashboard: React.FC<RiskAnalysisDashboardProps> = (props) => {
                               size="small"
                               label={`${(factor.weight * 100).toFixed(0)}%`}
                               color={
-                                factor.significance === 'high' ? 'error' :
-                                factor.significance === 'medium' ? 'warning' :
-                                'success'
+                                factor.significance === 'high'
+                                  ? 'error'
+                                  : factor.significance === 'medium'
+                                    ? 'warning'
+                                    : 'success'
                               }
                               sx={{ ml: 1 }}
                             />
                           </Box>
-                          <Typography variant="body2">
-                            {factor.students} estudantes
-                          </Typography>
+                          <Typography variant="body2">{factor.students} estudantes</Typography>
                         </Box>
 
                         <Box
@@ -469,7 +511,7 @@ const RiskAnalysisDashboard: React.FC<RiskAnalysisDashboardProps> = (props) => {
                             height: 8,
                             bgcolor: 'grey.200',
                             borderRadius: 1,
-                            mb: 2
+                            mb: 2,
                           }}
                         >
                           <Box
@@ -477,10 +519,12 @@ const RiskAnalysisDashboard: React.FC<RiskAnalysisDashboardProps> = (props) => {
                               height: '100%',
                               width: `${factor.weight * 100}%`,
                               bgcolor:
-                                factor.significance === 'high' ? 'error.main' :
-                                factor.significance === 'medium' ? 'warning.main' :
-                                'success.main',
-                              borderRadius: 1
+                                factor.significance === 'high'
+                                  ? 'error.main'
+                                  : factor.significance === 'medium'
+                                    ? 'warning.main'
+                                    : 'success.main',
+                              borderRadius: 1,
                             }}
                           />
                         </Box>

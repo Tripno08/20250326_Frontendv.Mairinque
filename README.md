@@ -1,237 +1,132 @@
-# Sistema de Encaminhamentos
+# Innerview Escola
 
-<div align="center">
+Sistema de integração com plataformas educacionais.
 
-![Logo do Projeto](assets/logo.png)
+## Funcionalidades
 
-[![Build Status](https://github.com/seu-usuario/seu-repositorio/workflows/CI/badge.svg)](https://github.com/seu-usuario/seu-repositorio/actions)
-[![Coverage Status](https://coveralls.io/repos/github/seu-usuario/seu-repositorio/badge.svg?branch=main)](https://coveralls.io/github/seu-usuario/seu-repositorio?branch=main)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+- Integração com LTI
+- Integração com Microsoft Education
+- Integração com Google Classroom
+- Webhooks para eventos
+- Dashboard de monitoramento
 
-</div>
+## Tecnologias
 
-## Sobre o Projeto
+- React
+- TypeScript
+- Material-UI
+- React Router
+- Axios
+- Zod
 
-O Sistema de Encaminhamentos é uma solução moderna e eficiente para gerenciar fluxos de encaminhamentos em ambientes educacionais. Desenvolvido com React, TypeScript e práticas modernas de desenvolvimento, o sistema oferece uma interface intuitiva e recursos avançados para acompanhamento e gestão de encaminhamentos.
+## Requisitos
 
-### Principais Funcionalidades
+- Node.js 18+
+- npm ou yarn
 
-- 📝 Criação e edição de encaminhamentos
-- 📊 Dashboard com métricas e análises
-- 📅 Acompanhamento de prazos
-- 👥 Gestão de responsáveis
-- 📎 Anexos e documentos
-- 💬 Comentários e histórico
-- 📱 Interface responsiva
-- 🔔 Sistema de notificações
+## Instalação
 
-## Começando
-
-### Pré-requisitos
-
-- Node.js 16.x ou superior
-- npm 7.x ou superior
-- Git
-
-### Instalação
-
+1. Clone o repositório:
 ```bash
-# Clone o repositório
-git clone https://github.com/seu-usuario/seu-repositorio.git
+git clone https://github.com/innerview/escola.git
+cd escola
+```
 
-# Entre no diretório
-cd seu-repositorio
-
-# Instale as dependências
+2. Instale as dependências:
+```bash
 npm install
-
-# Configure as variáveis de ambiente
-cp .env.example .env
-# Edite .env com suas configurações
-
-# Inicie o servidor de desenvolvimento
-npm run dev
+# ou
+yarn install
 ```
 
-### Configuração
-
-1. Configure o arquivo `.env`:
-```env
-NEXT_PUBLIC_API_URL=http://localhost:3000
-NEXT_PUBLIC_AUTH_DOMAIN=seu-dominio.auth0.com
-NEXT_PUBLIC_AUTH_CLIENT_ID=seu-client-id
-```
-
-2. Configure o banco de dados:
+3. Configure as variáveis de ambiente:
 ```bash
-# Execute as migrações
-npm run migrate
-
-# (Opcional) Carregue dados de exemplo
-npm run seed
+cp .env.example .env
 ```
 
-## Uso
-
-### Criando um Encaminhamento
-
-```typescript
-import { ReferralBuilder } from '@/components/referrals';
-
-function CreateReferral() {
-  const handleSubmit = async (data: ReferralData) => {
-    // Lógica de submissão
-  };
-
-  return (
-    <ReferralBuilder
-      onSubmit={handleSubmit}
-      onCancel={() => navigate(-1)}
-    />
-  );
-}
+4. Inicie o servidor de desenvolvimento:
+```bash
+npm start
+# ou
+yarn start
 ```
 
-### Listando Encaminhamentos
-
-```typescript
-import { ReferralList } from '@/components/referrals';
-import { useReferrals } from '@/hooks';
-
-function ListReferrals() {
-  const { referrals, loading } = useReferrals({
-    status: 'pending'
-  });
-
-  return (
-    <ReferralList
-      referrals={referrals}
-      loading={loading}
-      onSelect={handleSelect}
-    />
-  );
-}
-```
-
-### Dashboard
-
-```typescript
-import { ReferralDashboard } from '@/components/referrals';
-import { useReferralMetrics } from '@/hooks';
-
-function Dashboard() {
-  const { metrics } = useReferralMetrics();
-
-  return (
-    <ReferralDashboard
-      metrics={metrics}
-      onReferralSelect={handleSelect}
-    />
-  );
-}
-```
-
-## Arquitetura
-
-### Estrutura de Diretórios
+## Estrutura do Projeto
 
 ```
 src/
   ├── components/     # Componentes React
-  ├── hooks/         # Hooks personalizados
-  ├── services/      # Serviços e APIs
-  ├── contexts/      # Contextos React
+  ├── pages/         # Páginas da aplicação
+  ├── routes/        # Configuração de rotas
+  ├── services/      # Serviços de API
   ├── types/         # Tipos TypeScript
-  ├── utils/         # Utilitários
-  └── api/           # Configuração de API
+  ├── utils/         # Funções utilitárias
+  └── App.tsx        # Componente principal
 ```
 
-### Tecnologias
+## Configuração
 
-- **Frontend**
-  - React
-  - TypeScript
-  - Emotion (Styled Components)
-  - React Query
-  - React Router
-  - Material UI
+### LTI
 
-- **Qualidade**
-  - ESLint
-  - Prettier
-  - Jest
-  - React Testing Library
-  - Husky
+1. Configure as credenciais LTI no arquivo `.env`:
+```
+REACT_APP_LTI_CLIENT_ID=your_lti_client_id
+REACT_APP_LTI_CLIENT_SECRET=your_lti_client_secret
+REACT_APP_LTI_LAUNCH_URL=your_lti_launch_url
+REACT_APP_LTI_PLATFORM_URL=your_lti_platform_url
+```
 
-- **CI/CD**
-  - GitHub Actions
-  - Docker
-  - Vercel
+### Microsoft
 
-## Documentação
+1. Configure as credenciais Microsoft no arquivo `.env`:
+```
+REACT_APP_MICROSOFT_CLIENT_ID=your_microsoft_client_id
+REACT_APP_MICROSOFT_CLIENT_SECRET=your_microsoft_client_secret
+REACT_APP_MICROSOFT_TENANT_ID=your_microsoft_tenant_id
+REACT_APP_MICROSOFT_GRAPH_API_VERSION=v1.0
+```
 
-- [Guia de Contribuição](docs/CONTRIBUTING.md)
-- [Padrões de Código](docs/padroes-codigo.md)
-- [Fluxo de Trabalho](docs/fluxo-trabalho.md)
-- [Padrões de Tipagem](docs/padroes-tipagem.md)
-- [Arquitetura](docs/architecture.md)
-- [API](docs/api.md)
-- [Testes](docs/testes.md)
+### Google
 
-## Roadmap
+1. Configure as credenciais Google no arquivo `.env`:
+```
+REACT_APP_GOOGLE_CLIENT_ID=your_google_client_id
+REACT_APP_GOOGLE_CLIENT_SECRET=your_google_client_secret
+```
 
-### v1.0.0 (Atual)
-- ✅ CRUD de encaminhamentos
-- ✅ Dashboard básico
-- ✅ Autenticação
-- ✅ Notificações
+### Webhook
 
-### v1.1.0 (Próxima)
-- 🔄 Filtros avançados
-- 🔄 Relatórios personalizados
-- 🔄 Integração com email
-- 🔄 Melhorias de UX
+1. Configure as credenciais Webhook no arquivo `.env`:
+```
+REACT_APP_WEBHOOK_SECRET=your_webhook_secret
+REACT_APP_WEBHOOK_TIMEOUT=5000
+REACT_APP_WEBHOOK_RETRY_COUNT=3
+```
 
-### v1.2.0 (Futura)
-- 📋 Automação de fluxos
-- 📋 API pública
-- 📋 Apps mobile
-- 📋 Analytics avançado
+## Testes
 
-## Contribuindo
+Execute os testes:
+```bash
+npm test
+# ou
+yarn test
+```
 
-Contribuições são sempre bem-vindas! Veja [CONTRIBUTING.md](docs/CONTRIBUTING.md) para saber como começar.
+Gere o relatório de cobertura:
+```bash
+npm test -- --coverage
+# ou
+yarn test --coverage
+```
 
-### Reportando Bugs
+## Contribuição
 
-1. Abra uma [nova issue](https://github.com/seu-usuario/seu-repositorio/issues/new)
-2. Descreva o problema detalhadamente
-3. Inclua passos para reproduzir
-4. Adicione screenshots se possível
-
-### Propondo Melhorias
-
-1. Discuta a mudança em uma issue
-2. Fork o repositório
-3. Crie uma branch (`git checkout -b feature/sua-feature`)
-4. Commit suas mudanças (`git commit -m 'feat: add nova feature'`)
-5. Push para a branch (`git push origin feature/sua-feature`)
-6. Abra um Pull Request
+1. Faça um fork do projeto
+2. Crie uma branch para sua feature (`git checkout -b feature/amazing-feature`)
+3. Commit suas mudanças (`git commit -m 'Add some amazing feature'`)
+4. Push para a branch (`git push origin feature/amazing-feature`)
+5. Abra um Pull Request
 
 ## Licença
 
-Este projeto está licenciado sob a [MIT License](LICENSE).
-
-## Contato
-
-- **Email**: seu-email@exemplo.com
-- **Twitter**: [@seu-usuario](https://twitter.com/seu-usuario)
-- **LinkedIn**: [Seu Nome](https://linkedin.com/in/seu-usuario)
-
-## Agradecimentos
-
-- [React](https://reactjs.org/)
-- [TypeScript](https://www.typescriptlang.org/)
-- [Material UI](https://mui.com/)
-- [React Query](https://react-query.tanstack.com/)
-- Todos os contribuidores!
+Este projeto está licenciado sob a licença MIT - veja o arquivo [LICENSE](LICENSE) para detalhes.

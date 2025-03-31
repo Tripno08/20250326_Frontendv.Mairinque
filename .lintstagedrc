@@ -3,11 +3,7 @@
     "eslint --fix",
     "prettier --write"
   ],
-  "*.{json,md,yml,yaml}": [
+  "*.{json,css,md}": [
     "prettier --write"
-  ],
-  "*.{css,scss}": [
-    "prettier --write",
-    "stylelint --fix"
   ]
 }

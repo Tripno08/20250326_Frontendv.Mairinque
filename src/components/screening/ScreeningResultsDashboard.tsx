@@ -20,20 +20,23 @@ import {
   Select,
   MenuItem,
   Alert,
-  CircularProgress
+  CircularProgress,
 } from '@mui/material';
 import {
   Timeline as TimelineIcon,
   TrendingUp as TrendingUpIcon,
   Warning as WarningIcon,
-  Info as InfoIcon
+  Info as InfoIcon,
 } from '@mui/icons-material';
 import { useScreeningResults } from '../../hooks/useScreening';
 import {
   ScreeningResult,
   ScreeningResultsDashboardProps,
-  ScreeningTier
+  ScreeningTier,
 } from '../../types/screening';
+import GridContainer from '@/components/GridContainer';
+import GridItem from '@/components/GridItem';
+import MenuItemWrapper from '@/components/MenuItemWrapper';
 
 const getTierColor = (tier: ScreeningTier) => {
   switch (tier) {
@@ -63,7 +66,7 @@ const getTierLabel = (tier: ScreeningTier) => {
 
 export const ScreeningResultsDashboard: React.FC<ScreeningResultsDashboardProps> = ({
   studentId,
-  period
+  period,
 }) => {
   const { results, isLoading, error, refresh } = useScreeningResults(studentId, period);
   const [selectedResult, setSelectedResult] = useState<ScreeningResult | null>(null);
@@ -100,8 +103,8 @@ export const ScreeningResultsDashboard: React.FC<ScreeningResultsDashboardProps>
         height: '100%',
         cursor: 'pointer',
         '&:hover': {
-          boxShadow: 6
-        }
+          boxShadow: 6,
+        },
       }}
       onClick={() => setSelectedResult(result)}
     >
@@ -110,11 +113,7 @@ export const ScreeningResultsDashboard: React.FC<ScreeningResultsDashboardProps>
           <Typography variant="h6" component="h2">
             {result.instrumentId}
           </Typography>
-          <Chip
-            label={getTierLabel(result.tier)}
-            color={getTierColor(result.tier)}
-            size="small"
-          />
+          <Chip label={getTierLabel(result.tier)} color={getTierColor(result.tier)} size="small" />
         </Box>
 
         <Box sx={{ mt: 2 }}>
@@ -136,56 +135,43 @@ export const ScreeningResultsDashboard: React.FC<ScreeningResultsDashboardProps>
   );
 
   const renderResultDetails = () => (
-    <Dialog
-      open={!!selectedResult}
-      onClose={() => setSelectedResult(null)}
-      maxWidth="md"
-      fullWidth
-    >
+    <Dialog open={!!selectedResult} onClose={() => setSelectedResult(null)} maxWidth="md" fullWidth>
       {selectedResult && (
         <>
-          <DialogTitle>
-            Detalhes do Resultado
-          </DialogTitle>
+          <DialogTitle>Detalhes do Resultado</DialogTitle>
           <DialogContent>
             <Box sx={{ mb: 3 }}>
               <Typography variant="h6" gutterBottom>
                 Informações Gerais
               </Typography>
-              <Grid container spacing={2}>
-                <Grid item xs={6}>
+              <GridContainer spacing={2}>
+                <GridItem xs={6}>
                   <Typography variant="body2" color="text.secondary">
                     Instrumento
                   </Typography>
-                  <Typography variant="body1">
-                    {selectedResult.instrumentId}
-                  </Typography>
-                </Grid>
-                <Grid item xs={6}>
+                  <Typography variant="body1">{selectedResult.instrumentId}</Typography>
+                </GridItem>
+                <GridItem xs={6}>
                   <Typography variant="body2" color="text.secondary">
                     Data
                   </Typography>
                   <Typography variant="body1">
                     {new Date(selectedResult.completedAt).toLocaleDateString()}
                   </Typography>
-                </Grid>
-                <Grid item xs={6}>
+                </GridItem>
+                <GridItem xs={6}>
                   <Typography variant="body2" color="text.secondary">
                     Pontuação
                   </Typography>
-                  <Typography variant="body1">
-                    {selectedResult.score}
-                  </Typography>
-                </Grid>
-                <Grid item xs={6}>
+                  <Typography variant="body1">{selectedResult.score}</Typography>
+                </GridItem>
+                <GridItem xs={6}>
                   <Typography variant="body2" color="text.secondary">
                     Percentil
                   </Typography>
-                  <Typography variant="body1">
-                    {selectedResult.percentile}
-                  </Typography>
-                </Grid>
-                <Grid item xs={12}>
+                  <Typography variant="body1">{selectedResult.percentile}</Typography>
+                </GridItem>
+                <GridItem xs={12}>
                   <Typography variant="body2" color="text.secondary">
                     Tier
                   </Typography>
@@ -195,8 +181,8 @@ export const ScreeningResultsDashboard: React.FC<ScreeningResultsDashboardProps>
                     size="small"
                     sx={{ mt: 1 }}
                   />
-                </Grid>
-              </Grid>
+                </GridItem>
+              </GridContainer>
             </Box>
 
             <Box>
@@ -223,19 +209,17 @@ export const ScreeningResultsDashboard: React.FC<ScreeningResultsDashboardProps>
   return (
     <Box sx={{ p: 3 }}>
       <Box sx={{ mb: 3, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <Typography variant="h5">
-          Resultados de Rastreio
-        </Typography>
+        <Typography variant="h5">Resultados de Rastreio</Typography>
         <FormControl sx={{ minWidth: 200 }}>
           <InputLabel>Período</InputLabel>
           <Select
             value={timeRange}
             label="Período"
-            onChange={(e) => setTimeRange(e.target.value as 'week' | 'month' | 'year')}
+            onChange={e => setTimeRange(e.target.value as 'week' | 'month' | 'year')}
           >
-            <MenuItem value="week">Última Semana</MenuItem>
-            <MenuItem value="month">Último Mês</MenuItem>
-            <MenuItem value="year">Último Ano</MenuItem>
+            <MenuItemWrapper value="week">Última Semana</MenuItemWrapper>
+            <MenuItemWrapper value="month">Último Mês</MenuItemWrapper>
+            <MenuItemWrapper value="year">Último Ano</MenuItemWrapper>
           </Select>
         </FormControl>
       </Box>
@@ -245,15 +229,13 @@ export const ScreeningResultsDashboard: React.FC<ScreeningResultsDashboardProps>
           <Typography variant="h6" gutterBottom>
             Último Resultado
           </Typography>
-          <Grid container spacing={3}>
-            <Grid item xs={12} md={6}>
+          <GridContainer spacing={3}>
+            <GridItem xs={12} md={6}>
               <Box>
                 <Typography variant="body2" color="text.secondary" gutterBottom>
                   Pontuação Atual
                 </Typography>
-                <Typography variant="h4">
-                  {latestResult.score}
-                </Typography>
+                <Typography variant="h4">{latestResult.score}</Typography>
                 <Chip
                   label={getTierLabel(latestResult.tier)}
                   color={getTierColor(latestResult.tier)}
@@ -261,8 +243,8 @@ export const ScreeningResultsDashboard: React.FC<ScreeningResultsDashboardProps>
                   sx={{ mt: 1 }}
                 />
               </Box>
-            </Grid>
-            <Grid item xs={12} md={6}>
+            </GridItem>
+            <GridItem xs={12} md={6}>
               <Box>
                 <Typography variant="body2" color="text.secondary" gutterBottom>
                   Progresso
@@ -270,10 +252,17 @@ export const ScreeningResultsDashboard: React.FC<ScreeningResultsDashboardProps>
                 {previousResult && (
                   <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                     <TrendingUpIcon
-                      color={calculateProgress(latestResult.score, previousResult.score) >= 0 ? 'success' : 'error'}
+                      color={
+                        calculateProgress(latestResult.score, previousResult.score) >= 0
+                          ? 'success'
+                          : 'error'
+                      }
                     />
                     <Typography variant="body1">
-                      {Math.abs(calculateProgress(latestResult.score, previousResult.score)).toFixed(1)}%
+                      {Math.abs(
+                        calculateProgress(latestResult.score, previousResult.score)
+                      ).toFixed(1)}
+                      %
                     </Typography>
                   </Box>
                 )}
@@ -283,21 +272,21 @@ export const ScreeningResultsDashboard: React.FC<ScreeningResultsDashboardProps>
                   sx={{ mt: 1 }}
                 />
               </Box>
-            </Grid>
-          </Grid>
+            </GridItem>
+          </GridContainer>
         </Paper>
       )}
 
       <Typography variant="h6" gutterBottom>
         Histórico de Resultados
       </Typography>
-      <Grid container spacing={3}>
+      <GridContainer spacing={3}>
         {results.map(result => (
-          <Grid item xs={12} sm={6} md={4} key={result.id}>
+          <GridItem xs={12} sm={6} md={4} key={result.id}>
             {renderResultCard(result)}
-          </Grid>
+          </GridItem>
         ))}
-      </Grid>
+      </GridContainer>
 
       {renderResultDetails()}
     </Box>

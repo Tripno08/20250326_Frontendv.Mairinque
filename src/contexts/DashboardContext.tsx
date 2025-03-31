@@ -62,7 +62,7 @@ const dashboardReducer = (state: DashboardState, action: DashboardAction): Dashb
         ...state,
         layout: {
           ...state.layout,
-          widgets: state.layout.widgets.map((widget) =>
+          widgets: state.layout.widgets.map(widget =>
             widget.id === action.payload.id ? action.payload : widget
           ),
           updatedAt: new Date(),
@@ -84,7 +84,7 @@ const dashboardReducer = (state: DashboardState, action: DashboardAction): Dashb
         ...state,
         layout: {
           ...state.layout,
-          widgets: state.layout.widgets.filter((widget) => widget.id !== action.payload),
+          widgets: state.layout.widgets.filter(widget => widget.id !== action.payload),
           updatedAt: new Date(),
         },
         selectedWidget: state.selectedWidget === action.payload ? null : state.selectedWidget,
@@ -109,9 +109,7 @@ export const DashboardProvider: React.FC<{ children: React.ReactNode }> = ({ chi
   const [state, dispatch] = useReducer(dashboardReducer, initialState);
 
   return (
-    <DashboardContext.Provider value={{ state, dispatch }}>
-      {children}
-    </DashboardContext.Provider>
+    <DashboardContext.Provider value={{ state, dispatch }}>{children}</DashboardContext.Provider>
   );
 };
 
@@ -169,4 +167,4 @@ export const useWidgetManagement = () => {
     addWidget: (widget: WidgetConfig) => dispatch({ type: 'ADD_WIDGET', payload: widget }),
     removeWidget: (widgetId: string) => dispatch({ type: 'REMOVE_WIDGET', payload: widgetId }),
   };
-}; 
+};

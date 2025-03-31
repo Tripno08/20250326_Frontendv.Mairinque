@@ -112,4 +112,4 @@ export interface AssessmentStats {
   averageScore: number;
   completionRate: number;
   recentResults: AssessmentResult[];
-} 
+}

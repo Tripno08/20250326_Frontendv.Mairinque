@@ -19,12 +19,7 @@ export const AssessmentCoverageWidget: React.FC<AssessmentCoverageWidgetProps> =
   const coverage = (data.assessed / data.total) * 100;
 
   return (
-    <WidgetBase
-      widget={widget}
-      title="Cobertura de Avaliações"
-      isLoading={isLoading}
-      error={error}
-    >
+    <WidgetBase widget={widget} title="Cobertura de Avaliações" isLoading={isLoading} error={error}>
       <Box sx={{ height: '100%', width: '100%', p: 2 }}>
         <Box sx={{ mb: 2 }}>
           <Typography variant="h4" component="div" gutterBottom>
@@ -45,7 +40,8 @@ export const AssessmentCoverageWidget: React.FC<AssessmentCoverageWidgetProps> =
               backgroundColor: 'grey.200',
               '& .MuiLinearProgress-bar': {
                 borderRadius: 5,
-                backgroundColor: coverage >= 80 ? 'success.main' : coverage >= 60 ? 'warning.main' : 'error.main',
+                backgroundColor:
+                  coverage >= 80 ? 'success.main' : coverage >= 60 ? 'warning.main' : 'error.main',
               },
             }}
           />
@@ -62,4 +58,4 @@ export const AssessmentCoverageWidget: React.FC<AssessmentCoverageWidgetProps> =
       </Box>
     </WidgetBase>
   );
-}; 
+};

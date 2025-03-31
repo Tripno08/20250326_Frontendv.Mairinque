@@ -11,14 +11,7 @@ export const DroppableIntervention = forwardRef<HTMLDivElement, DroppableInterve
     const theme = useTheme();
     const intervention = item.intervention;
 
-    const {
-      attributes,
-      listeners,
-      setNodeRef,
-      transform,
-      transition,
-      isDragging,
-    } = useSortable({
+    const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
       id: item.id,
       data: {
         intervention: item.intervention,
@@ -87,7 +80,14 @@ export const DroppableIntervention = forwardRef<HTMLDivElement, DroppableInterve
           </Box>
 
           <Box sx={{ flex: 1 }}>
-            <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', mb: 1 }}>
+            <Box
+              sx={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'flex-start',
+                mb: 1,
+              }}
+            >
               <Typography variant="subtitle1" fontWeight="bold">
                 {intervention.title}
               </Typography>
@@ -124,7 +124,7 @@ export const DroppableIntervention = forwardRef<HTMLDivElement, DroppableInterve
                   bgcolor: theme.palette.grey[100],
                   p: 1,
                   borderRadius: 1,
-                  mb: 1
+                  mb: 1,
                 }}
               >
                 Notas: {item.notes}
@@ -136,7 +136,7 @@ export const DroppableIntervention = forwardRef<HTMLDivElement, DroppableInterve
             size="small"
             color="error"
             sx={{ ml: 1 }}
-            onClick={(e) => {
+            onClick={e => {
               e.stopPropagation();
               // O evento de remoção será gerenciado pelo componente principal
             }}

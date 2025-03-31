@@ -14,19 +14,19 @@ const mockStudentData: StudentRiskData[] = [
     previousScore: 72,
     changeTrend: 'worsening',
     domains: {
-      'leitura': {
+      leitura: {
         score: 58,
         threshold: 70,
-        status: 'at-risk'
+        status: 'at-risk',
       },
-      'matemática': {
+      matemática: {
         score: 72,
         threshold: 70,
-        status: 'on-track'
-      }
+        status: 'on-track',
+      },
     },
     lastAssessment: '2023-03-15',
-    interventions: ['Grupo de leitura intensiva']
+    interventions: ['Grupo de leitura intensiva'],
   },
   {
     id: '2',
@@ -37,14 +37,14 @@ const mockStudentData: StudentRiskData[] = [
     previousScore: 40,
     changeTrend: 'stable',
     domains: {
-      'leitura': {
+      leitura: {
         score: 38,
         threshold: 70,
-        status: 'critical'
-      }
+        status: 'critical',
+      },
     },
     lastAssessment: '2023-03-10',
-    interventions: []
+    interventions: [],
   },
   {
     id: '3',
@@ -55,15 +55,15 @@ const mockStudentData: StudentRiskData[] = [
     previousScore: 80,
     changeTrend: 'improving',
     domains: {
-      'leitura': {
+      leitura: {
         score: 88,
         threshold: 70,
-        status: 'above'
-      }
+        status: 'above',
+      },
     },
     lastAssessment: '2023-03-18',
-    interventions: []
-  }
+    interventions: [],
+  },
 ];
 
 describe('StudentRiskTable', () => {
@@ -110,12 +110,7 @@ describe('StudentRiskTable', () => {
 
   it('chama onStudentClick quando um estudante é clicado', () => {
     const handleStudentClick = jest.fn();
-    render(
-      <StudentRiskTable
-        data={mockStudentData}
-        onStudentClick={handleStudentClick}
-      />
-    );
+    render(<StudentRiskTable data={mockStudentData} onStudentClick={handleStudentClick} />);
 
     // Clicar na linha do primeiro estudante
     const studentName = screen.getByText('Ana Silva');

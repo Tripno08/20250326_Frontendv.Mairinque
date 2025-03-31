@@ -11,9 +11,17 @@ import {
   Cell,
   PieChart,
   Pie,
-  Sector
+  Sector,
 } from 'recharts';
-import { Box, Paper, Typography, Grid, useTheme, ToggleButtonGroup, ToggleButton } from '@mui/material';
+import {
+  Box,
+  Paper,
+  Typography,
+  Grid,
+  useTheme,
+  ToggleButtonGroup,
+  ToggleButton,
+} from '@mui/material';
 import { BarChartOutlined, PieChartOutlined } from '@mui/icons-material';
 import { TierDistributionChartProps } from '@/types/visualization';
 
@@ -23,8 +31,17 @@ const CHART_MARGIN = { top: 20, right: 30, left: 20, bottom: 5 };
 const renderActiveShape = (props: any) => {
   const RADIAN = Math.PI / 180;
   const {
-    cx, cy, midAngle, innerRadius, outerRadius, startAngle, endAngle,
-    fill, payload, percent, count
+    cx,
+    cy,
+    midAngle,
+    innerRadius,
+    outerRadius,
+    startAngle,
+    endAngle,
+    fill,
+    payload,
+    percent,
+    count,
   } = props;
   const sin = Math.sin(-RADIAN * midAngle);
   const cos = Math.cos(-RADIAN * midAngle);
@@ -79,7 +96,7 @@ export const TierDistributionChart: React.FC<TierDistributionChartProps> = ({
   className,
   style,
   width = 500,
-  height = 400
+  height = 400,
 }) => {
   const theme = useTheme();
   const [activeIndex, setActiveIndex] = React.useState(0);
@@ -90,7 +107,7 @@ export const TierDistributionChart: React.FC<TierDistributionChartProps> = ({
     name: tier.name,
     count: tier.count,
     percentage: tier.percentage,
-    color: tier.color
+    color: tier.color,
   }));
 
   // Manipuladores de eventos
@@ -100,7 +117,7 @@ export const TierDistributionChart: React.FC<TierDistributionChartProps> = ({
 
   const handleChartTypeChange = (
     _: React.MouseEvent<HTMLElement>,
-    newType: 'bar' | 'pie' | null,
+    newType: 'bar' | 'pie' | null
   ) => {
     if (newType !== null) {
       setChartType(newType);
@@ -140,7 +157,7 @@ export const TierDistributionChart: React.FC<TierDistributionChartProps> = ({
         p: 2,
         height: `${height}px`,
         width: `${width}px`,
-        ...(style || {})
+        ...(style || {}),
       }}
       className={className || undefined}
     >
@@ -165,14 +182,10 @@ export const TierDistributionChart: React.FC<TierDistributionChartProps> = ({
       <Box sx={{ width: '100%', height: 'calc(100% - 70px)' }}>
         <ResponsiveContainer width="100%" height="100%">
           {chartType === 'bar' ? (
-            <BarChart
-              data={chartData}
-              margin={CHART_MARGIN}
-              onClick={handleChartClick}
-            >
+            <BarChart data={chartData} margin={CHART_MARGIN} onClick={handleChartClick}>
               <CartesianGrid strokeDasharray="3 3" vertical={false} />
               <XAxis dataKey="name" />
-              <YAxis tickFormatter={(value) => `${value}`} />
+              <YAxis tickFormatter={value => `${value}`} />
               <Tooltip content={<CustomTooltip />} />
               {showLegend && <Legend />}
               <Bar

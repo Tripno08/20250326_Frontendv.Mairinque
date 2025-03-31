@@ -12,11 +12,7 @@ const exampleData: PyramidData = {
       color: '#4CAF50',
       percentage: 80,
       students: 800,
-      interventions: [
-        'Instrução diferenciada',
-        'Monitoramento contínuo',
-        'Feedback imediato',
-      ],
+      interventions: ['Instrução diferenciada', 'Monitoramento contínuo', 'Feedback imediato'],
     },
     {
       id: 'tier2',
@@ -25,11 +21,7 @@ const exampleData: PyramidData = {
       color: '#FFC107',
       percentage: 15,
       students: 150,
-      interventions: [
-        'Tutoria em pequenos grupos',
-        'Prática adicional',
-        'Monitoramento semanal',
-      ],
+      interventions: ['Tutoria em pequenos grupos', 'Prática adicional', 'Monitoramento semanal'],
     },
     {
       id: 'tier3',
@@ -79,4 +71,4 @@ export const PyramidVisualizationExample: React.FC = () => {
       </Box>
     </Box>
   );
-}; 
+};

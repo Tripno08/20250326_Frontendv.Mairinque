@@ -1,24 +1,24 @@
-import React, { useRef, useEffect, useState } from 'react'
-import { Box, CircularProgress, Typography, Paper, Grid } from '@mui/material'
-import { RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Radar } from 'recharts'
+import React, { useRef, useEffect, useState } from 'react';
+import { Box, CircularProgress, Typography, Paper, Grid } from '@mui/material';
+import { RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Radar } from 'recharts';
 
 interface DomainSummaryData {
-  reading: number
-  math: number
-  writing: number
+  reading: number;
+  math: number;
+  writing: number;
 }
 
 interface DomainSummaryProps {
-  data: DomainSummaryData
-  isLoading?: boolean
-  error?: string
-  width?: number
-  height?: number
+  data: DomainSummaryData;
+  isLoading?: boolean;
+  error?: string;
+  width?: number;
+  height?: number;
 }
 
 interface ChartDimensions {
-  width: number
-  height: number
+  width: number;
+  height: number;
 }
 
 export const DomainSummary: React.FC<DomainSummaryProps> = ({
@@ -28,41 +28,41 @@ export const DomainSummary: React.FC<DomainSummaryProps> = ({
   width: propWidth,
   height: propHeight,
 }) => {
-  const containerRef = useRef<HTMLDivElement>(null)
+  const containerRef = useRef<HTMLDivElement>(null);
   const [dimensions, setDimensions] = useState<ChartDimensions>({
     width: propWidth || 800,
-    height: propHeight || 600
-  })
+    height: propHeight || 600,
+  });
 
   const chartData = [
     { domain: 'Leitura', value: data.reading },
     { domain: 'Matemática', value: data.math },
     { domain: 'Escrita', value: data.writing },
-  ]
+  ];
 
   useEffect(() => {
     const updateDimensions = () => {
       if (containerRef.current) {
-        const { clientWidth, clientHeight } = containerRef.current
+        const { clientWidth, clientHeight } = containerRef.current;
         setDimensions({
           width: propWidth || Math.max(clientWidth, 300),
-          height: propHeight || Math.max(clientHeight, 300)
-        })
+          height: propHeight || Math.max(clientHeight, 300),
+        });
       }
-    }
+    };
 
-    updateDimensions()
-    window.addEventListener('resize', updateDimensions)
+    updateDimensions();
+    window.addEventListener('resize', updateDimensions);
 
-    return () => window.removeEventListener('resize', updateDimensions)
-  }, [propWidth, propHeight])
+    return () => window.removeEventListener('resize', updateDimensions);
+  }, [propWidth, propHeight]);
 
   if (isLoading) {
     return (
       <Box display="flex" justifyContent="center" alignItems="center" minHeight={300}>
         <CircularProgress />
       </Box>
-    )
+    );
   }
 
   if (error) {
@@ -70,7 +70,7 @@ export const DomainSummary: React.FC<DomainSummaryProps> = ({
       <Box display="flex" justifyContent="center" alignItems="center" minHeight={300}>
         <Typography color="error">{error}</Typography>
       </Box>
-    )
+    );
   }
 
   return (
@@ -89,7 +89,7 @@ export const DomainSummary: React.FC<DomainSummaryProps> = ({
             sx={{
               minWidth: '300px',
               minHeight: '300px',
-              position: 'relative'
+              position: 'relative',
             }}
           >
             <RadarChart
@@ -116,19 +116,17 @@ export const DomainSummary: React.FC<DomainSummaryProps> = ({
             <Typography variant="subtitle1" gutterBottom>
               Detalhes
             </Typography>
-            {chartData.map((item) => (
+            {chartData.map(item => (
               <Box key={item.domain} mb={1}>
                 <Typography variant="body2" color="text.secondary">
                   {item.domain}
                 </Typography>
-                <Typography variant="h6">
-                  {item.value}%
-                </Typography>
+                <Typography variant="h6">{item.value}%</Typography>
               </Box>
             ))}
           </Box>
         </Grid>
       </Grid>
     </Paper>
-  )
-}
+  );
+};

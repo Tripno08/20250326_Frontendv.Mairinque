@@ -15,7 +15,7 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-  Paper
+  Paper,
 } from '@mui/material';
 import { ScreeningAdministration, ScreeningResponse } from '../../types/screening';
 
@@ -35,7 +35,7 @@ const formatResponseValue = (response: ScreeningResponse): string => {
 export const ScreeningResponses: React.FC<ScreeningResponsesProps> = ({
   administration,
   open,
-  onClose
+  onClose,
 }) => {
   return (
     <Dialog open={open} onClose={onClose} maxWidth="md" fullWidth>
@@ -70,9 +70,7 @@ export const ScreeningResponses: React.FC<ScreeningResponsesProps> = ({
                     <TableRow key={index}>
                       <TableCell>{response.questionId}</TableCell>
                       <TableCell>{formatResponseValue(response)}</TableCell>
-                      <TableCell>
-                        {new Date(response.timestamp).toLocaleString()}
-                      </TableCell>
+                      <TableCell>{new Date(response.timestamp).toLocaleString()}</TableCell>
                     </TableRow>
                   ))}
                 </TableBody>

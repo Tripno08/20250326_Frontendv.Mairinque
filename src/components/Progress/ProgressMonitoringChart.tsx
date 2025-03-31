@@ -35,7 +35,7 @@ interface ChartDimensions {
     right: number;
     left: number;
     bottom: number;
-  }
+  };
 }
 
 export const ProgressMonitoringChart: React.FC<ProgressMonitoringChartProps> = ({
@@ -52,7 +52,7 @@ export const ProgressMonitoringChart: React.FC<ProgressMonitoringChartProps> = (
   const [dimensions, setDimensions] = useState<ChartDimensions>(() => ({
     width: propWidth,
     height: propHeight,
-    margin: { top: 20, right: 30, left: 20, bottom: 20 }
+    margin: { top: 20, right: 30, left: 20, bottom: 20 },
   }));
   const [zoomLevel, setZoomLevel] = useState(1);
   const [selectedDateRange, setSelectedDateRange] = useState(dateRange);
@@ -65,7 +65,7 @@ export const ProgressMonitoringChart: React.FC<ProgressMonitoringChartProps> = (
         setDimensions({
           width: Math.max(containerWidth, 300),
           height: Math.max(containerHeight, 300),
-          margin: { top: 20, right: 30, left: 20, bottom: 20 }
+          margin: { top: 20, right: 30, left: 20, bottom: 20 },
         });
       }
     };
@@ -77,15 +77,11 @@ export const ProgressMonitoringChart: React.FC<ProgressMonitoringChartProps> = (
   }, [propWidth, propHeight]);
 
   const trendLine = calculateTrendLine(data);
-  const projections = goals.map((goal) =>
-    calculateProjection(data, goal.deadline)
-  );
+  const projections = goals.map(goal => calculateProjection(data, goal.deadline));
 
   const filteredData = selectedDateRange
     ? data.filter(
-        (point) =>
-          point.date >= selectedDateRange.start &&
-          point.date <= selectedDateRange.end
+        point => point.date >= selectedDateRange.start && point.date <= selectedDateRange.end
       )
     : data;
 
@@ -94,12 +90,8 @@ export const ProgressMonitoringChart: React.FC<ProgressMonitoringChartProps> = (
       const dataPoint = payload[0].payload;
       return (
         <Paper sx={{ p: 2 }}>
-          <Typography variant="subtitle2">
-            {formatDate(new Date(label))}
-          </Typography>
-          <Typography variant="body2">
-            Valor: {formatValue(dataPoint.value)}
-          </Typography>
+          <Typography variant="subtitle2">{formatDate(new Date(label))}</Typography>
+          <Typography variant="body2">Valor: {formatValue(dataPoint.value)}</Typography>
           {dataPoint.intervention && (
             <Typography
               variant="body2"
@@ -150,7 +142,7 @@ export const ProgressMonitoringChart: React.FC<ProgressMonitoringChartProps> = (
         <MuiTooltip title="Aumentar Zoom">
           <IconButton
             size="small"
-            onClick={() => setZoomLevel((prev) => Math.min(prev + 0.1, 2))}
+            onClick={() => setZoomLevel(prev => Math.min(prev + 0.1, 2))}
             aria-label="Aumentar Zoom"
           >
             <ZoomInIcon />
@@ -159,18 +151,14 @@ export const ProgressMonitoringChart: React.FC<ProgressMonitoringChartProps> = (
         <MuiTooltip title="Diminuir Zoom">
           <IconButton
             size="small"
-            onClick={() => setZoomLevel((prev) => Math.max(prev - 0.1, 0.5))}
+            onClick={() => setZoomLevel(prev => Math.max(prev - 0.1, 0.5))}
             aria-label="Diminuir Zoom"
           >
             <ZoomOutIcon />
           </IconButton>
         </MuiTooltip>
         <MuiTooltip title="Resetar Zoom">
-          <IconButton
-            size="small"
-            onClick={() => setZoomLevel(1)}
-            aria-label="Resetar Zoom"
-          >
+          <IconButton size="small" onClick={() => setZoomLevel(1)} aria-label="Resetar Zoom">
             <RefreshIcon />
           </IconButton>
         </MuiTooltip>
@@ -186,13 +174,10 @@ export const ProgressMonitoringChart: React.FC<ProgressMonitoringChartProps> = (
         <CartesianGrid strokeDasharray="3 3" />
         <XAxis
           dataKey="date"
-          tickFormatter={(date) => formatDate(new Date(date))}
+          tickFormatter={date => formatDate(new Date(date))}
           domain={['dataMin', 'dataMax']}
         />
-        <YAxis
-          tickFormatter={formatValue}
-          domain={['dataMin', 'dataMax']}
-        />
+        <YAxis tickFormatter={formatValue} domain={['dataMin', 'dataMax']} />
         <Tooltip content={<CustomTooltip />} />
         <Legend />
 
@@ -210,16 +195,14 @@ export const ProgressMonitoringChart: React.FC<ProgressMonitoringChartProps> = (
         {/* Linha de Tendência */}
         <Line
           type="monotone"
-          dataKey={(data: any) =>
-            trendLine.slope * data.index + trendLine.intercept
-          }
+          dataKey={(data: any) => trendLine.slope * data.index + trendLine.intercept}
           stroke="#757575"
           strokeDasharray="5 5"
           name="Tendência"
         />
 
         {/* Benchmarks */}
-        {benchmarks.map((benchmark) => (
+        {benchmarks.map(benchmark => (
           <ReferenceLine
             key={benchmark.name}
             y={Number(benchmark.value)}
@@ -234,7 +217,7 @@ export const ProgressMonitoringChart: React.FC<ProgressMonitoringChartProps> = (
         ))}
 
         {/* Metas */}
-        {goals.map((goal) => (
+        {goals.map(goal => (
           <ReferenceLine
             key={goal.name}
             y={Number(goal.targetValue)}

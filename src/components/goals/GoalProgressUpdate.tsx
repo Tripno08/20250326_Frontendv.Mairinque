@@ -10,14 +10,14 @@ import {
   Slider,
   FormHelperText,
   Divider,
-  InputAdornment
+  InputAdornment,
 } from '@mui/material';
 import type { GoalProgressUpdateProps } from '@/types/smart-goals';
 
 export const GoalProgressUpdate: React.FC<GoalProgressUpdateProps> = ({
   goal,
   onUpdate,
-  onCancel
+  onCancel,
 }) => {
   // Estados
   const [value, setValue] = useState<number>(goal.measurement.currentValue);
@@ -107,7 +107,8 @@ export const GoalProgressUpdate: React.FC<GoalProgressUpdateProps> = ({
       <form onSubmit={handleSubmit}>
         <Box sx={{ mb: 4 }}>
           <Typography gutterBottom>
-            Valor Atual: {value} {goal.measurement.unit} ({Math.round(calculatePercentage(value))}% concluído)
+            Valor Atual: {value} {goal.measurement.unit} ({Math.round(calculatePercentage(value))}%
+            concluído)
           </Typography>
 
           <Slider
@@ -118,8 +119,14 @@ export const GoalProgressUpdate: React.FC<GoalProgressUpdateProps> = ({
             valueLabelDisplay="auto"
             step={Math.abs(maxValue - minValue) > 100 ? 1 : 0.1}
             marks={[
-              { value: goal.measurement.initialValue, label: `Inicial: ${goal.measurement.initialValue}` },
-              { value: goal.measurement.targetValue, label: `Alvo: ${goal.measurement.targetValue}` }
+              {
+                value: goal.measurement.initialValue,
+                label: `Inicial: ${goal.measurement.initialValue}`,
+              },
+              {
+                value: goal.measurement.targetValue,
+                label: `Alvo: ${goal.measurement.targetValue}`,
+              },
             ]}
             min={minValue}
             max={maxValue}
@@ -140,7 +147,7 @@ export const GoalProgressUpdate: React.FC<GoalProgressUpdateProps> = ({
             inputProps={{
               min: minValue,
               max: maxValue,
-              step: Math.abs(maxValue - minValue) > 100 ? 1 : 0.1
+              step: Math.abs(maxValue - minValue) > 100 ? 1 : 0.1,
             }}
             sx={{ mt: 2 }}
           />

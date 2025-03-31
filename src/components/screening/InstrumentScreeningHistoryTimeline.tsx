@@ -8,7 +8,7 @@ import {
   Select,
   MenuItem,
   TextField,
-  Chip
+  Chip,
 } from '@mui/material';
 import Timeline from '@mui/lab/Timeline';
 import TimelineItem from '@mui/lab/TimelineItem';
@@ -53,9 +53,9 @@ const getStatusLabel = (status: string) => {
   }
 };
 
-export const InstrumentScreeningHistoryTimeline: React.FC<InstrumentScreeningHistoryTimelineProps> = ({
-  instrumentId
-}) => {
+export const InstrumentScreeningHistoryTimeline: React.FC<
+  InstrumentScreeningHistoryTimelineProps
+> = ({ instrumentId }) => {
   const [filters, setFilters] = useState<{
     status?: ScreeningAdministration['status'];
     startDate?: Date;
@@ -64,7 +64,7 @@ export const InstrumentScreeningHistoryTimeline: React.FC<InstrumentScreeningHis
 
   const { administrations, loading, error } = useScreeningAdministrations({
     instrumentId,
-    ...filters
+    ...filters,
   });
 
   const handleFilterChange = (field: keyof typeof filters, value: any) => {
@@ -92,7 +92,7 @@ export const InstrumentScreeningHistoryTimeline: React.FC<InstrumentScreeningHis
             <Select
               value={filters.status || ''}
               label="Status"
-              onChange={(e) => handleFilterChange('status', e.target.value)}
+              onChange={e => handleFilterChange('status', e.target.value)}
             >
               <MenuItem value="">Todos</MenuItem>
               <MenuItem value="pending">Pendente</MenuItem>
@@ -109,7 +109,9 @@ export const InstrumentScreeningHistoryTimeline: React.FC<InstrumentScreeningHis
             label="Data Inicial"
             type="date"
             value={filters.startDate ? new Date(filters.startDate).toISOString().split('T')[0] : ''}
-            onChange={(e) => handleFilterChange('startDate', e.target.value ? new Date(e.target.value) : undefined)}
+            onChange={e =>
+              handleFilterChange('startDate', e.target.value ? new Date(e.target.value) : undefined)
+            }
             InputLabelProps={{ shrink: true }}
           />
         </Grid>
@@ -120,7 +122,9 @@ export const InstrumentScreeningHistoryTimeline: React.FC<InstrumentScreeningHis
             label="Data Final"
             type="date"
             value={filters.endDate ? new Date(filters.endDate).toISOString().split('T')[0] : ''}
-            onChange={(e) => handleFilterChange('endDate', e.target.value ? new Date(e.target.value) : undefined)}
+            onChange={e =>
+              handleFilterChange('endDate', e.target.value ? new Date(e.target.value) : undefined)
+            }
             InputLabelProps={{ shrink: true }}
           />
         </Grid>
@@ -134,7 +138,14 @@ export const InstrumentScreeningHistoryTimeline: React.FC<InstrumentScreeningHis
               {index < administrations.length - 1 && <TimelineConnector />}
             </TimelineSeparator>
             <TimelineContent>
-              <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 1 }}>
+              <Box
+                sx={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                  mb: 1,
+                }}
+              >
                 <Typography variant="subtitle1" component="div">
                   Estudante: {administration.studentId}
                 </Typography>
@@ -151,7 +162,8 @@ export const InstrumentScreeningHistoryTimeline: React.FC<InstrumentScreeningHis
                 Início: {new Date(administration.startDate).toLocaleString()}
               </Typography>
               <Typography variant="body2" color="text.secondary">
-                Término: {administration.endDate ? new Date(administration.endDate).toLocaleString() : '-'}
+                Término:{' '}
+                {administration.endDate ? new Date(administration.endDate).toLocaleString() : '-'}
               </Typography>
               <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>
                 Respostas: {administration.responses.length}

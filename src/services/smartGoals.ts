@@ -8,7 +8,8 @@ const MOCK_GOALS: SmartGoal[] = [
     studentId: 'student-123',
     title: 'Melhorar fluência de leitura',
     description: 'Aumentar a velocidade e precisão na leitura oral',
-    specificDetails: 'Aumentar a fluência de leitura de 60 para 90 palavras por minuto com 95% de precisão em textos de nível escolar',
+    specificDetails:
+      'Aumentar a fluência de leitura de 60 para 90 palavras por minuto com 95% de precisão em textos de nível escolar',
     measurement: {
       initialValue: 60,
       targetValue: 90,
@@ -17,16 +18,17 @@ const MOCK_GOALS: SmartGoal[] = [
       progressHistory: [
         { date: new Date('2023-09-01'), value: 60, notes: 'Avaliação inicial' },
         { date: new Date('2023-09-15'), value: 65, notes: 'Após 2 semanas de prática diária' },
-        { date: new Date('2023-10-01'), value: 72, notes: 'Melhora consistente' }
-      ]
+        { date: new Date('2023-10-01'), value: 72, notes: 'Melhora consistente' },
+      ],
     },
     achievementSteps: [
       'Prática diária de leitura por 15 minutos',
       'Uso de cronômetro para medir velocidade',
       'Reler textos para aumentar familiaridade',
-      'Participar de grupo de leitura semanal'
+      'Participar de grupo de leitura semanal',
     ],
-    relevance: 'A fluência de leitura é fundamental para a compreensão textual e para o sucesso acadêmico em todas as disciplinas',
+    relevance:
+      'A fluência de leitura é fundamental para a compreensão textual e para o sucesso acadêmico em todas as disciplinas',
     startDate: new Date('2023-09-01'),
     targetDate: new Date('2023-12-15'),
     status: 'em andamento',
@@ -36,14 +38,15 @@ const MOCK_GOALS: SmartGoal[] = [
     interventions: ['intervention-1', 'intervention-2'],
     domain: 'Língua Portuguesa',
     skills: ['Fluência de leitura', 'Decodificação', 'Compreensão textual'],
-    responsibleUsers: ['Professor de Português', 'Psicopedagogo']
+    responsibleUsers: ['Professor de Português', 'Psicopedagogo'],
   },
   {
     id: 'goal-2',
     studentId: 'student-123',
     title: 'Desenvolver habilidades de resolução de problemas matemáticos',
     description: 'Melhorar a capacidade de resolver problemas matemáticos do 5º ano',
-    specificDetails: 'Aumentar a taxa de acerto em problemas matemáticos envolvendo frações de 40% para 80% em avaliações padronizadas',
+    specificDetails:
+      'Aumentar a taxa de acerto em problemas matemáticos envolvendo frações de 40% para 80% em avaliações padronizadas',
     measurement: {
       initialValue: 40,
       targetValue: 80,
@@ -52,16 +55,21 @@ const MOCK_GOALS: SmartGoal[] = [
       progressHistory: [
         { date: new Date('2023-08-15'), value: 40, notes: 'Avaliação diagnóstica' },
         { date: new Date('2023-09-15'), value: 52, notes: 'Após intervenções iniciais' },
-        { date: new Date('2023-10-15'), value: 60, notes: 'Progresso constante, mas precisa de mais prática' }
-      ]
+        {
+          date: new Date('2023-10-15'),
+          value: 60,
+          notes: 'Progresso constante, mas precisa de mais prática',
+        },
+      ],
     },
     achievementSteps: [
       'Usar materiais concretos para visualizar frações',
       'Praticar problemas com contextos reais diariamente',
       'Criar representações visuais dos problemas',
-      'Explicar o raciocínio utilizado para resolver problemas'
+      'Explicar o raciocínio utilizado para resolver problemas',
     ],
-    relevance: 'A compreensão de frações é um fundamento crítico para matemática avançada e aplicações na vida cotidiana',
+    relevance:
+      'A compreensão de frações é um fundamento crítico para matemática avançada e aplicações na vida cotidiana',
     startDate: new Date('2023-08-15'),
     targetDate: new Date('2024-01-31'),
     status: 'em andamento',
@@ -71,8 +79,8 @@ const MOCK_GOALS: SmartGoal[] = [
     interventions: ['intervention-3'],
     domain: 'Matemática',
     skills: ['Frações', 'Resolução de problemas', 'Raciocínio lógico'],
-    responsibleUsers: ['Professor de Matemática', 'Tutor']
-  }
+    responsibleUsers: ['Professor de Matemática', 'Tutor'],
+  },
 ];
 
 // Variável para armazenar metas (emula banco de dados)
@@ -82,7 +90,7 @@ let goals = [...MOCK_GOALS];
  * Busca todas as metas SMART
  */
 export const getAllGoals = async (): Promise<SmartGoal[]> => {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     setTimeout(() => {
       resolve([...goals]);
     }, 500); // Simula latência de rede
@@ -93,7 +101,7 @@ export const getAllGoals = async (): Promise<SmartGoal[]> => {
  * Busca as metas SMART de um aluno específico
  */
 export const getStudentGoals = async (studentId: string): Promise<SmartGoal[]> => {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     setTimeout(() => {
       const studentGoals = goals.filter(goal => goal.studentId === studentId);
       resolve([...studentGoals]);
@@ -105,7 +113,7 @@ export const getStudentGoals = async (studentId: string): Promise<SmartGoal[]> =
  * Busca uma meta SMART por ID
  */
 export const getGoalById = async (goalId: string): Promise<SmartGoal | null> => {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     setTimeout(() => {
       const goal = goals.find(goal => goal.id === goalId);
       resolve(goal || null);
@@ -117,7 +125,7 @@ export const getGoalById = async (goalId: string): Promise<SmartGoal | null> => 
  * Cria uma nova meta SMART
  */
 export const createGoal = async (formData: SmartGoalFormData): Promise<SmartGoal> => {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     setTimeout(() => {
       const now = new Date();
 
@@ -149,10 +157,10 @@ export const createGoal = async (formData: SmartGoalFormData): Promise<SmartGoal
             {
               date: now,
               value: formData.initialValue,
-              notes: 'Valor inicial'
-            }
-          ]
-        }
+              notes: 'Valor inicial',
+            },
+          ],
+        },
       };
 
       // Adicionar à lista
@@ -166,8 +174,11 @@ export const createGoal = async (formData: SmartGoalFormData): Promise<SmartGoal
 /**
  * Atualiza uma meta SMART existente
  */
-export const updateGoal = async (goalId: string, formData: SmartGoalFormData): Promise<SmartGoal | null> => {
-  return new Promise((resolve) => {
+export const updateGoal = async (
+  goalId: string,
+  formData: SmartGoalFormData
+): Promise<SmartGoal | null> => {
+  return new Promise(resolve => {
     setTimeout(() => {
       const index = goals.findIndex(goal => goal.id === goalId);
 
@@ -205,16 +216,12 @@ export const updateGoal = async (goalId: string, formData: SmartGoalFormData): P
           ...existingGoal.measurement,
           initialValue: formData.initialValue,
           targetValue: formData.targetValue,
-          unit: formData.unit
-        }
+          unit: formData.unit,
+        },
       };
 
       // Substituir na lista
-      goals = [
-        ...goals.slice(0, index),
-        updatedGoal,
-        ...goals.slice(index + 1)
-      ];
+      goals = [...goals.slice(0, index), updatedGoal, ...goals.slice(index + 1)];
 
       resolve(updatedGoal);
     }, 500);
@@ -229,7 +236,7 @@ export const updateGoalProgress = async (
   value: number,
   notes?: string
 ): Promise<SmartGoal | null> => {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     setTimeout(() => {
       const index = goals.findIndex(goal => goal.id === goalId);
 
@@ -251,7 +258,7 @@ export const updateGoalProgress = async (
       const newProgressEntry = {
         date: now,
         value,
-        notes: notes || ''
+        notes: notes || '',
       };
 
       // Verificar se atingiu a meta
@@ -276,19 +283,12 @@ export const updateGoalProgress = async (
         measurement: {
           ...existingGoal.measurement,
           currentValue: value,
-          progressHistory: [
-            ...existingGoal.measurement.progressHistory,
-            newProgressEntry
-          ]
-        }
+          progressHistory: [...existingGoal.measurement.progressHistory, newProgressEntry],
+        },
       };
 
       // Substituir na lista
-      goals = [
-        ...goals.slice(0, index),
-        updatedGoal,
-        ...goals.slice(index + 1)
-      ];
+      goals = [...goals.slice(0, index), updatedGoal, ...goals.slice(index + 1)];
 
       resolve(updatedGoal);
     }, 500);
@@ -299,7 +299,7 @@ export const updateGoalProgress = async (
  * Exclui uma meta SMART
  */
 export const deleteGoal = async (goalId: string): Promise<boolean> => {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     setTimeout(() => {
       const initialLength = goals.length;
       goals = goals.filter(goal => goal.id !== goalId);

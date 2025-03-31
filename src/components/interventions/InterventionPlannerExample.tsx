@@ -9,7 +9,8 @@ const mockInterventions: Intervention[] = [
   {
     id: '1',
     title: 'Prática de Leitura Guiada',
-    description: 'Intervenção estruturada para melhorar a fluência e compreensão leitora através de leitura em pares e feedback imediato.',
+    description:
+      'Intervenção estruturada para melhorar a fluência e compreensão leitora através de leitura em pares e feedback imediato.',
     tier: 'Tier 2',
     domain: 'Acadêmico',
     evidenceLevel: 'Alta Evidência',
@@ -20,20 +21,21 @@ const mockInterventions: Intervention[] = [
       'Estabelecer objetivos de leitura',
       'Realizar leitura em pares',
       'Fornecer feedback construtivo',
-      'Registrar progresso'
+      'Registrar progresso',
     ],
     effectiveness: {
       rating: 4.5,
       studies: 12,
-      description: 'Efetiva para melhorar fluência e compreensão leitora'
+      description: 'Efetiva para melhorar fluência e compreensão leitora',
     },
     imageUrl: '/images/interventions/guided-reading.jpg',
-    tags: ['Leitura', 'Fluência', 'Compreensão']
+    tags: ['Leitura', 'Fluência', 'Compreensão'],
   },
   {
     id: '2',
     title: 'Treinamento de Habilidades Sociais',
-    description: 'Programa estruturado para desenvolver habilidades sociais básicas e avançadas em ambiente controlado.',
+    description:
+      'Programa estruturado para desenvolver habilidades sociais básicas e avançadas em ambiente controlado.',
     tier: 'Tier 2',
     domain: 'Social',
     evidenceLevel: 'Média Evidência',
@@ -44,20 +46,21 @@ const mockInterventions: Intervention[] = [
       'Demonstrar comportamento adequado',
       'Praticar em pares',
       'Fornecer feedback',
-      'Aplicar em contexto natural'
+      'Aplicar em contexto natural',
     ],
     effectiveness: {
       rating: 4.0,
       studies: 8,
-      description: 'Efetiva para melhorar interações sociais'
+      description: 'Efetiva para melhorar interações sociais',
     },
     imageUrl: '/images/interventions/social-skills.jpg',
-    tags: ['Habilidades Sociais', 'Comunicação', 'Interação']
+    tags: ['Habilidades Sociais', 'Comunicação', 'Interação'],
   },
   {
     id: '3',
     title: 'Regulação Emocional',
-    description: 'Técnicas de mindfulness e regulação emocional para gerenciar emoções e comportamentos.',
+    description:
+      'Técnicas de mindfulness e regulação emocional para gerenciar emoções e comportamentos.',
     tier: 'Tier 1',
     domain: 'Emocional',
     evidenceLevel: 'Alta Evidência',
@@ -68,20 +71,21 @@ const mockInterventions: Intervention[] = [
       'Praticar respiração consciente',
       'Usar técnicas de grounding',
       'Aplicar estratégias de regulação',
-      'Refletir sobre experiência'
+      'Refletir sobre experiência',
     ],
     effectiveness: {
       rating: 4.8,
       studies: 15,
-      description: 'Altamente efetiva para regulação emocional'
+      description: 'Altamente efetiva para regulação emocional',
     },
     imageUrl: '/images/interventions/emotional-regulation.jpg',
-    tags: ['Mindfulness', 'Regulação Emocional', 'Autocontrole']
+    tags: ['Mindfulness', 'Regulação Emocional', 'Autocontrole'],
   },
   {
     id: '4',
     title: 'Intervenção em Matemática Básica',
-    description: 'Sequência estruturada de atividades para reforçar conceitos matemáticos básicos e operações.',
+    description:
+      'Sequência estruturada de atividades para reforçar conceitos matemáticos básicos e operações.',
     tier: 'Tier 2',
     domain: 'Acadêmico',
     evidenceLevel: 'Alta Evidência',
@@ -92,20 +96,21 @@ const mockInterventions: Intervention[] = [
       'Modelagem de conceitos',
       'Prática guiada',
       'Prática independente',
-      'Avaliação formativa'
+      'Avaliação formativa',
     ],
     effectiveness: {
       rating: 4.2,
       studies: 10,
-      description: 'Efetiva para alunos com dificuldades em matemática'
+      description: 'Efetiva para alunos com dificuldades em matemática',
     },
     imageUrl: '/images/interventions/math-intervention.jpg',
-    tags: ['Matemática', 'Operações Básicas', 'Numeracia']
+    tags: ['Matemática', 'Operações Básicas', 'Numeracia'],
   },
   {
     id: '5',
     title: 'Modelagem Comportamental',
-    description: 'Técnicas de modelagem e reforço positivo para desenvolver comportamentos adaptativos.',
+    description:
+      'Técnicas de modelagem e reforço positivo para desenvolver comportamentos adaptativos.',
     tier: 'Tier 3',
     domain: 'Comportamental',
     evidenceLevel: 'Média Evidência',
@@ -116,22 +121,23 @@ const mockInterventions: Intervention[] = [
       'Demonstrar comportamento',
       'Praticar com feedback',
       'Implementar reforço',
-      'Monitorar progresso'
+      'Monitorar progresso',
     ],
     effectiveness: {
       rating: 3.8,
       studies: 7,
-      description: 'Moderadamente efetiva para modificação comportamental'
+      description: 'Moderadamente efetiva para modificação comportamental',
     },
     imageUrl: '/images/interventions/behavior-modeling.jpg',
-    tags: ['Comportamento', 'Reforço Positivo', 'Modelagem']
-  }
+    tags: ['Comportamento', 'Reforço Positivo', 'Modelagem'],
+  },
 ];
 
 // Plano inicial vazio
 const initialPlan: InterventionPlan = {
   title: 'Plano de Intervenção - Maria Silva',
-  description: 'Plano estruturado para apoiar desenvolvimento de habilidades acadêmicas e socioemocionais',
+  description:
+    'Plano estruturado para apoiar desenvolvimento de habilidades acadêmicas e socioemocionais',
   studentId: 'student-123',
   items: [],
   status: 'draft',
@@ -157,7 +163,10 @@ export const InterventionPlannerExample: React.FC = () => {
         Planejamento de Intervenções RTI/MTSS
       </Typography>
 
-      <Paper elevation={0} sx={{ p: 3, mb: 4, borderRadius: 2, border: '1px solid', borderColor: 'divider' }}>
+      <Paper
+        elevation={0}
+        sx={{ p: 3, mb: 4, borderRadius: 2, border: '1px solid', borderColor: 'divider' }}
+      >
         <Typography variant="body1" paragraph>
           Planeje intervenções personalizadas arrastando atividades da biblioteca para o plano.
           Reorganize as atividades conforme necessário e salve o plano quando estiver concluído.

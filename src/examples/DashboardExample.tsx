@@ -105,11 +105,7 @@ export const DashboardExample: React.FC = () => {
       type: 'domain-summary',
       title: 'Desempenho por Domínio',
       component: (
-        <DomainSummary
-          data={mockData.domainSummary}
-          isLoading={isLoading}
-          error={error}
-        />
+        <DomainSummary data={mockData.domainSummary} isLoading={isLoading} error={error} />
       ),
       defaultConfig: {
         w: 6,
@@ -144,34 +140,34 @@ export const DashboardExample: React.FC = () => {
         <ProgressMonitoringChart
           data={mockData.progressData}
           benchmarks={[
-            { 
-              name: 'Meta 1', 
-              value: 80, 
+            {
+              name: 'Meta 1',
+              value: 80,
               color: '#4CAF50',
-              description: 'Meta de desempenho 1'
+              description: 'Meta de desempenho 1',
             },
-            { 
-              name: 'Meta 2', 
-              value: 90, 
+            {
+              name: 'Meta 2',
+              value: 90,
               color: '#2196F3',
-              description: 'Meta de desempenho 2'
-            }
+              description: 'Meta de desempenho 2',
+            },
           ]}
           goals={[
-            { 
-              name: 'Objetivo 1', 
-              targetValue: 85, 
-              deadline: new Date('2024-06-30'), 
+            {
+              name: 'Objetivo 1',
+              targetValue: 85,
+              deadline: new Date('2024-06-30'),
               color: '#FF9800',
-              description: 'Objetivo de progresso 1'
+              description: 'Objetivo de progresso 1',
             },
-            { 
-              name: 'Objetivo 2', 
-              targetValue: 95, 
-              deadline: new Date('2024-12-31'), 
+            {
+              name: 'Objetivo 2',
+              targetValue: 95,
+              deadline: new Date('2024-12-31'),
               color: '#9C27B0',
-              description: 'Objetivo de progresso 2'
-            }
+              description: 'Objetivo de progresso 2',
+            },
           ]}
           isLoading={isLoading}
           error={error}
@@ -211,4 +207,4 @@ export const DashboardExample: React.FC = () => {
       />
     </Box>
   );
-}; 
+};

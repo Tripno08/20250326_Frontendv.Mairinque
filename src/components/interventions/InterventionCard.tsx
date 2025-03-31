@@ -66,11 +66,7 @@ export const InterventionCard = forwardRef<HTMLDivElement, InterventionCardProps
       >
         {imageUrl && (
           <div className="aspect-w-16 aspect-h-9">
-            <img
-              src={imageUrl}
-              alt={title}
-              className="object-cover w-full h-full"
-            />
+            <img src={imageUrl} alt={title} className="object-cover w-full h-full" />
           </div>
         )}
 
@@ -101,7 +97,7 @@ export const InterventionCard = forwardRef<HTMLDivElement, InterventionCardProps
           </div>
 
           <div className="mt-4 flex flex-wrap gap-2">
-            {tags.map((tag) => (
+            {tags.map(tag => (
               <span
                 key={tag}
                 className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-blue-100 text-blue-800"

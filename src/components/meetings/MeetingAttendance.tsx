@@ -52,7 +52,7 @@ export const MeetingAttendance: React.FC<MeetingAttendanceProps> = ({
       </Typography>
 
       <List>
-        {meeting.participants.map((participant) => (
+        {meeting.participants.map(participant => (
           <ListItem key={participant.id}>
             <ListItemText
               primary={participant.name}
@@ -73,7 +73,7 @@ export const MeetingAttendance: React.FC<MeetingAttendanceProps> = ({
               <Switch
                 edge="end"
                 checked={participant.attendance || false}
-                onChange={(e) => onUpdateAttendance(participant.id, e.target.checked)}
+                onChange={e => onUpdateAttendance(participant.id, e.target.checked)}
                 disabled={participant.status === 'declined'}
               />
             </ListItemSecondaryAction>
@@ -90,14 +90,12 @@ export const MeetingAttendance: React.FC<MeetingAttendanceProps> = ({
           </Grid>
           <Grid item xs={12} sm={4}>
             <Typography variant="body2" color="text.secondary">
-              Presentes:{' '}
-              {meeting.participants.filter((p) => p.attendance).length}
+              Presentes: {meeting.participants.filter(p => p.attendance).length}
             </Typography>
           </Grid>
           <Grid item xs={12} sm={4}>
             <Typography variant="body2" color="text.secondary">
-              Ausentes:{' '}
-              {meeting.participants.filter((p) => !p.attendance).length}
+              Ausentes: {meeting.participants.filter(p => !p.attendance).length}
             </Typography>
           </Grid>
         </Grid>

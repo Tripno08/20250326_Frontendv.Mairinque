@@ -6,7 +6,7 @@ import {
   useTheme,
   Tooltip as MuiTooltip,
   CircularProgress,
-  Alert
+  Alert,
 } from '@mui/material';
 import {
   ResponsiveContainer,
@@ -19,7 +19,7 @@ import {
   Legend,
   ReferenceLine,
   Cell,
-  LabelList
+  LabelList,
 } from 'recharts';
 import { TeamMember, WorkloadChartProps } from '@/types/team';
 import { useCaseAssignments } from '@/hooks/useTeam';
@@ -35,7 +35,7 @@ export const WorkloadChart: React.FC<WorkloadChartProps> = ({
   width = 800,
   height = 500,
   showLegend = true,
-  title = 'Carga de Trabalho da Equipe'
+  title = 'Carga de Trabalho da Equipe',
 }) => {
   const theme = useTheme();
   const { caseloadByMember, isLoading, error } = useCaseAssignments(teamId);
@@ -44,38 +44,40 @@ export const WorkloadChart: React.FC<WorkloadChartProps> = ({
   const chartData = useMemo(() => {
     if (!members.length) return [];
 
-    return members.map(member => {
-      // Obter casos atribuídos a este membro
-      const memberCaseload = caseloadByMember.find(c => c.memberId === member.id);
-      const currentCaseload = memberCaseload?.caseCount || 0;
-      const maxCaseload = member.maxCaseload || 10; // Padrão se não for definido
+    return members
+      .map(member => {
+        // Obter casos atribuídos a este membro
+        const memberCaseload = caseloadByMember.find(c => c.memberId === member.id);
+        const currentCaseload = memberCaseload?.caseCount || 0;
+        const maxCaseload = member.maxCaseload || 10; // Padrão se não for definido
 
-      // Calcular a porcentagem de utilização da capacidade
-      const utilizationPercentage = Math.round((currentCaseload / maxCaseload) * 100);
+        // Calcular a porcentagem de utilização da capacidade
+        const utilizationPercentage = Math.round((currentCaseload / maxCaseload) * 100);
 
-      // Determinar status baseado na utilização
-      let status = 'normal'; // 0-80%
-      let color = theme.palette.success.main;
+        // Determinar status baseado na utilização
+        let status = 'normal'; // 0-80%
+        let color = theme.palette.success.main;
 
-      if (utilizationPercentage > 95) {
-        status = 'sobrecarregado'; // >95%
-        color = theme.palette.error.main;
-      } else if (utilizationPercentage > 80) {
-        status = 'alto'; // 81-95%
-        color = theme.palette.warning.main;
-      }
+        if (utilizationPercentage > 95) {
+          status = 'sobrecarregado'; // >95%
+          color = theme.palette.error.main;
+        } else if (utilizationPercentage > 80) {
+          status = 'alto'; // 81-95%
+          color = theme.palette.warning.main;
+        }
 
-      return {
-        name: member.name,
-        role: member.role,
-        currentCaseload,
-        maxCaseload,
-        remainingCapacity: Math.max(0, maxCaseload - currentCaseload),
-        utilizationPercentage,
-        status,
-        color
-      };
-    }).sort((a, b) => b.utilizationPercentage - a.utilizationPercentage); // Ordenar por utilização (decrescente)
+        return {
+          name: member.name,
+          role: member.role,
+          currentCaseload,
+          maxCaseload,
+          remainingCapacity: Math.max(0, maxCaseload - currentCaseload),
+          utilizationPercentage,
+          status,
+          color,
+        };
+      })
+      .sort((a, b) => b.utilizationPercentage - a.utilizationPercentage); // Ordenar por utilização (decrescente)
   }, [members, caseloadByMember, theme]);
 
   // Componente Tooltip personalizado
@@ -99,11 +101,7 @@ export const WorkloadChart: React.FC<WorkloadChartProps> = ({
             <Typography variant="body2">
               <strong>Capacidade disponível:</strong> {data.remainingCapacity}
             </Typography>
-            <Typography
-              variant="body2"
-              fontWeight="bold"
-              color={data.color}
-            >
+            <Typography variant="body2" fontWeight="bold" color={data.color}>
               <strong>Utilização:</strong> {data.utilizationPercentage}%
             </Typography>
           </Box>
@@ -137,7 +135,7 @@ export const WorkloadChart: React.FC<WorkloadChartProps> = ({
       sx={{
         p: 3,
         width: width || '100%',
-        height: height || 500
+        height: height || 500,
       }}
       className={className}
     >
@@ -146,7 +144,9 @@ export const WorkloadChart: React.FC<WorkloadChartProps> = ({
       </Typography>
 
       {isLoading ? (
-        <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '80%' }}>
+        <Box
+          sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '80%' }}
+        >
           <CircularProgress />
         </Box>
       ) : error ? (
@@ -154,10 +154,10 @@ export const WorkloadChart: React.FC<WorkloadChartProps> = ({
           Erro ao carregar dados: {error.message}
         </Alert>
       ) : chartData.length === 0 ? (
-        <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '80%' }}>
-          <Typography color="text.secondary">
-            Sem dados disponíveis para exibição
-          </Typography>
+        <Box
+          sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '80%' }}
+        >
+          <Typography color="text.secondary">Sem dados disponíveis para exibição</Typography>
         </Box>
       ) : (
         <Box sx={{ height: 'calc(100% - 40px)', width: '100%' }}>
@@ -173,14 +173,10 @@ export const WorkloadChart: React.FC<WorkloadChartProps> = ({
                 label={{
                   value: 'Número de Casos',
                   position: 'insideBottom',
-                  offset: -15
+                  offset: -15,
                 }}
               />
-              <YAxis
-                type="category"
-                dataKey="name"
-                tickLine={false}
-              />
+              <YAxis type="category" dataKey="name" tickLine={false} />
               <Tooltip content={<CustomTooltip />} />
               {showLegend && (
                 <Legend
@@ -188,7 +184,7 @@ export const WorkloadChart: React.FC<WorkloadChartProps> = ({
                   height={36}
                   payload={[
                     { value: 'Atual', type: 'square', color: theme.palette.primary.main },
-                    { value: 'Capacidade Máxima', type: 'line', color: theme.palette.grey[500] }
+                    { value: 'Capacidade Máxima', type: 'line', color: theme.palette.grey[500] },
                   ]}
                 />
               )}
@@ -220,7 +216,7 @@ export const WorkloadChart: React.FC<WorkloadChartProps> = ({
                     position: 'right',
                     value: `Max: ${entry.maxCaseload}`,
                     fill: theme.palette.text.secondary,
-                    fontSize: 12
+                    fontSize: 12,
                   }}
                 />
               ))}
@@ -236,7 +232,7 @@ export const WorkloadChart: React.FC<WorkloadChartProps> = ({
             display: 'flex',
             justifyContent: 'center',
             mt: 2,
-            gap: 3
+            gap: 3,
           }}
         >
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
@@ -246,12 +242,10 @@ export const WorkloadChart: React.FC<WorkloadChartProps> = ({
                 height: 12,
                 borderRadius: '50%',
                 bgcolor: theme.palette.success.main,
-                mr: 1
+                mr: 1,
               }}
             />
-            <Typography variant="body2">
-              Normal (0-80%)
-            </Typography>
+            <Typography variant="body2">Normal (0-80%)</Typography>
           </Box>
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
             <Box
@@ -260,12 +254,10 @@ export const WorkloadChart: React.FC<WorkloadChartProps> = ({
                 height: 12,
                 borderRadius: '50%',
                 bgcolor: theme.palette.warning.main,
-                mr: 1
+                mr: 1,
               }}
             />
-            <Typography variant="body2">
-              Alta (81-95%)
-            </Typography>
+            <Typography variant="body2">Alta (81-95%)</Typography>
           </Box>
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
             <Box
@@ -274,12 +266,10 @@ export const WorkloadChart: React.FC<WorkloadChartProps> = ({
                 height: 12,
                 borderRadius: '50%',
                 bgcolor: theme.palette.error.main,
-                mr: 1
+                mr: 1,
               }}
             />
-            <Typography variant="body2">
-              Sobrecarga ({">"}95%)
-            </Typography>
+            <Typography variant="body2">Sobrecarga ({'>'}95%)</Typography>
           </Box>
         </Box>
       )}

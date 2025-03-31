@@ -57,4 +57,4 @@ export interface Projection {
   targetValue: number;
   deadline: Date;
   confidence: number;
-} 
+}

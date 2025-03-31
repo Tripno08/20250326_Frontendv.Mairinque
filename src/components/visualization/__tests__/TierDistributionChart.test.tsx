@@ -53,12 +53,8 @@ jest.mock('recharts', () => {
     YAxis: () => <div data-testid="y-axis" />,
     Tooltip: () => <div data-testid="tooltip" />,
     Legend: () => <div data-testid="legend" />,
-    Bar: ({ children }: { children: React.ReactNode }) => (
-      <div data-testid="bar">{children}</div>
-    ),
-    Pie: ({ children }: { children: React.ReactNode }) => (
-      <div data-testid="pie">{children}</div>
-    ),
+    Bar: ({ children }: { children: React.ReactNode }) => <div data-testid="bar">{children}</div>,
+    Pie: ({ children }: { children: React.ReactNode }) => <div data-testid="pie">{children}</div>,
     Cell: () => <div data-testid="cell" />,
     Sector: () => <div data-testid="sector" />,
   };
@@ -100,12 +96,7 @@ describe('TierDistributionChart', () => {
   it('chama a função onTierClick quando um tier é clicado', () => {
     const mockOnTierClick = jest.fn();
 
-    render(
-      <TierDistributionChart
-        data={mockData}
-        onTierClick={mockOnTierClick}
-      />
-    );
+    render(<TierDistributionChart data={mockData} onTierClick={mockOnTierClick} />);
 
     // Simular o clique no gráfico
     // Como não podemos simular exatamente o evento do Recharts,
@@ -116,23 +107,13 @@ describe('TierDistributionChart', () => {
   it('renderiza com título personalizado', () => {
     const customTitle = 'Distribuição de Alunos';
 
-    render(
-      <TierDistributionChart
-        data={mockData}
-        title={customTitle}
-      />
-    );
+    render(<TierDistributionChart data={mockData} title={customTitle} />);
 
     expect(screen.getByText(customTitle)).toBeInTheDocument();
   });
 
   it('não mostra a legenda quando showLegend é false', () => {
-    render(
-      <TierDistributionChart
-        data={mockData}
-        showLegend={false}
-      />
-    );
+    render(<TierDistributionChart data={mockData} showLegend={false} />);
 
     // Como o Legend é mockado, não pode ser totalmente testado aqui,
     // mas a prop está sendo passada
@@ -140,11 +121,7 @@ describe('TierDistributionChart', () => {
 
   it('renderiza com tamanho personalizado', () => {
     const { container } = render(
-      <TierDistributionChart
-        data={mockData}
-        width={600}
-        height={300}
-      />
+      <TierDistributionChart data={mockData} width={600} height={300} />
     );
 
     // Como estamos usando um Box que envolve o Paper, não podemos

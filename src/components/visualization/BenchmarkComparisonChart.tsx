@@ -12,7 +12,7 @@ import {
   CartesianGrid,
   XAxis,
   YAxis,
-  Bar
+  Bar,
 } from 'recharts';
 import {
   Box,
@@ -23,7 +23,7 @@ import {
   ToggleButton,
   Switch,
   FormControlLabel,
-  FormGroup
+  FormGroup,
 } from '@mui/material';
 import { RadarOutlined, BarChartOutlined } from '@mui/icons-material';
 import { BenchmarkComparisonChartProps } from '@/types/visualization';
@@ -36,7 +36,7 @@ export const BenchmarkComparisonChart: React.FC<BenchmarkComparisonChartProps> =
   className,
   style,
   width = 700,
-  height = 500
+  height = 500,
 }) => {
   const theme = useTheme();
   const [chartType, setChartType] = useState<'radar' | 'bar'>('radar');
@@ -45,17 +45,17 @@ export const BenchmarkComparisonChart: React.FC<BenchmarkComparisonChartProps> =
     'districtAverage',
     'stateAverage',
     'nationalAverage',
-    ...(showTarget ? ['target'] : [])
+    ...(showTarget ? ['target'] : []),
   ]);
 
   // Formatação dos dados
   const formattedData = data.map(item => ({
     domain: item.domain,
-    'Escola': item.schoolAverage,
-    'Distrito': item.districtAverage,
-    'Estado': item.stateAverage,
-    'Nacional': item.nationalAverage,
-    'Meta': item.target
+    Escola: item.schoolAverage,
+    Distrito: item.districtAverage,
+    Estado: item.stateAverage,
+    Nacional: item.nationalAverage,
+    Meta: item.target,
   }));
 
   // Opções de dados a mostrar
@@ -64,7 +64,7 @@ export const BenchmarkComparisonChart: React.FC<BenchmarkComparisonChartProps> =
     { key: 'districtAverage', label: 'Distrito', color: theme.palette.secondary.main },
     { key: 'stateAverage', label: 'Estado', color: theme.palette.warning.main },
     { key: 'nationalAverage', label: 'Nacional', color: theme.palette.info.main },
-    { key: 'target', label: 'Meta', color: theme.palette.error.main }
+    { key: 'target', label: 'Meta', color: theme.palette.error.main },
   ];
 
   // Calcular valor máximo para eixos
@@ -74,14 +74,14 @@ export const BenchmarkComparisonChart: React.FC<BenchmarkComparisonChartProps> =
       item.districtAverage,
       item.stateAverage,
       item.nationalAverage,
-      item.target
+      item.target,
     ])
   );
 
   // Manipuladores de eventos
   const handleChartTypeChange = (
     _: React.MouseEvent<HTMLElement>,
-    newType: 'radar' | 'bar' | null,
+    newType: 'radar' | 'bar' | null
   ) => {
     if (newType !== null) {
       setChartType(newType);
@@ -108,11 +108,7 @@ export const BenchmarkComparisonChart: React.FC<BenchmarkComparisonChartProps> =
             {label}
           </Typography>
           {payload.map((entry: any, index: number) => (
-            <Typography
-              key={`tooltip-item-${index}`}
-              variant="body2"
-              sx={{ color: entry.color }}
-            >
+            <Typography key={`tooltip-item-${index}`} variant="body2" sx={{ color: entry.color }}>
               <strong>{entry.name}:</strong> {entry.value.toFixed(1)}
             </Typography>
           ))}
@@ -130,9 +126,7 @@ export const BenchmarkComparisonChart: React.FC<BenchmarkComparisonChartProps> =
 
   // Renderizar gráfico adequado
   const renderChart = () => {
-    const filteredOptions = dataOptions.filter(opt =>
-      showPerformanceLabels.includes(opt.key)
-    );
+    const filteredOptions = dataOptions.filter(opt => showPerformanceLabels.includes(opt.key));
 
     if (chartType === 'radar') {
       return (
@@ -161,10 +155,7 @@ export const BenchmarkComparisonChart: React.FC<BenchmarkComparisonChartProps> =
     } else {
       return (
         <ResponsiveContainer width="100%" height="100%">
-          <BarChart
-            data={formattedData}
-            margin={{ top: 20, right: 30, left: 20, bottom: 50 }}
-          >
+          <BarChart data={formattedData} margin={{ top: 20, right: 30, left: 20, bottom: 50 }}>
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis dataKey="domain" angle={-45} textAnchor="end" height={70} />
             <YAxis domain={[0, Math.ceil(maxValue * 1.1)]} />
@@ -195,11 +186,13 @@ export const BenchmarkComparisonChart: React.FC<BenchmarkComparisonChartProps> =
         height: `${height}px`,
         display: 'flex',
         flexDirection: 'column',
-        ...(style || {})
+        ...(style || {}),
       }}
       className={className || undefined}
     >
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', mb: 2 }}>
+      <Box
+        sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', mb: 2 }}
+      >
         <Typography variant="h6">{title}</Typography>
 
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
@@ -232,9 +225,9 @@ export const BenchmarkComparisonChart: React.FC<BenchmarkComparisonChartProps> =
                     sx={{
                       '& .MuiSwitch-track': {
                         bgcolor: option.color,
-                        opacity: showPerformanceLabels.includes(option.key) ? 0.5 : 0.1
+                        opacity: showPerformanceLabels.includes(option.key) ? 0.5 : 0.1,
                       },
-                      '& .Mui-checked .MuiSwitch-thumb': { bgcolor: option.color }
+                      '& .Mui-checked .MuiSwitch-thumb': { bgcolor: option.color },
                     }}
                   />
                 }
@@ -245,9 +238,7 @@ export const BenchmarkComparisonChart: React.FC<BenchmarkComparisonChartProps> =
         </Box>
       </Box>
 
-      <Box sx={{ flex: 1, minHeight: 0 }}>
-        {renderChart()}
-      </Box>
+      <Box sx={{ flex: 1, minHeight: 0 }}>{renderChart()}</Box>
 
       <Typography variant="body2" color="text.secondary" sx={{ mt: 2, textAlign: 'right' }}>
         Comparação de {data.length} domínios acadêmicos

@@ -3,7 +3,7 @@ import {
   ScreeningAdministration,
   ScreeningResult,
   ScreeningCycle,
-  ScreeningRule
+  ScreeningRule,
 } from '../types/screening';
 
 class ScreeningService {
@@ -130,7 +130,9 @@ class ScreeningService {
   }
 
   // Ciclos
-  async createCycle(cycle: Omit<ScreeningCycle, 'id' | 'createdAt' | 'updatedAt'>): Promise<ScreeningCycle> {
+  async createCycle(
+    cycle: Omit<ScreeningCycle, 'id' | 'createdAt' | 'updatedAt'>
+  ): Promise<ScreeningCycle> {
     const response = await fetch(`${this.baseUrl}/api/screening/cycles`, {
       method: 'POST',
       headers: {
@@ -173,7 +175,9 @@ class ScreeningService {
     return response.json();
   }
 
-  async createRule(rule: Omit<ScreeningRule, 'id' | 'createdAt' | 'updatedAt'>): Promise<ScreeningRule> {
+  async createRule(
+    rule: Omit<ScreeningRule, 'id' | 'createdAt' | 'updatedAt'>
+  ): Promise<ScreeningRule> {
     const response = await fetch(`${this.baseUrl}/api/screening/rules`, {
       method: 'POST',
       headers: {
@@ -214,7 +218,9 @@ class ScreeningService {
     endDate?: Date;
   }): Promise<ScreeningAdministration[]> {
     try {
-      const response = await fetch(`${this.baseUrl}/administrations${this.buildQueryString(filters)}`);
+      const response = await fetch(
+        `${this.baseUrl}/administrations${this.buildQueryString(filters)}`
+      );
       if (!response.ok) {
         throw new Error('Erro ao buscar administrações');
       }
@@ -238,7 +244,9 @@ class ScreeningService {
     }
   }
 
-  async createAdministration(administration: Omit<ScreeningAdministration, 'id' | 'createdAt' | 'updatedAt'>): Promise<ScreeningAdministration> {
+  async createAdministration(
+    administration: Omit<ScreeningAdministration, 'id' | 'createdAt' | 'updatedAt'>
+  ): Promise<ScreeningAdministration> {
     try {
       const response = await fetch(`${this.baseUrl}/administrations`, {
         method: 'POST',
@@ -257,7 +265,10 @@ class ScreeningService {
     }
   }
 
-  async updateAdministration(id: string, administration: Partial<ScreeningAdministration>): Promise<ScreeningAdministration> {
+  async updateAdministration(
+    id: string,
+    administration: Partial<ScreeningAdministration>
+  ): Promise<ScreeningAdministration> {
     try {
       const response = await fetch(`${this.baseUrl}/administrations/${id}`, {
         method: 'PATCH',

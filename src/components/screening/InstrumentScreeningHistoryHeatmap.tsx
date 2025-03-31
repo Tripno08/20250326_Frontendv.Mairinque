@@ -9,17 +9,9 @@ import {
   MenuItem,
   TextField,
   Paper,
-  Pagination
+  Pagination,
 } from '@mui/material';
-import {
-  ResponsiveContainer,
-  HeatmapChart,
-  XAxis,
-  YAxis,
-  Tooltip,
-  Legend,
-  Cell
-} from 'recharts';
+import { ResponsiveContainer, HeatmapChart, XAxis, YAxis, Tooltip, Legend, Cell } from 'recharts';
 import { useScreeningAdministrations } from '../../hooks/useScreening';
 import { ScreeningAdministration } from '../../types/screening';
 
@@ -27,9 +19,9 @@ interface InstrumentScreeningHistoryHeatmapProps {
   instrumentId: string;
 }
 
-export const InstrumentScreeningHistoryHeatmap: React.FC<InstrumentScreeningHistoryHeatmapProps> = ({
-  instrumentId
-}) => {
+export const InstrumentScreeningHistoryHeatmap: React.FC<
+  InstrumentScreeningHistoryHeatmapProps
+> = ({ instrumentId }) => {
   const [filters, setFilters] = useState<{
     status?: ScreeningAdministration['status'];
     startDate?: Date;
@@ -40,7 +32,7 @@ export const InstrumentScreeningHistoryHeatmap: React.FC<InstrumentScreeningHist
 
   const { administrations, loading, error } = useScreeningAdministrations({
     instrumentId,
-    ...filters
+    ...filters,
   });
 
   const handleFilterChange = (field: keyof typeof filters, value: any) => {
@@ -61,15 +53,12 @@ export const InstrumentScreeningHistoryHeatmap: React.FC<InstrumentScreeningHist
   }
 
   const totalPages = Math.ceil(administrations.length / itemsPerPage);
-  const paginatedData = administrations.slice(
-    (page - 1) * itemsPerPage,
-    page * itemsPerPage
-  );
+  const paginatedData = administrations.slice((page - 1) * itemsPerPage, page * itemsPerPage);
 
   const chartData = paginatedData.map(administration => ({
     date: new Date(administration.startDate).toLocaleDateString(),
     status: administration.status,
-    responses: administration.responses.length
+    responses: administration.responses.length,
   }));
 
   const getColor = (value: number) => {
@@ -95,7 +84,7 @@ export const InstrumentScreeningHistoryHeatmap: React.FC<InstrumentScreeningHist
             <Select
               value={filters.status || ''}
               label="Status"
-              onChange={(e) => handleFilterChange('status', e.target.value)}
+              onChange={e => handleFilterChange('status', e.target.value)}
             >
               <MenuItem value="">Todos</MenuItem>
               <MenuItem value="pending">Pendente</MenuItem>
@@ -112,7 +101,9 @@ export const InstrumentScreeningHistoryHeatmap: React.FC<InstrumentScreeningHist
             label="Data Inicial"
             type="date"
             value={filters.startDate ? new Date(filters.startDate).toISOString().split('T')[0] : ''}
-            onChange={(e) => handleFilterChange('startDate', e.target.value ? new Date(e.target.value) : undefined)}
+            onChange={e =>
+              handleFilterChange('startDate', e.target.value ? new Date(e.target.value) : undefined)
+            }
             InputLabelProps={{ shrink: true }}
           />
         </Grid>
@@ -123,7 +114,9 @@ export const InstrumentScreeningHistoryHeatmap: React.FC<InstrumentScreeningHist
             label="Data Final"
             type="date"
             value={filters.endDate ? new Date(filters.endDate).toISOString().split('T')[0] : ''}
-            onChange={(e) => handleFilterChange('endDate', e.target.value ? new Date(e.target.value) : undefined)}
+            onChange={e =>
+              handleFilterChange('endDate', e.target.value ? new Date(e.target.value) : undefined)
+            }
             InputLabelProps={{ shrink: true }}
           />
         </Grid>
@@ -140,10 +133,7 @@ export const InstrumentScreeningHistoryHeatmap: React.FC<InstrumentScreeningHist
             />
             <Legend />
             {chartData.map((entry, index) => (
-              <Cell
-                key={`cell-${index}`}
-                fill={getColor(entry.responses)}
-              />
+              <Cell key={`cell-${index}`} fill={getColor(entry.responses)} />
             ))}
           </HeatmapChart>
         </ResponsiveContainer>

@@ -20,7 +20,7 @@ import {
   DialogContent,
   DialogActions,
   Button,
-  Divider
+  Divider,
 } from '@mui/material';
 import {
   Favorite as FavoriteIcon,
@@ -28,7 +28,7 @@ import {
   Compare as CompareIcon,
   Timer as TimerIcon,
   School as SchoolIcon,
-  Psychology as PsychologyIcon
+  Psychology as PsychologyIcon,
 } from '@mui/icons-material';
 import { screeningService } from '../../services/screeningService';
 import { useScreeningInstrument } from '../../hooks/useScreening';
@@ -36,12 +36,12 @@ import {
   ScreeningInstrument,
   ScreeningArea,
   ScreeningCategory,
-  ScreeningInstrumentCatalogProps
+  ScreeningInstrumentCatalogProps,
 } from '../../types/screening';
 
 export const ScreeningInstrumentCatalog: React.FC<ScreeningInstrumentCatalogProps> = ({
   onInstrumentSelect,
-  filters
+  filters,
 }) => {
   const [instruments, setInstruments] = useState<ScreeningInstrument[]>([]);
   const [loading, setLoading] = useState(true);
@@ -88,11 +88,7 @@ export const ScreeningInstrumentCatalog: React.FC<ScreeningInstrumentCatalogProp
     try {
       await screeningService.toggleFavoriteInstrument(instrument.id);
       setInstruments(prev =>
-        prev.map(i =>
-          i.id === instrument.id
-            ? { ...i, isFavorite: !i.isFavorite }
-            : i
-        )
+        prev.map(i => (i.id === instrument.id ? { ...i, isFavorite: !i.isFavorite } : i))
       );
     } catch (err) {
       setError(err instanceof Error ? err : new Error('Erro ao favoritar instrumento'));
@@ -100,9 +96,11 @@ export const ScreeningInstrumentCatalog: React.FC<ScreeningInstrumentCatalogProp
   };
 
   const filteredInstruments = instruments.filter(instrument => {
-    const matchesSearch = instrument.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    const matchesSearch =
+      instrument.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
       instrument.description.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesAge = instrument.ageRange.min >= ageRange[0] && instrument.ageRange.max <= ageRange[1];
+    const matchesAge =
+      instrument.ageRange.min >= ageRange[0] && instrument.ageRange.max <= ageRange[1];
     return matchesSearch && matchesAge;
   });
 
@@ -118,8 +116,8 @@ export const ScreeningInstrumentCatalog: React.FC<ScreeningInstrumentCatalogProp
           flexDirection: 'column',
           cursor: 'pointer',
           '&:hover': {
-            boxShadow: 6
-          }
+            boxShadow: 6,
+          },
         }}
         onClick={() => handleInstrumentClick(instrument)}
       >
@@ -129,7 +127,7 @@ export const ScreeningInstrumentCatalog: React.FC<ScreeningInstrumentCatalogProp
               {instrument.name}
             </Typography>
             <IconButton
-              onClick={(e) => {
+              onClick={e => {
                 e.stopPropagation();
                 handleFavoriteToggle(instrument);
               }}
@@ -175,12 +173,7 @@ export const ScreeningInstrumentCatalog: React.FC<ScreeningInstrumentCatalogProp
   };
 
   const renderComparisonDialog = () => (
-    <Dialog
-      open={compareMode}
-      onClose={() => setCompareMode(false)}
-      maxWidth="lg"
-      fullWidth
-    >
+    <Dialog open={compareMode} onClose={() => setCompareMode(false)} maxWidth="lg" fullWidth>
       <DialogTitle>Comparar Instrumentos</DialogTitle>
       <DialogContent>
         <Grid container spacing={3}>
@@ -194,7 +187,8 @@ export const ScreeningInstrumentCatalog: React.FC<ScreeningInstrumentCatalogProp
                     <strong>Tempo de aplicação:</strong> {instrument.administrationTime} min
                   </Typography>
                   <Typography variant="body2">
-                    <strong>Faixa etária:</strong> {instrument.ageRange.min} - {instrument.ageRange.max} anos
+                    <strong>Faixa etária:</strong> {instrument.ageRange.min} -{' '}
+                    {instrument.ageRange.max} anos
                   </Typography>
                   <Typography variant="body2">
                     <strong>Pontos de corte:</strong>
@@ -315,7 +309,7 @@ export const ScreeningInstrumentCatalog: React.FC<ScreeningInstrumentCatalogProp
           label="Buscar"
           variant="outlined"
           value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
+          onChange={e => setSearchTerm(e.target.value)}
           sx={{ flexGrow: 1 }}
         />
         <FormControl sx={{ minWidth: 200 }}>
@@ -329,9 +323,9 @@ export const ScreeningInstrumentCatalog: React.FC<ScreeningInstrumentCatalogProp
             marks
           />
         </FormControl>
-        <Tooltip title={compareMode ? "Fechar comparação" : "Comparar instrumentos"}>
+        <Tooltip title={compareMode ? 'Fechar comparação' : 'Comparar instrumentos'}>
           <IconButton
-            color={compareMode ? "primary" : "default"}
+            color={compareMode ? 'primary' : 'default'}
             onClick={() => setCompareMode(!compareMode)}
           >
             <CompareIcon />

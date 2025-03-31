@@ -8,18 +8,18 @@ import {
   Select,
   MenuItem,
   TextField,
-  Paper
+  Paper,
+  Card,
+  Button,
+  Divider,
+  IconButton,
 } from '@mui/material';
-import {
-  ResponsiveContainer,
-  PieChart,
-  Pie,
-  Cell,
-  Tooltip,
-  Legend
-} from 'recharts';
+import { ResponsiveContainer, PieChart, Pie, Cell, Tooltip, Legend } from 'recharts';
 import { useScreeningAdministrations } from '../../hooks/useScreening';
 import { ScreeningAdministration } from '../../types/screening';
+import { DatePicker } from '@mui/x-date-pickers';
+import GridContainer from '@/components/GridContainer';
+import GridItem from '@/components/GridItem';
 
 interface InstrumentScreeningHistoryPieChartProps {
   instrumentId: string;
@@ -27,9 +27,9 @@ interface InstrumentScreeningHistoryPieChartProps {
 
 const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8884D8'];
 
-export const InstrumentScreeningHistoryPieChart: React.FC<InstrumentScreeningHistoryPieChartProps> = ({
-  instrumentId
-}) => {
+export const InstrumentScreeningHistoryPieChart: React.FC<
+  InstrumentScreeningHistoryPieChartProps
+> = ({ instrumentId }) => {
   const [filters, setFilters] = useState<{
     status?: ScreeningAdministration['status'];
     startDate?: Date;
@@ -38,7 +38,7 @@ export const InstrumentScreeningHistoryPieChart: React.FC<InstrumentScreeningHis
 
   const { administrations, loading, error } = useScreeningAdministrations({
     instrumentId,
-    ...filters
+    ...filters,
   });
 
   const handleFilterChange = (field: keyof typeof filters, value: any) => {
@@ -60,7 +60,7 @@ export const InstrumentScreeningHistoryPieChart: React.FC<InstrumentScreeningHis
     } else {
       acc.push({
         name: administration.status,
-        value: 1
+        value: 1,
       });
     }
     return acc;
@@ -68,50 +68,57 @@ export const InstrumentScreeningHistoryPieChart: React.FC<InstrumentScreeningHis
 
   return (
     <Box>
-      <Typography variant="h6" gutterBottom>
-        Histórico de Administrações
-      </Typography>
-
-      <Grid container spacing={2} sx={{ mb: 3 }}>
-        <Grid item xs={12} sm={6} md={4}>
-          <FormControl fullWidth>
-            <InputLabel>Status</InputLabel>
-            <Select
-              value={filters.status || ''}
-              label="Status"
-              onChange={(e) => handleFilterChange('status', e.target.value)}
-            >
-              <MenuItem value="">Todos</MenuItem>
-              <MenuItem value="pending">Pendente</MenuItem>
-              <MenuItem value="in_progress">Em Andamento</MenuItem>
-              <MenuItem value="completed">Concluído</MenuItem>
-              <MenuItem value="cancelled">Cancelado</MenuItem>
-            </Select>
-          </FormControl>
-        </Grid>
-
-        <Grid item xs={12} sm={6} md={4}>
-          <TextField
-            fullWidth
-            label="Data Inicial"
-            type="date"
-            value={filters.startDate ? new Date(filters.startDate).toISOString().split('T')[0] : ''}
-            onChange={(e) => handleFilterChange('startDate', e.target.value ? new Date(e.target.value) : undefined)}
-            InputLabelProps={{ shrink: true }}
-          />
-        </Grid>
-
-        <Grid item xs={12} sm={6} md={4}>
-          <TextField
-            fullWidth
-            label="Data Final"
-            type="date"
-            value={filters.endDate ? new Date(filters.endDate).toISOString().split('T')[0] : ''}
-            onChange={(e) => handleFilterChange('endDate', e.target.value ? new Date(e.target.value) : undefined)}
-            InputLabelProps={{ shrink: true }}
-          />
-        </Grid>
-      </Grid>
+      <Card sx={{ p: 3, mb: 3 }}>
+        <Typography variant="h5" sx={{ mb: 2 }}>
+          Histórico de Triagem - Gráfico de Pizza
+        </Typography>
+        <GridContainer spacing={2} sx={{ mb: 3 }}>
+          <GridItem xs={12} sm={6} md={4}>
+            <DatePicker
+              label="Data Inicial"
+              value={filters.startDate}
+              onChange={newValue => handleFilterChange('startDate', newValue)}
+              format="dd/MM/yyyy"
+              slotProps={{
+                textField: {
+                  fullWidth: true,
+                  variant: 'outlined',
+                },
+              }}
+            />
+          </GridItem>
+          <GridItem xs={12} sm={6} md={4}>
+            <DatePicker
+              label="Data Final"
+              value={filters.endDate}
+              onChange={newValue => handleFilterChange('endDate', newValue)}
+              format="dd/MM/yyyy"
+              slotProps={{
+                textField: {
+                  fullWidth: true,
+                  variant: 'outlined',
+                },
+              }}
+            />
+          </GridItem>
+          <GridItem xs={12} sm={6} md={4}>
+            <FormControl fullWidth>
+              <InputLabel>Status</InputLabel>
+              <Select
+                value={filters.status || ''}
+                label="Status"
+                onChange={e => handleFilterChange('status', e.target.value)}
+              >
+                <MenuItem value="">Todos</MenuItem>
+                <MenuItem value="pending">Pendente</MenuItem>
+                <MenuItem value="in_progress">Em Andamento</MenuItem>
+                <MenuItem value="completed">Concluído</MenuItem>
+                <MenuItem value="cancelled">Cancelado</MenuItem>
+              </Select>
+            </FormControl>
+          </GridItem>
+        </GridContainer>
+      </Card>
 
       <Paper sx={{ p: 2, height: 400 }}>
         <ResponsiveContainer width="100%" height="100%">

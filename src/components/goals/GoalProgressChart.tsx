@@ -10,7 +10,7 @@ import {
   Tooltip,
   Legend,
   ResponsiveContainer,
-  ReferenceLine
+  ReferenceLine,
 } from 'recharts';
 import { Box, Paper, Typography, useTheme } from '@mui/material';
 import { format } from 'date-fns';
@@ -20,7 +20,7 @@ import type { GoalProgressChartProps } from '@/types/smart-goals';
 export const GoalProgressChart: React.FC<GoalProgressChartProps> = ({
   goal,
   width = 600,
-  height = 300
+  height = 300,
 }) => {
   const theme = useTheme();
 
@@ -38,7 +38,7 @@ export const GoalProgressChart: React.FC<GoalProgressChartProps> = ({
       date: format(new Date(item.date), 'dd/MM/yyyy', { locale: ptBR }),
       valor: item.value,
       notes: item.notes,
-      timestamp: new Date(item.date).getTime()
+      timestamp: new Date(item.date).getTime(),
     }));
   }, [goal.measurement.progressHistory]);
 
@@ -56,7 +56,7 @@ export const GoalProgressChart: React.FC<GoalProgressChartProps> = ({
           justifyContent: 'center',
           height,
           width: '100%',
-          maxWidth: width
+          maxWidth: width,
         }}
       >
         <Typography variant="body1" color="text.secondary">
@@ -67,16 +67,8 @@ export const GoalProgressChart: React.FC<GoalProgressChartProps> = ({
   }
 
   // Determinar valores mínimo e máximo para o eixo Y
-  const minValue = Math.min(
-    initialValue,
-    targetValue,
-    ...chartData.map(item => item.valor)
-  );
-  const maxValue = Math.max(
-    initialValue,
-    targetValue,
-    ...chartData.map(item => item.valor)
-  );
+  const minValue = Math.min(initialValue, targetValue, ...chartData.map(item => item.valor));
+  const maxValue = Math.max(initialValue, targetValue, ...chartData.map(item => item.valor));
 
   // Adicionar margem ao eixo Y
   const yAxisMin = Math.max(0, minValue - (maxValue - minValue) * 0.1);
@@ -95,7 +87,7 @@ export const GoalProgressChart: React.FC<GoalProgressChartProps> = ({
             borderColor: 'divider',
             borderRadius: 1,
             boxShadow: 1,
-            maxWidth: 250
+            maxWidth: 250,
           }}
         >
           <Typography variant="subtitle2">{label}</Typography>
@@ -108,7 +100,7 @@ export const GoalProgressChart: React.FC<GoalProgressChartProps> = ({
                 height: 10,
                 backgroundColor: theme.palette.primary.main,
                 mr: 1,
-                borderRadius: '50%'
+                borderRadius: '50%',
               }}
             />
             Valor: {data.valor} {goal.measurement.unit}
@@ -164,8 +156,8 @@ export const GoalProgressChart: React.FC<GoalProgressChartProps> = ({
                 style: {
                   textAnchor: 'middle',
                   fill: theme.palette.text.secondary,
-                  fontSize: 12
-                }
+                  fontSize: 12,
+                },
               }}
             />
 
@@ -181,7 +173,7 @@ export const GoalProgressChart: React.FC<GoalProgressChartProps> = ({
               label={{
                 value: `Inicial: ${initialValue}`,
                 position: 'insideBottomRight',
-                style: { fill: theme.palette.grey[600], fontSize: 11 }
+                style: { fill: theme.palette.grey[600], fontSize: 11 },
               }}
             />
 
@@ -193,7 +185,7 @@ export const GoalProgressChart: React.FC<GoalProgressChartProps> = ({
               label={{
                 value: `Alvo: ${targetValue}`,
                 position: 'insideTopRight',
-                style: { fill: theme.palette.success.main, fontSize: 11 }
+                style: { fill: theme.palette.success.main, fontSize: 11 },
               }}
             />
 

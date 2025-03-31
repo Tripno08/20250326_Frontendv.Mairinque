@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState } from 'react';
 import {
   Box,
   Typography,
@@ -11,8 +11,8 @@ import {
   MenuItem,
   FormControl,
   InputLabel,
-  SelectChangeEvent
-} from '@mui/material'
+  SelectChangeEvent,
+} from '@mui/material';
 import {
   BarChart,
   Bar,
@@ -31,16 +31,16 @@ import {
   PolarGrid,
   PolarAngleAxis,
   PolarRadiusAxis,
-  Radar
-} from 'recharts'
-import { motion } from 'framer-motion'
-import { ActionableInsight } from '@/types/actionable-insights'
-import { ComparativeInsight } from './ComparativeInsight'
+  Radar,
+} from 'recharts';
+import { motion } from 'framer-motion';
+import { ActionableInsight } from '@/types/actionable-insights';
+import { ComparativeInsight } from './ComparativeInsight';
 
 interface InsightVisualizationProps {
-  insights: ActionableInsight[]
-  className?: string
-  style?: React.CSSProperties
+  insights: ActionableInsight[];
+  className?: string;
+  style?: React.CSSProperties;
 }
 
 /**
@@ -49,11 +49,11 @@ interface InsightVisualizationProps {
 export const InsightVisualization: React.FC<InsightVisualizationProps> = ({
   insights,
   className,
-  style
+  style,
 }) => {
-  const theme = useTheme()
-  const [visualizationType, setVisualizationType] = useState<string>('alertLevel')
-  const [selectedInsight, setSelectedInsight] = useState<string | null>(null)
+  const theme = useTheme();
+  const [visualizationType, setVisualizationType] = useState<string>('alertLevel');
+  const [selectedInsight, setSelectedInsight] = useState<string | null>(null);
 
   // Categorias para visualização
   const categories = [
@@ -61,115 +61,121 @@ export const InsightVisualization: React.FC<InsightVisualizationProps> = ({
     { value: 'category', label: 'Por Categoria' },
     { value: 'impactArea', label: 'Por Área de Impacto' },
     { value: 'profileRelevance', label: 'Por Relevância de Perfil' },
-    { value: 'timeline', label: 'Linha do Tempo' }
-  ]
+    { value: 'timeline', label: 'Linha do Tempo' },
+  ];
 
   // Manipula a mudança do tipo de visualização
   const handleVisualizationTypeChange = (event: SelectChangeEvent) => {
-    setVisualizationType(event.target.value)
-  }
+    setVisualizationType(event.target.value);
+  };
 
   // Manipula a seleção de um insight
   const handleInsightSelect = (insightId: string) => {
-    setSelectedInsight(insightId === selectedInsight ? null : insightId)
-  }
+    setSelectedInsight(insightId === selectedInsight ? null : insightId);
+  };
 
   // Preparação de dados para gráficos por nível de alerta
   const alertLevelData = React.useMemo(() => {
-    const counts: Record<string, number> = { 'low': 0, 'moderate': 0, 'high': 0, 'critical': 0 }
+    const counts: Record<string, number> = { low: 0, moderate: 0, high: 0, critical: 0 };
 
     insights.forEach(insight => {
-      counts[insight.alertLevel]++
-    })
+      counts[insight.alertLevel]++;
+    });
 
-    return Object.entries(counts).map(([name, value]) => ({ name, value }))
-  }, [insights])
+    return Object.entries(counts).map(([name, value]) => ({ name, value }));
+  }, [insights]);
 
   // Preparação de dados para gráficos por categoria
   const categoryData = React.useMemo(() => {
-    const counts: Record<string, number> = {}
+    const counts: Record<string, number> = {};
 
     insights.forEach(insight => {
-      counts[insight.category] = (counts[insight.category] || 0) + 1
-    })
+      counts[insight.category] = (counts[insight.category] || 0) + 1;
+    });
 
-    return Object.entries(counts).map(([name, value]) => ({ name, value }))
-  }, [insights])
+    return Object.entries(counts).map(([name, value]) => ({ name, value }));
+  }, [insights]);
 
   // Preparação de dados para gráficos por área de impacto
   const impactAreaData = React.useMemo(() => {
-    const counts: Record<string, number> = {}
+    const counts: Record<string, number> = {};
 
     insights.forEach(insight => {
       insight.impactArea.forEach(area => {
-        counts[area] = (counts[area] || 0) + 1
-      })
-    })
+        counts[area] = (counts[area] || 0) + 1;
+      });
+    });
 
-    return Object.entries(counts).map(([name, value]) => ({ name, value }))
-  }, [insights])
+    return Object.entries(counts).map(([name, value]) => ({ name, value }));
+  }, [insights]);
 
   // Preparação de dados para gráficos por relevância de perfil
   const profileRelevanceData = React.useMemo(() => {
-    const profiles = ['teacher', 'specialist', 'coordinator', 'principal', 'administrator']
+    const profiles = ['teacher', 'specialist', 'coordinator', 'principal', 'administrator'];
     const data = profiles.map(profile => {
-      const avg = insights.reduce((sum, insight) => sum + insight.profileRelevance[profile], 0) /
-                insights.length || 0
+      const avg =
+        insights.reduce((sum, insight) => sum + insight.profileRelevance[profile], 0) /
+          insights.length || 0;
 
       return {
-        name: profile === 'teacher' ? 'Professor' :
-              profile === 'specialist' ? 'Especialista' :
-              profile === 'coordinator' ? 'Coordenador' :
-              profile === 'principal' ? 'Diretor' :
-              'Administrador',
-        value: Math.round(avg * 100)
-      }
-    })
+        name:
+          profile === 'teacher'
+            ? 'Professor'
+            : profile === 'specialist'
+              ? 'Especialista'
+              : profile === 'coordinator'
+                ? 'Coordenador'
+                : profile === 'principal'
+                  ? 'Diretor'
+                  : 'Administrador',
+        value: Math.round(avg * 100),
+      };
+    });
 
-    return data
-  }, [insights])
+    return data;
+  }, [insights]);
 
   // Preparação de dados para linha do tempo
   const timelineData = React.useMemo(() => {
     // Agrupar insights por mês
-    const monthlyData: Record<string, Record<string, number>> = {}
+    const monthlyData: Record<string, Record<string, number>> = {};
 
     insights.forEach(insight => {
-      const date = new Date(insight.timestamp)
-      const monthYear = `${date.getMonth() + 1}/${date.getFullYear()}`
+      const date = new Date(insight.timestamp);
+      const monthYear = `${date.getMonth() + 1}/${date.getFullYear()}`;
 
       if (!monthlyData[monthYear]) {
         monthlyData[monthYear] = {
-          'low': 0,
-          'moderate': 0,
-          'high': 0,
-          'critical': 0
-        }
+          low: 0,
+          moderate: 0,
+          high: 0,
+          critical: 0,
+        };
       }
 
-      monthlyData[monthYear][insight.alertLevel]++
-    })
+      monthlyData[monthYear][insight.alertLevel]++;
+    });
 
     // Ordenar por data
     return Object.entries(monthlyData)
       .map(([date, counts]) => ({
         date,
-        ...counts
+        ...counts,
       }))
       .sort((a, b) => {
-        const [monthA, yearA] = a.date.split('/')
-        const [monthB, yearB] = b.date.split('/')
-        return (Number(yearA) - Number(yearB)) || (Number(monthA) - Number(monthB))
-      })
-  }, [insights])
+        const [monthA, yearA] = a.date.split('/');
+        const [monthB, yearB] = b.date.split('/');
+        return Number(yearA) - Number(yearB) || Number(monthA) - Number(monthB);
+      });
+  }, [insights]);
 
   // Cores para gráficos
   const ALERT_COLORS = {
-    'low': '#4caf50',      // verde
-    'moderate': '#ff9800', // laranja
-    'high': '#f44336',     // vermelho
-    'critical': '#d32f2f'  // vermelho escuro
-  }
+    low: '#4caf50', // verde
+    moderate: '#ff9800', // laranja
+    high: '#f44336', // vermelho
+    critical: '#d32f2f', // vermelho escuro
+  };
 
   const COLORS = [
     theme.palette.primary.main,
@@ -178,8 +184,8 @@ export const InsightVisualization: React.FC<InsightVisualizationProps> = ({
     theme.palette.warning.main,
     theme.palette.info.main,
     theme.palette.success.main,
-    ...Object.values(ALERT_COLORS)
-  ]
+    ...Object.values(ALERT_COLORS),
+  ];
 
   // Renderiza o gráfico apropriado com base no tipo selecionado
   const renderVisualization = () => {
@@ -202,7 +208,10 @@ export const InsightVisualization: React.FC<InsightVisualizationProps> = ({
                       <Legend />
                       <Bar dataKey="value" name="Quantidade de Insights">
                         {alertLevelData.map((entry, index) => (
-                          <Cell key={`cell-${index}`} fill={ALERT_COLORS[entry.name] || COLORS[index % COLORS.length]} />
+                          <Cell
+                            key={`cell-${index}`}
+                            fill={ALERT_COLORS[entry.name] || COLORS[index % COLORS.length]}
+                          />
                         ))}
                       </Bar>
                     </BarChart>
@@ -224,7 +233,10 @@ export const InsightVisualization: React.FC<InsightVisualizationProps> = ({
                         dataKey="value"
                       >
                         {alertLevelData.map((entry, index) => (
-                          <Cell key={`cell-${index}`} fill={ALERT_COLORS[entry.name] || COLORS[index % COLORS.length]} />
+                          <Cell
+                            key={`cell-${index}`}
+                            fill={ALERT_COLORS[entry.name] || COLORS[index % COLORS.length]}
+                          />
                         ))}
                       </Pie>
                       <Tooltip />
@@ -234,7 +246,7 @@ export const InsightVisualization: React.FC<InsightVisualizationProps> = ({
               </Grid>
             </Grid>
           </Box>
-        )
+        );
 
       case 'category':
         return (
@@ -252,7 +264,11 @@ export const InsightVisualization: React.FC<InsightVisualizationProps> = ({
                       <YAxis />
                       <Tooltip />
                       <Legend />
-                      <Bar dataKey="value" name="Quantidade de Insights" fill={theme.palette.primary.main} />
+                      <Bar
+                        dataKey="value"
+                        name="Quantidade de Insights"
+                        fill={theme.palette.primary.main}
+                      />
                     </BarChart>
                   </ResponsiveContainer>
                 </Paper>
@@ -282,7 +298,7 @@ export const InsightVisualization: React.FC<InsightVisualizationProps> = ({
               </Grid>
             </Grid>
           </Box>
-        )
+        );
 
       case 'impactArea':
         return (
@@ -300,7 +316,11 @@ export const InsightVisualization: React.FC<InsightVisualizationProps> = ({
                       <YAxis />
                       <Tooltip />
                       <Legend />
-                      <Bar dataKey="value" name="Quantidade de Insights" fill={theme.palette.secondary.main} />
+                      <Bar
+                        dataKey="value"
+                        name="Quantidade de Insights"
+                        fill={theme.palette.secondary.main}
+                      />
                     </BarChart>
                   </ResponsiveContainer>
                 </Paper>
@@ -312,7 +332,13 @@ export const InsightVisualization: React.FC<InsightVisualizationProps> = ({
                       <PolarGrid />
                       <PolarAngleAxis dataKey="name" />
                       <PolarRadiusAxis angle={30} domain={[0, 'auto']} />
-                      <Radar name="Quantidade de Insights" dataKey="value" stroke={theme.palette.primary.main} fill={theme.palette.primary.main} fillOpacity={0.6} />
+                      <Radar
+                        name="Quantidade de Insights"
+                        dataKey="value"
+                        stroke={theme.palette.primary.main}
+                        fill={theme.palette.primary.main}
+                        fillOpacity={0.6}
+                      />
                       <Legend />
                       <Tooltip />
                     </RadarChart>
@@ -321,7 +347,7 @@ export const InsightVisualization: React.FC<InsightVisualizationProps> = ({
               </Grid>
             </Grid>
           </Box>
-        )
+        );
 
       case 'profileRelevance':
         return (
@@ -339,14 +365,18 @@ export const InsightVisualization: React.FC<InsightVisualizationProps> = ({
                       <YAxis domain={[0, 100]} />
                       <Tooltip />
                       <Legend />
-                      <Bar dataKey="value" name="Relevância Média (%)" fill={theme.palette.info.main} />
+                      <Bar
+                        dataKey="value"
+                        name="Relevância Média (%)"
+                        fill={theme.palette.info.main}
+                      />
                     </BarChart>
                   </ResponsiveContainer>
                 </Paper>
               </Grid>
             </Grid>
           </Box>
-        )
+        );
 
       case 'timeline':
         return (
@@ -365,21 +395,31 @@ export const InsightVisualization: React.FC<InsightVisualizationProps> = ({
                       <Tooltip />
                       <Legend />
                       <Line type="monotone" dataKey="low" name="Baixo" stroke={ALERT_COLORS.low} />
-                      <Line type="monotone" dataKey="moderate" name="Moderado" stroke={ALERT_COLORS.moderate} />
+                      <Line
+                        type="monotone"
+                        dataKey="moderate"
+                        name="Moderado"
+                        stroke={ALERT_COLORS.moderate}
+                      />
                       <Line type="monotone" dataKey="high" name="Alto" stroke={ALERT_COLORS.high} />
-                      <Line type="monotone" dataKey="critical" name="Crítico" stroke={ALERT_COLORS.critical} />
+                      <Line
+                        type="monotone"
+                        dataKey="critical"
+                        name="Crítico"
+                        stroke={ALERT_COLORS.critical}
+                      />
                     </LineChart>
                   </ResponsiveContainer>
                 </Paper>
               </Grid>
             </Grid>
           </Box>
-        )
+        );
 
       default:
-        return null
+        return null;
     }
-  }
+  };
 
   return (
     <Box className={className} style={style}>
@@ -396,7 +436,7 @@ export const InsightVisualization: React.FC<InsightVisualizationProps> = ({
             label="Tipo de Visualização"
             onChange={handleVisualizationTypeChange}
           >
-            {categories.map((category) => (
+            {categories.map(category => (
               <MenuItem key={category.value} value={category.value}>
                 {category.label}
               </MenuItem>
@@ -423,5 +463,5 @@ export const InsightVisualization: React.FC<InsightVisualizationProps> = ({
         </Box>
       )}
     </Box>
-  )
-}
+  );
+};

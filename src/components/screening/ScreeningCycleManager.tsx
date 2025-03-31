@@ -21,7 +21,7 @@ import {
   CircularProgress,
   Tooltip,
   Chip,
-  Stack
+  Stack,
 } from '@mui/material';
 import {
   Add as AddIcon,
@@ -29,15 +29,18 @@ import {
   Delete as DeleteIcon,
   CalendarToday as CalendarIcon,
   Assessment as AssessmentIcon,
-  Notifications as NotificationsIcon
+  Notifications as NotificationsIcon,
 } from '@mui/icons-material';
 import { useScreeningCycle } from '../../hooks/useScreening';
 import {
   ScreeningCycle,
   ScreeningCycleManagerProps,
   ScreeningTier,
-  ScreeningFrequency
+  ScreeningFrequency,
 } from '../../types/screening';
+import GridContainer from '@/components/GridContainer';
+import GridItem from '@/components/GridItem';
+import MenuItemWrapper from '@/components/MenuItemWrapper';
 
 const getTierColor = (tier: ScreeningTier) => {
   switch (tier) {
@@ -82,7 +85,7 @@ const getFrequencyLabel = (frequency: ScreeningFrequency) => {
 
 export const ScreeningCycleManager: React.FC<ScreeningCycleManagerProps> = ({
   onCycleCreate,
-  onCycleUpdate
+  onCycleUpdate,
 }) => {
   const [selectedCycle, setSelectedCycle] = useState<ScreeningCycle | null>(null);
   const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
@@ -94,7 +97,7 @@ export const ScreeningCycleManager: React.FC<ScreeningCycleManagerProps> = ({
     frequency: 'monthly',
     tier: 'universal',
     instruments: [],
-    status: 'pending'
+    status: 'pending',
   });
 
   const handleCreateCycle = () => {
@@ -107,7 +110,7 @@ export const ScreeningCycleManager: React.FC<ScreeningCycleManagerProps> = ({
       frequency: 'monthly',
       tier: 'universal',
       instruments: [],
-      status: 'pending'
+      status: 'pending',
     });
   };
 
@@ -123,7 +126,7 @@ export const ScreeningCycleManager: React.FC<ScreeningCycleManagerProps> = ({
       frequency: 'monthly',
       tier: 'universal',
       instruments: [],
-      status: 'pending'
+      status: 'pending',
     });
   };
 
@@ -209,14 +212,16 @@ export const ScreeningCycleManager: React.FC<ScreeningCycleManagerProps> = ({
           <TextField
             label="Nome"
             value={formData.name}
-            onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}
+            onChange={e => setFormData(prev => ({ ...prev, name: e.target.value }))}
             fullWidth
           />
           <TextField
             label="Data de Início"
             type="date"
-            value={formData.startDate ? new Date(formData.startDate).toISOString().split('T')[0] : ''}
-            onChange={(e) => setFormData(prev => ({ ...prev, startDate: new Date(e.target.value) }))}
+            value={
+              formData.startDate ? new Date(formData.startDate).toISOString().split('T')[0] : ''
+            }
+            onChange={e => setFormData(prev => ({ ...prev, startDate: new Date(e.target.value) }))}
             fullWidth
             InputLabelProps={{ shrink: true }}
           />
@@ -224,7 +229,7 @@ export const ScreeningCycleManager: React.FC<ScreeningCycleManagerProps> = ({
             label="Data de Fim"
             type="date"
             value={formData.endDate ? new Date(formData.endDate).toISOString().split('T')[0] : ''}
-            onChange={(e) => setFormData(prev => ({ ...prev, endDate: new Date(e.target.value) }))}
+            onChange={e => setFormData(prev => ({ ...prev, endDate: new Date(e.target.value) }))}
             fullWidth
             InputLabelProps={{ shrink: true }}
           />
@@ -233,12 +238,14 @@ export const ScreeningCycleManager: React.FC<ScreeningCycleManagerProps> = ({
             <Select
               value={formData.frequency}
               label="Frequência"
-              onChange={(e) => setFormData(prev => ({ ...prev, frequency: e.target.value as ScreeningFrequency }))}
+              onChange={e =>
+                setFormData(prev => ({ ...prev, frequency: e.target.value as ScreeningFrequency }))
+              }
             >
-              <MenuItem value="weekly">Semanal</MenuItem>
-              <MenuItem value="biweekly">Quinzenal</MenuItem>
-              <MenuItem value="monthly">Mensal</MenuItem>
-              <MenuItem value="quarterly">Trimestral</MenuItem>
+              <MenuItemWrapper value="weekly">Semanal</MenuItemWrapper>
+              <MenuItemWrapper value="biweekly">Quinzenal</MenuItemWrapper>
+              <MenuItemWrapper value="monthly">Mensal</MenuItemWrapper>
+              <MenuItemWrapper value="quarterly">Trimestral</MenuItemWrapper>
             </Select>
           </FormControl>
           <FormControl fullWidth>
@@ -246,11 +253,13 @@ export const ScreeningCycleManager: React.FC<ScreeningCycleManagerProps> = ({
             <Select
               value={formData.tier}
               label="Tier"
-              onChange={(e) => setFormData(prev => ({ ...prev, tier: e.target.value as ScreeningTier }))}
+              onChange={e =>
+                setFormData(prev => ({ ...prev, tier: e.target.value as ScreeningTier }))
+              }
             >
-              <MenuItem value="universal">Universal</MenuItem>
-              <MenuItem value="selective">Seletivo</MenuItem>
-              <MenuItem value="intensive">Intensivo</MenuItem>
+              <MenuItemWrapper value="universal">Universal</MenuItemWrapper>
+              <MenuItemWrapper value="selective">Seletivo</MenuItemWrapper>
+              <MenuItemWrapper value="intensive">Intensivo</MenuItemWrapper>
             </Select>
           </FormControl>
         </Box>
@@ -277,14 +286,16 @@ export const ScreeningCycleManager: React.FC<ScreeningCycleManagerProps> = ({
           <TextField
             label="Nome"
             value={formData.name}
-            onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}
+            onChange={e => setFormData(prev => ({ ...prev, name: e.target.value }))}
             fullWidth
           />
           <TextField
             label="Data de Início"
             type="date"
-            value={formData.startDate ? new Date(formData.startDate).toISOString().split('T')[0] : ''}
-            onChange={(e) => setFormData(prev => ({ ...prev, startDate: new Date(e.target.value) }))}
+            value={
+              formData.startDate ? new Date(formData.startDate).toISOString().split('T')[0] : ''
+            }
+            onChange={e => setFormData(prev => ({ ...prev, startDate: new Date(e.target.value) }))}
             fullWidth
             InputLabelProps={{ shrink: true }}
           />
@@ -292,7 +303,7 @@ export const ScreeningCycleManager: React.FC<ScreeningCycleManagerProps> = ({
             label="Data de Fim"
             type="date"
             value={formData.endDate ? new Date(formData.endDate).toISOString().split('T')[0] : ''}
-            onChange={(e) => setFormData(prev => ({ ...prev, endDate: new Date(e.target.value) }))}
+            onChange={e => setFormData(prev => ({ ...prev, endDate: new Date(e.target.value) }))}
             fullWidth
             InputLabelProps={{ shrink: true }}
           />
@@ -301,12 +312,14 @@ export const ScreeningCycleManager: React.FC<ScreeningCycleManagerProps> = ({
             <Select
               value={formData.frequency}
               label="Frequência"
-              onChange={(e) => setFormData(prev => ({ ...prev, frequency: e.target.value as ScreeningFrequency }))}
+              onChange={e =>
+                setFormData(prev => ({ ...prev, frequency: e.target.value as ScreeningFrequency }))
+              }
             >
-              <MenuItem value="weekly">Semanal</MenuItem>
-              <MenuItem value="biweekly">Quinzenal</MenuItem>
-              <MenuItem value="monthly">Mensal</MenuItem>
-              <MenuItem value="quarterly">Trimestral</MenuItem>
+              <MenuItemWrapper value="weekly">Semanal</MenuItemWrapper>
+              <MenuItemWrapper value="biweekly">Quinzenal</MenuItemWrapper>
+              <MenuItemWrapper value="monthly">Mensal</MenuItemWrapper>
+              <MenuItemWrapper value="quarterly">Trimestral</MenuItemWrapper>
             </Select>
           </FormControl>
           <FormControl fullWidth>
@@ -314,11 +327,13 @@ export const ScreeningCycleManager: React.FC<ScreeningCycleManagerProps> = ({
             <Select
               value={formData.tier}
               label="Tier"
-              onChange={(e) => setFormData(prev => ({ ...prev, tier: e.target.value as ScreeningTier }))}
+              onChange={e =>
+                setFormData(prev => ({ ...prev, tier: e.target.value as ScreeningTier }))
+              }
             >
-              <MenuItem value="universal">Universal</MenuItem>
-              <MenuItem value="selective">Seletivo</MenuItem>
-              <MenuItem value="intensive">Intensivo</MenuItem>
+              <MenuItemWrapper value="universal">Universal</MenuItemWrapper>
+              <MenuItemWrapper value="selective">Seletivo</MenuItemWrapper>
+              <MenuItemWrapper value="intensive">Intensivo</MenuItemWrapper>
             </Select>
           </FormControl>
         </Box>
@@ -335,9 +350,7 @@ export const ScreeningCycleManager: React.FC<ScreeningCycleManagerProps> = ({
   return (
     <Box sx={{ p: 3 }}>
       <Box sx={{ mb: 3, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <Typography variant="h5">
-          Ciclos de Rastreio
-        </Typography>
+        <Typography variant="h5">Ciclos de Rastreio</Typography>
         <Button
           variant="contained"
           startIcon={<AddIcon />}
@@ -347,9 +360,7 @@ export const ScreeningCycleManager: React.FC<ScreeningCycleManagerProps> = ({
         </Button>
       </Box>
 
-      <Grid container spacing={3}>
-        {/* TODO: Implementar lista de ciclos */}
-      </Grid>
+      <GridContainer spacing={3}>{/* TODO: Implementar lista de ciclos */}</GridContainer>
 
       {renderCreateDialog()}
       {renderEditDialog()}

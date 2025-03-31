@@ -13,7 +13,7 @@ import {
   Scatter,
   ZAxis,
   Brush,
-  ReferenceLine
+  ReferenceLine,
 } from 'recharts';
 import {
   Box,
@@ -31,7 +31,7 @@ import {
   OutlinedInput,
   Slider,
   Grid,
-  useTheme
+  useTheme,
 } from '@mui/material';
 import { InterventionEffectivenessChartProps } from '@/types/visualization';
 
@@ -39,7 +39,7 @@ import { InterventionEffectivenessChartProps } from '@/types/visualization';
 const TIER_COLORS = {
   1: '#4CAF50', // Verde para Tier 1
   2: '#FFC107', // Amarelo para Tier 2
-  3: '#F44336'  // Vermelho para Tier 3
+  3: '#F44336', // Vermelho para Tier 3
 };
 
 const CHART_MARGIN = { top: 20, right: 30, left: 20, bottom: 60 };
@@ -55,7 +55,7 @@ export const InterventionEffectivenessChart: React.FC<InterventionEffectivenessC
   className,
   style,
   width = 800,
-  height = 500
+  height = 500,
 }) => {
   const theme = useTheme();
 
@@ -87,7 +87,7 @@ export const InterventionEffectivenessChart: React.FC<InterventionEffectivenessC
       .sort((a, b) => b.effectiveness - a.effectiveness)
       .map(item => ({
         ...item,
-        effectivenessScore: item.effectiveness
+        effectivenessScore: item.effectiveness,
       }));
   }, [filteredData]);
 
@@ -97,7 +97,7 @@ export const InterventionEffectivenessChart: React.FC<InterventionEffectivenessC
       ...item,
       x: item.durationInWeeks,
       y: item.averageGrowth,
-      z: item.studentsCount
+      z: item.studentsCount,
     }));
   }, [filteredData]);
 
@@ -108,9 +108,10 @@ export const InterventionEffectivenessChart: React.FC<InterventionEffectivenessC
     } = event;
 
     // Convertendo string[] para (1 | 2 | 3)[]
-    const selectedValues = typeof value === 'string'
-      ? value.split(',').map(Number) as (1 | 2 | 3)[]
-      : value as (1 | 2 | 3)[];
+    const selectedValues =
+      typeof value === 'string'
+        ? (value.split(',').map(Number) as (1 | 2 | 3)[])
+        : (value as (1 | 2 | 3)[]);
 
     setTiers(selectedValues);
   };
@@ -178,12 +179,14 @@ export const InterventionEffectivenessChart: React.FC<InterventionEffectivenessC
         height: height || '100%',
         display: 'flex',
         flexDirection: 'column',
-        ...style
+        ...style,
       }}
       className={className}
     >
       <Box sx={{ mb: 3 }}>
-        <Typography variant="h6" gutterBottom>{title}</Typography>
+        <Typography variant="h6" gutterBottom>
+          {title}
+        </Typography>
 
         <Grid container spacing={2} alignItems="center">
           {/* Seletor de Tipo de Visualização */}
@@ -214,31 +217,29 @@ export const InterventionEffectivenessChart: React.FC<InterventionEffectivenessC
                 value={tiers}
                 onChange={handleTierChange}
                 input={<OutlinedInput label="Níveis" />}
-                renderValue={(selected) => (
+                renderValue={selected => (
                   <Stack direction="row" spacing={0.5} flexWrap="wrap">
-                    {(selected as (1 | 2 | 3)[]).map((value) => (
+                    {(selected as (1 | 2 | 3)[]).map(value => (
                       <Chip
                         key={value}
                         label={`Tier ${value}`}
                         size="small"
                         sx={{
                           bgcolor: TIER_COLORS[value],
-                          color: value === 1 ? 'text.primary' : 'white'
+                          color: value === 1 ? 'text.primary' : 'white',
                         }}
                       />
                     ))}
                   </Stack>
                 )}
               >
-                {[1, 2, 3].map((tier) => (
+                {[1, 2, 3].map(tier => (
                   <MenuItem key={tier} value={tier}>
                     <Checkbox checked={tiers.includes(tier as 1 | 2 | 3)} />
                     <ListItemText
                       primary={`Tier ${tier}`}
                       secondary={
-                        tier === 1 ? 'Universal' :
-                        tier === 2 ? 'Direcionado' :
-                        'Intensivo'
+                        tier === 1 ? 'Universal' : tier === 2 ? 'Direcionado' : 'Intensivo'
                       }
                     />
                   </MenuItem>
@@ -258,15 +259,15 @@ export const InterventionEffectivenessChart: React.FC<InterventionEffectivenessC
                 value={domains}
                 onChange={handleDomainChange}
                 input={<OutlinedInput label="Domínios" />}
-                renderValue={(selected) => (
+                renderValue={selected => (
                   <Stack direction="row" spacing={0.5} flexWrap="wrap">
-                    {(selected as string[]).map((value) => (
+                    {(selected as string[]).map(value => (
                       <Chip key={value} label={value} size="small" />
                     ))}
                   </Stack>
                 )}
               >
-                {availableDomains.map((domain) => (
+                {availableDomains.map(domain => (
                   <MenuItem key={domain} value={domain}>
                     <Checkbox checked={domains.includes(domain)} />
                     <ListItemText primary={domain} />
@@ -300,11 +301,7 @@ export const InterventionEffectivenessChart: React.FC<InterventionEffectivenessC
       <Box sx={{ flex: 1, minHeight: 0, width: '100%' }}>
         <ResponsiveContainer width="100%" height="100%">
           {viewType === 'bar' ? (
-            <BarChart
-              data={barChartData}
-              margin={CHART_MARGIN}
-              onClick={handleChartClick}
-            >
+            <BarChart data={barChartData} margin={CHART_MARGIN} onClick={handleChartClick}>
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis
                 dataKey="intervention"
@@ -320,12 +317,21 @@ export const InterventionEffectivenessChart: React.FC<InterventionEffectivenessC
               />
               <Tooltip content={<CustomTooltip />} />
               <Legend />
-              <ReferenceLine y={70} stroke="#666" strokeDasharray="3 3" label={{ value: 'Muito Eficaz', position: 'right', fill: '#666' }} />
+              <ReferenceLine
+                y={70}
+                stroke="#666"
+                strokeDasharray="3 3"
+                label={{ value: 'Muito Eficaz', position: 'right', fill: '#666' }}
+              />
               <Bar
                 dataKey="effectivenessScore"
                 name="Eficácia"
                 radius={[4, 4, 0, 0]}
-                label={showLabels ? { position: 'top', formatter: (value: number) => `${value.toFixed(0)}%` } : false}
+                label={
+                  showLabels
+                    ? { position: 'top', formatter: (value: number) => `${value.toFixed(0)}%` }
+                    : false
+                }
               >
                 {barChartData.map((entry, index) => (
                   <Cell key={`cell-${index}`} fill={TIER_COLORS[entry.tier]} />
@@ -334,10 +340,7 @@ export const InterventionEffectivenessChart: React.FC<InterventionEffectivenessC
               <Brush dataKey="intervention" height={30} stroke="#8884d8" />
             </BarChart>
           ) : (
-            <ScatterChart
-              margin={CHART_MARGIN}
-              onClick={handleChartClick}
-            >
+            <ScatterChart margin={CHART_MARGIN} onClick={handleChartClick}>
               <CartesianGrid />
               <XAxis
                 type="number"
@@ -351,12 +354,7 @@ export const InterventionEffectivenessChart: React.FC<InterventionEffectivenessC
                 name="Crescimento Médio"
                 label={{ value: 'Crescimento Médio', angle: -90, position: 'insideLeft' }}
               />
-              <ZAxis
-                type="number"
-                dataKey="z"
-                range={[50, 400]}
-                name="Número de Alunos"
-              />
+              <ZAxis type="number" dataKey="z" range={[50, 400]} name="Número de Alunos" />
               <Tooltip content={<CustomTooltip />} />
               <Legend />
               {scatterChartData.map((domain, index) => {
@@ -383,12 +381,10 @@ export const InterventionEffectivenessChart: React.FC<InterventionEffectivenessC
             left: '50%',
             transform: 'translate(-50%, -50%)',
             textAlign: 'center',
-            color: 'text.secondary'
+            color: 'text.secondary',
           }}
         >
-          <Typography variant="body1">
-            Nenhum dado encontrado com os filtros atuais
-          </Typography>
+          <Typography variant="body1">Nenhum dado encontrado com os filtros atuais</Typography>
         </Box>
       )}
 

@@ -12,7 +12,9 @@
 .widget-enter-active {
   opacity: 1;
   transform: scale(1);
-  transition: opacity 300ms, transform 300ms;
+  transition:
+    opacity 300ms,
+    transform 300ms;
 }
 
 .widget-exit {
@@ -23,7 +25,9 @@
 .widget-exit-active {
   opacity: 0;
   transform: scale(0.9);
-  transition: opacity 300ms, transform 300ms;
+  transition:
+    opacity 300ms,
+    transform 300ms;
 }
 
 /* Estilos do Grid */
@@ -95,8 +99,8 @@
   .react-grid-item {
     transition: none;
   }
-  
+
   .widget {
     margin-bottom: 16px;
   }
-} 
+}

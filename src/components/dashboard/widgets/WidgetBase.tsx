@@ -129,4 +129,4 @@ export const WidgetBase: React.FC<WidgetBaseProps> = ({
       </Paper>
     </motion.div>
   );
-}; 
+};

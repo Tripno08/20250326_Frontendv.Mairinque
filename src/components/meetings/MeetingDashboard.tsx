@@ -77,7 +77,7 @@ export const MeetingDashboard: React.FC<MeetingDashboardProps> = ({
     if (totalDecisions === 0) return 0;
 
     const completedDecisions = meeting.decisions.filter(
-      (decision) => decision.status === 'completed'
+      decision => decision.status === 'completed'
     ).length;
 
     return (completedDecisions / totalDecisions) * 100;
@@ -86,17 +86,17 @@ export const MeetingDashboard: React.FC<MeetingDashboardProps> = ({
   const getUpcomingMeetings = () => {
     const now = new Date();
     return meetings
-      .filter((meeting) => new Date(meeting.startDate) > now)
+      .filter(meeting => new Date(meeting.startDate) > now)
       .sort((a, b) => new Date(a.startDate).getTime() - new Date(b.startDate).getTime())
       .slice(0, 5);
   };
 
   const getPendingDecisions = (): PendingDecision[] => {
     return meetings
-      .flatMap((meeting) =>
+      .flatMap(meeting =>
         meeting.decisions
-          .filter((decision) => decision.status !== 'completed')
-          .map((decision) => ({
+          .filter(decision => decision.status !== 'completed')
+          .map(decision => ({
             ...decision,
             meetingId: meeting.id,
             meetingTitle: meeting.title,
@@ -134,7 +134,7 @@ export const MeetingDashboard: React.FC<MeetingDashboardProps> = ({
                       Reuniões Concluídas
                     </Typography>
                     <Typography variant="h4">
-                      {meetings.filter((m) => m.status === 'completed').length}
+                      {meetings.filter(m => m.status === 'completed').length}
                     </Typography>
                   </CardContent>
                 </Card>
@@ -146,7 +146,7 @@ export const MeetingDashboard: React.FC<MeetingDashboardProps> = ({
                       Reuniões Agendadas
                     </Typography>
                     <Typography variant="h4">
-                      {meetings.filter((m) => m.status === 'scheduled').length}
+                      {meetings.filter(m => m.status === 'scheduled').length}
                     </Typography>
                   </CardContent>
                 </Card>
@@ -158,7 +158,7 @@ export const MeetingDashboard: React.FC<MeetingDashboardProps> = ({
                       Reuniões em Andamento
                     </Typography>
                     <Typography variant="h4">
-                      {meetings.filter((m) => m.status === 'in_progress').length}
+                      {meetings.filter(m => m.status === 'in_progress').length}
                     </Typography>
                   </CardContent>
                 </Card>
@@ -174,12 +174,8 @@ export const MeetingDashboard: React.FC<MeetingDashboardProps> = ({
               Próximas Reuniões
             </Typography>
             <List>
-              {getUpcomingMeetings().map((meeting) => (
-                <ListItem
-                  key={meeting.id}
-                  button
-                  onClick={() => onMeetingSelect(meeting.id)}
-                >
+              {getUpcomingMeetings().map(meeting => (
+                <ListItem key={meeting.id} button onClick={() => onMeetingSelect(meeting.id)}>
                   <ListItemIcon>
                     <EventIcon />
                   </ListItemIcon>
@@ -205,7 +201,7 @@ export const MeetingDashboard: React.FC<MeetingDashboardProps> = ({
               Decisões Pendentes
             </Typography>
             <List>
-              {getPendingDecisions().map((decision) => (
+              {getPendingDecisions().map(decision => (
                 <ListItem
                   key={decision.id}
                   button
@@ -252,12 +248,8 @@ export const MeetingDashboard: React.FC<MeetingDashboardProps> = ({
               Progresso das Reuniões
             </Typography>
             <List>
-              {meetings.map((meeting) => (
-                <ListItem
-                  key={meeting.id}
-                  button
-                  onClick={() => onMeetingSelect(meeting.id)}
-                >
+              {meetings.map(meeting => (
+                <ListItem key={meeting.id} button onClick={() => onMeetingSelect(meeting.id)}>
                   <ListItemIcon>
                     <EventIcon />
                   </ListItemIcon>
@@ -267,7 +259,7 @@ export const MeetingDashboard: React.FC<MeetingDashboardProps> = ({
                       <Box sx={{ width: '100%' }}>
                         <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
                           <Typography variant="body2" color="text.secondary" sx={{ mr: 1 }}>
-                            {meeting.decisions.filter((d) => d.status === 'completed').length} de{' '}
+                            {meeting.decisions.filter(d => d.status === 'completed').length} de{' '}
                             {meeting.decisions.length} decisões concluídas
                           </Typography>
                           <Chip

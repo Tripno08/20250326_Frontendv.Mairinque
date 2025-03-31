@@ -16,18 +16,21 @@ import {
   Button,
   IconButton,
   Tooltip,
-  Paper
+  Paper,
 } from '@mui/material';
 import {
   Search as SearchIcon,
   Add as AddIcon,
   FilterList as FilterIcon,
   ClearAll as ClearAllIcon,
-  Assignment as AssignmentIcon
+  Assignment as AssignmentIcon,
 } from '@mui/icons-material';
 import { motion, AnimatePresence } from 'framer-motion';
 import { SmartGoalCard } from './SmartGoalCard';
 import type { GoalListProps, SmartGoal, GoalStatus, GoalPriority } from '@/types/smart-goals';
+import GridItem from '@/components/GridItem';
+import GridContainer from '@/components/GridContainer';
+import MenuItemWrapper from '@/components/MenuItemWrapper';
 
 // Tipos para filtros
 interface FilterOptions {
@@ -41,14 +44,14 @@ export const SmartGoalList: React.FC<GoalListProps> = ({
   goals,
   onEdit,
   onDelete,
-  onUpdateProgress
+  onUpdateProgress,
 }) => {
   // Estado dos filtros
   const [filters, setFilters] = useState<FilterOptions>({
     status: 'todas',
     priority: 'todas',
     domain: 'todos',
-    search: ''
+    search: '',
   });
 
   // Estado para mostrar/esconder filtros
@@ -106,7 +109,7 @@ export const SmartGoalList: React.FC<GoalListProps> = ({
   ) => {
     setFilters(prev => ({
       ...prev,
-      [field]: value
+      [field]: value,
     }));
   };
 
@@ -116,7 +119,7 @@ export const SmartGoalList: React.FC<GoalListProps> = ({
       status: 'todas',
       priority: 'todas',
       domain: 'todos',
-      search: ''
+      search: '',
     });
   };
 
@@ -129,28 +132,30 @@ export const SmartGoalList: React.FC<GoalListProps> = ({
   const sortedGoals = useMemo(() => {
     const statusOrder = {
       'em andamento': 0,
-      'atrasada': 1,
+      atrasada: 1,
       'não iniciada': 2,
-      'concluída': 3,
-      'cancelada': 4
+      concluída: 3,
+      cancelada: 4,
     };
 
     const priorityOrder = {
-      'crítica': 0,
-      'alta': 1,
-      'média': 2,
-      'baixa': 3
+      crítica: 0,
+      alta: 1,
+      média: 2,
+      baixa: 3,
     };
 
     return [...filteredGoals].sort((a, b) => {
       // Primeiro por status
-      const statusDiff = statusOrder[a.status as keyof typeof statusOrder] -
-                          statusOrder[b.status as keyof typeof statusOrder];
+      const statusDiff =
+        statusOrder[a.status as keyof typeof statusOrder] -
+        statusOrder[b.status as keyof typeof statusOrder];
       if (statusDiff !== 0) return statusDiff;
 
       // Depois por prioridade
-      const priorityDiff = priorityOrder[a.priority as keyof typeof priorityOrder] -
-                            priorityOrder[b.priority as keyof typeof priorityOrder];
+      const priorityDiff =
+        priorityOrder[a.priority as keyof typeof priorityOrder] -
+        priorityOrder[b.priority as keyof typeof priorityOrder];
       if (priorityDiff !== 0) return priorityDiff;
 
       // Por fim, por data alvo (mais próxima primeiro)
@@ -166,7 +171,7 @@ export const SmartGoalList: React.FC<GoalListProps> = ({
       atrasadas: goals.filter(g => g.status === 'atrasada').length,
       concluidas: goals.filter(g => g.status === 'concluída').length,
       naoIniciadas: goals.filter(g => g.status === 'não iniciada').length,
-      canceladas: goals.filter(g => g.status === 'cancelada').length
+      canceladas: goals.filter(g => g.status === 'cancelada').length,
     };
 
     return counts;
@@ -188,11 +193,8 @@ export const SmartGoalList: React.FC<GoalListProps> = ({
               </IconButton>
             </Tooltip>
 
-            <Tooltip title={showFilters ? "Esconder Filtros" : "Mostrar Filtros"}>
-              <IconButton
-                color={showFilters ? "primary" : "default"}
-                onClick={toggleFilters}
-              >
+            <Tooltip title={showFilters ? 'Esconder Filtros' : 'Mostrar Filtros'}>
+              <IconButton color={showFilters ? 'primary' : 'default'} onClick={toggleFilters}>
                 <FilterIcon />
               </IconButton>
             </Tooltip>
@@ -209,7 +211,7 @@ export const SmartGoalList: React.FC<GoalListProps> = ({
             flexWrap: 'wrap',
             gap: 2,
             justifyContent: 'space-around',
-            alignItems: 'center'
+            alignItems: 'center',
           }}
         >
           <Box sx={{ textAlign: 'center' }}>
@@ -265,36 +267,31 @@ export const SmartGoalList: React.FC<GoalListProps> = ({
             </Typography>
           </Box>
         </Paper>
-      </Box>
 
-      {/* Área de busca e filtros */}
-      <Box sx={{ mb: 4 }}>
-        <TextField
-          fullWidth
-          placeholder="Buscar meta por título, descrição, habilidades..."
-          variant="outlined"
-          value={filters.search}
-          onChange={(e) => handleFilterChange('search', e.target.value)}
-          InputProps={{
-            startAdornment: (
-              <InputAdornment position="start">
-                <SearchIcon />
-              </InputAdornment>
-            ),
-            endAdornment: filters.search ? (
-              <InputAdornment position="end">
-                <IconButton
-                  size="small"
-                  onClick={() => handleFilterChange('search', '')}
-                  aria-label="Limpar busca"
-                >
-                  <ClearAllIcon />
-                </IconButton>
-              </InputAdornment>
-            ) : null
-          }}
-          sx={{ mb: 2 }}
-        />
+        {/* Barra de pesquisa */}
+        <Box sx={{ mb: 3 }}>
+          <TextField
+            fullWidth
+            placeholder="Pesquisar metas por título, descrição ou habilidades..."
+            variant="outlined"
+            value={filters.search}
+            onChange={e => handleFilterChange('search', e.target.value)}
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <SearchIcon />
+                </InputAdornment>
+              ),
+              endAdornment: filters.search && (
+                <InputAdornment position="end">
+                  <IconButton size="small" onClick={() => handleFilterChange('search', '')}>
+                    <ClearAllIcon fontSize="small" />
+                  </IconButton>
+                </InputAdornment>
+              ),
+            }}
+          />
+        </Box>
 
         <AnimatePresence>
           {showFilters && (
@@ -305,112 +302,130 @@ export const SmartGoalList: React.FC<GoalListProps> = ({
               transition={{ duration: 0.3 }}
             >
               <Paper variant="outlined" sx={{ p: 2, mb: 2 }}>
-                <Grid container spacing={2} alignItems="center">
-                  <Grid item xs={12} sm={4}>
+                <GridContainer spacing={2} alignItems="center">
+                  <GridItem xs={12} sm={4}>
                     <FormControl fullWidth size="small">
                       <InputLabel id="status-filter-label">Status</InputLabel>
                       <Select
                         labelId="status-filter-label"
                         value={filters.status}
-                        onChange={(e) => handleFilterChange('status', e.target.value)}
+                        onChange={e => handleFilterChange('status', e.target.value)}
                         label="Status"
                       >
-                        <MenuItem value="todas">Todas</MenuItem>
-                        <MenuItem value="em andamento">Em Andamento</MenuItem>
-                        <MenuItem value="não iniciada">Não Iniciada</MenuItem>
-                        <MenuItem value="atrasada">Atrasada</MenuItem>
-                        <MenuItem value="concluída">Concluída</MenuItem>
-                        <MenuItem value="cancelada">Cancelada</MenuItem>
+                        <MenuItemWrapper value="todas">Todas</MenuItemWrapper>
+                        <MenuItemWrapper value="em andamento">Em Andamento</MenuItemWrapper>
+                        <MenuItemWrapper value="não iniciada">Não Iniciada</MenuItemWrapper>
+                        <MenuItemWrapper value="atrasada">Atrasada</MenuItemWrapper>
+                        <MenuItemWrapper value="concluída">Concluída</MenuItemWrapper>
+                        <MenuItemWrapper value="cancelada">Cancelada</MenuItemWrapper>
                       </Select>
                     </FormControl>
-                  </Grid>
+                  </GridItem>
 
-                  <Grid item xs={12} sm={4}>
+                  <GridItem xs={12} sm={4}>
                     <FormControl fullWidth size="small">
                       <InputLabel id="priority-filter-label">Prioridade</InputLabel>
                       <Select
                         labelId="priority-filter-label"
                         value={filters.priority}
-                        onChange={(e) => handleFilterChange('priority', e.target.value)}
+                        onChange={e => handleFilterChange('priority', e.target.value)}
                         label="Prioridade"
                       >
-                        <MenuItem value="todas">Todas</MenuItem>
-                        <MenuItem value="crítica">Crítica</MenuItem>
-                        <MenuItem value="alta">Alta</MenuItem>
-                        <MenuItem value="média">Média</MenuItem>
-                        <MenuItem value="baixa">Baixa</MenuItem>
+                        <MenuItemWrapper value="todas">Todas</MenuItemWrapper>
+                        <MenuItemWrapper value="crítica">Crítica</MenuItemWrapper>
+                        <MenuItemWrapper value="alta">Alta</MenuItemWrapper>
+                        <MenuItemWrapper value="média">Média</MenuItemWrapper>
+                        <MenuItemWrapper value="baixa">Baixa</MenuItemWrapper>
                       </Select>
                     </FormControl>
-                  </Grid>
+                  </GridItem>
 
-                  <Grid item xs={12} sm={4}>
+                  <GridItem xs={12} sm={4}>
                     <FormControl fullWidth size="small">
                       <InputLabel id="domain-filter-label">Domínio</InputLabel>
                       <Select
                         labelId="domain-filter-label"
                         value={filters.domain}
-                        onChange={(e) => handleFilterChange('domain', e.target.value)}
+                        onChange={e => handleFilterChange('domain', e.target.value)}
                         label="Domínio"
                       >
-                        <MenuItem value="todos">Todos</MenuItem>
+                        <MenuItemWrapper value="todos">Todos</MenuItemWrapper>
                         {domains.map(domain => (
-                          <MenuItem key={domain} value={domain}>{domain}</MenuItem>
+                          <MenuItemWrapper key={domain} value={domain}>
+                            {domain}
+                          </MenuItemWrapper>
                         ))}
                       </Select>
                     </FormControl>
-                  </Grid>
+                  </GridItem>
 
-                  <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'flex-end' }}>
-                    <Button
-                      variant="outlined"
-                      startIcon={<ClearAllIcon />}
-                      onClick={clearFilters}
-                      size="small"
-                    >
-                      Limpar Filtros
-                    </Button>
-                  </Grid>
-                </Grid>
+                  {(filters.status !== 'todas' ||
+                    filters.priority !== 'todas' ||
+                    filters.domain !== 'todos') && (
+                    <GridItem xs={12}>
+                      <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap', mt: 1 }}>
+                        {filters.status !== 'todas' && (
+                          <Chip
+                            label={`Status: ${filters.status}`}
+                            onDelete={() => handleFilterChange('status', 'todas')}
+                            size="small"
+                          />
+                        )}
+                        {filters.priority !== 'todas' && (
+                          <Chip
+                            label={`Prioridade: ${filters.priority}`}
+                            onDelete={() => handleFilterChange('priority', 'todas')}
+                            size="small"
+                          />
+                        )}
+                        {filters.domain !== 'todos' && (
+                          <Chip
+                            label={`Domínio: ${filters.domain}`}
+                            onDelete={() => handleFilterChange('domain', 'todos')}
+                            size="small"
+                          />
+                        )}
+                        <Chip
+                          label="Limpar todos"
+                          onDelete={clearFilters}
+                          size="small"
+                          color="primary"
+                        />
+                      </Box>
+                    </GridItem>
+                  )}
+                </GridContainer>
               </Paper>
             </motion.div>
           )}
         </AnimatePresence>
-
-        {/* Resumo dos filtros ativos */}
-        {(filters.status !== 'todas' || filters.priority !== 'todas' || filters.domain !== 'todos') && (
-          <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap', mb: 2 }}>
-            <Typography variant="body2" color="text.secondary">
-              Filtros ativos:
-            </Typography>
-
-            {filters.status !== 'todas' && (
-              <Chip
-                label={`Status: ${filters.status}`}
-                size="small"
-                onDelete={() => handleFilterChange('status', 'todas')}
-              />
-            )}
-
-            {filters.priority !== 'todas' && (
-              <Chip
-                label={`Prioridade: ${filters.priority}`}
-                size="small"
-                onDelete={() => handleFilterChange('priority', 'todas')}
-              />
-            )}
-
-            {filters.domain !== 'todos' && (
-              <Chip
-                label={`Domínio: ${filters.domain}`}
-                size="small"
-                onDelete={() => handleFilterChange('domain', 'todos')}
-              />
-            )}
-          </Box>
-        )}
       </Box>
 
-      {/* Lista de metas */}
+      {/* Resultados da pesquisa com quantidade de metas encontradas */}
+      {filteredGoals.length > 0 && (
+        <Box sx={{ mb: 2, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <Typography variant="subtitle1" color="text.secondary">
+            {filteredGoals.length}{' '}
+            {filteredGoals.length === 1 ? 'meta encontrada' : 'metas encontradas'}
+          </Typography>
+          <Box>
+            {(filters.status !== 'todas' ||
+              filters.priority !== 'todas' ||
+              filters.domain !== 'todos' ||
+              filters.search) && (
+              <Button
+                startIcon={<ClearAllIcon />}
+                size="small"
+                onClick={clearFilters}
+                sx={{ textTransform: 'none' }}
+              >
+                Limpar filtros
+              </Button>
+            )}
+          </Box>
+        </Box>
+      )}
+
       {sortedGoals.length === 0 ? (
         <Box
           sx={{
@@ -419,35 +434,32 @@ export const SmartGoalList: React.FC<GoalListProps> = ({
             flexDirection: 'column',
             alignItems: 'center',
             bgcolor: 'background.paper',
-            borderRadius: 2
+            borderRadius: 2,
           }}
         >
           <AssignmentIcon sx={{ fontSize: 60, color: 'text.secondary', mb: 2 }} />
           <Typography variant="h6" color="text.secondary" gutterBottom>
             Nenhuma meta encontrada
           </Typography>
-          <Typography variant="body2" color="text.secondary" align="center" sx={{ maxWidth: 400, mb: 3 }}>
+          <Typography
+            variant="body2"
+            color="text.secondary"
+            align="center"
+            sx={{ maxWidth: 400, mb: 3 }}
+          >
             {goals.length === 0
               ? 'Ainda não há metas cadastradas. Crie sua primeira meta SMART agora!'
               : 'Nenhuma meta corresponde aos filtros aplicados. Tente ajustar seus critérios de busca.'}
           </Typography>
 
           {goals.length === 0 && onEdit && (
-            <Button
-              variant="contained"
-              startIcon={<AddIcon />}
-              onClick={() => onEdit('')}
-            >
+            <Button variant="contained" startIcon={<AddIcon />} onClick={() => onEdit('')}>
               Criar Nova Meta
             </Button>
           )}
 
           {goals.length > 0 && (
-            <Button
-              variant="outlined"
-              startIcon={<ClearAllIcon />}
-              onClick={clearFilters}
-            >
+            <Button variant="outlined" startIcon={<ClearAllIcon />} onClick={clearFilters}>
               Limpar Filtros
             </Button>
           )}

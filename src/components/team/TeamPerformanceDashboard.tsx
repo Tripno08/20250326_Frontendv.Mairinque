@@ -3,7 +3,6 @@ import {
   Box,
   Paper,
   Typography,
-  Grid,
   Card,
   CardContent,
   CardHeader,
@@ -14,7 +13,7 @@ import {
   TextField,
   MenuItem,
   InputAdornment,
-  useTheme
+  useTheme,
 } from '@mui/material';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
@@ -38,7 +37,7 @@ import {
   Radar,
   PolarGrid,
   PolarAngleAxis,
-  PolarRadiusAxis
+  PolarRadiusAxis,
 } from 'recharts';
 import {
   CheckCircle as CheckCircleIcon,
@@ -46,188 +45,171 @@ import {
   Schedule as ScheduleIcon,
   CalendarMonth as CalendarMonthIcon,
   Sync as SyncIcon,
-  Group as GroupIcon
+  Group as GroupIcon,
 } from '@mui/icons-material';
-import { TeamMetrics, TeamPerformanceDashboardProps, CaseStatus, InterventionTier } from '@/types/team';
+import { CaseStatus, InterventionTier, TeamPerformanceDashboardProps } from '@/types/team';
+import { TeamMetrics } from '@/types/team-dashboard';
 import { teamService } from '@/services/teamService';
 import { format, subMonths, parseISO } from 'date-fns';
 
-/**
- * Dashboard de métricas de desempenho da equipe
- */
+// Mapeamento para cores do status de casos
+const statusColors: Record<string, string> = {
+  [CaseStatus.OPEN]: '#2196f3', // azul
+  [CaseStatus.ASSIGNED]: '#9c27b0', // roxo
+  [CaseStatus.IN_PROGRESS]: '#ff9800', // laranja
+  [CaseStatus.UNDER_REVIEW]: '#1976d2', // azul escuro
+  [CaseStatus.COMPLETED]: '#4caf50', // verde
+  [CaseStatus.CLOSED]: '#9e9e9e', // cinza
+};
+
+// Mapeamento para cores das intervenções por tier
+const tierColors: Record<number, string> = {
+  [InterventionTier.TIER1]: '#4caf50', // verde
+  [InterventionTier.TIER2]: '#ff9800', // laranja
+  [InterventionTier.TIER3]: '#f44336', // vermelho
+};
+
 export const TeamPerformanceDashboard: React.FC<TeamPerformanceDashboardProps> = ({
+  teamId,
+  width = '100%',
+  height,
   className,
   style,
-  teamId,
-  metrics: propMetrics,
-  width = 1000,
-  height = 700,
-  dateRange: propDateRange,
-  onDateRangeChange
 }) => {
   const theme = useTheme();
-
-  // Estado para armazenar métricas e status de carregamento
-  const [metrics, setMetrics] = useState<TeamMetrics | null>(propMetrics || null);
-  const [isLoading, setIsLoading] = useState<boolean>(!propMetrics);
-  const [error, setError] = useState<Error | null>(null);
-
-  // Estado para controle de datas
-  const [dateRange, setDateRange] = useState<{
-    start: Date;
-    end: Date;
-  }>({
-    start: propDateRange ? parseISO(propDateRange.start) : subMonths(new Date(), 3),
-    end: propDateRange ? parseISO(propDateRange.end) : new Date()
+  const [metrics, setMetrics] = useState<TeamMetrics | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
+  const [dateRange, setDateRange] = useState({
+    start: subMonths(new Date(), 3),
+    end: new Date(),
   });
 
-  // Carregar métricas se não forem fornecidas como prop
+  // Busca dados da equipe quando o componente é carregado ou quando o filtro de datas é alterado
   useEffect(() => {
-    if (propMetrics) {
-      setMetrics(propMetrics);
-      return;
-    }
-
-    const fetchMetrics = async () => {
-      setIsLoading(true);
-      setError(null);
+    const fetchData = async () => {
       try {
-        const data = await teamService.getTeamMetrics(teamId);
-        setMetrics(data);
+        setLoading(true);
+        setError(null);
+        const data = await teamService.getTeamMetrics(teamId, {
+          startDate: dateRange.start.toISOString(),
+          endDate: dateRange.end.toISOString(),
+        });
+        setMetrics(data as unknown as TeamMetrics);
       } catch (err) {
-        setError(err instanceof Error ? err : new Error('Erro ao carregar métricas'));
+        setError('Falha ao carregar métricas da equipe. Por favor, tente novamente.');
+        console.error('Error fetching team metrics:', err);
       } finally {
-        setIsLoading(false);
+        setLoading(false);
       }
     };
 
-    fetchMetrics();
-  }, [teamId, propMetrics]);
+    fetchData();
+  }, [teamId, dateRange.start, dateRange.end]);
 
-  // Manipulador de mudança de intervalo de datas
-  const handleDateRangeChange = (type: 'start' | 'end', newDate: Date | null) => {
-    if (!newDate) return;
-
-    const newDateRange = {
-      ...dateRange,
-      [type]: newDate
-    };
-
-    setDateRange(newDateRange);
-
-    if (onDateRangeChange) {
-      onDateRangeChange({
-        start: format(newDateRange.start, 'yyyy-MM-dd'),
-        end: format(newDateRange.end, 'yyyy-MM-dd')
-      });
+  // Manipula a alteração das datas no filtro
+  const handleDateRangeChange = (field: 'start' | 'end', value: Date | null) => {
+    if (value) {
+      setDateRange(prev => ({ ...prev, [field]: value }));
     }
   };
 
-  // Cores para tiers
-  const TIER_COLORS = {
-    [InterventionTier.TIER1]: '#4CAF50', // Verde para Tier 1
-    [InterventionTier.TIER2]: '#FFC107', // Amarelo para Tier 2
-    [InterventionTier.TIER3]: '#F44336'  // Vermelho para Tier 3
+  // Gera dados para o gráfico de status de casos
+  const getCaseStatusChartData = () => {
+    if (!metrics) return [];
+
+    return Object.entries(metrics.casesByStatus || {}).map(([status, count]) => ({
+      name: status,
+      value: count,
+    }));
   };
 
-  // Cores para status de caso
-  const STATUS_COLORS: Record<CaseStatus, string> = {
-    [CaseStatus.OPEN]: theme.palette.info.main,
-    [CaseStatus.ASSIGNED]: theme.palette.warning.light,
-    [CaseStatus.IN_PROGRESS]: theme.palette.warning.main,
-    [CaseStatus.UNDER_REVIEW]: theme.palette.info.dark,
-    [CaseStatus.COMPLETED]: theme.palette.success.main,
-    [CaseStatus.CLOSED]: theme.palette.success.dark
+  // Gera dados para o gráfico de distribuição de intervenções por tier
+  const getTierDistributionChartData = () => {
+    if (!metrics) return [];
+
+    return Object.entries(metrics.casesByTier || {}).map(([tier, count]) => ({
+      name: tier,
+      value: count,
+    }));
   };
 
-  // Preparar dados para gráfico de distribuição por status
-  const statusDistributionData = metrics
-    ? Object.entries(metrics.casesByStatus).map(([status, count]) => ({
-        name: status.replace('_', ' ').toLowerCase(),
-        value: count,
-        color: STATUS_COLORS[status as CaseStatus]
-      }))
-    : [];
+  // Gera dados para o gráfico de progresso ao longo do tempo
+  const getProgressChartData = () => {
+    if (!metrics || !metrics.progressOverTime) return [];
 
-  // Preparar dados para gráfico de distribuição por tier
-  const tierDistributionData = metrics
-    ? Object.entries(metrics.casesByTier).map(([tier, count]) => ({
-        name: `Tier ${tier}`,
-        value: count,
-        color: TIER_COLORS[parseInt(tier) as InterventionTier]
-      }))
-    : [];
-
-  // Preparar dados para gráfico de desempenho de membros
-  const memberPerformanceData = metrics?.memberPerformance || [];
-
-  // Renderizar métrica principal em um card
-  const renderMetricCard = (
-    title: string,
-    value: number | string,
-    subtitle: string,
-    icon: React.ReactNode,
-    color: string = theme.palette.primary.main
-  ) => (
-    <Card sx={{ height: '100%' }}>
-      <CardContent>
-        <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
-          <Box sx={{ mr: 2, color }}>
-            {icon}
-          </Box>
-          <Typography variant="h6" component="div">
-            {title}
-          </Typography>
-        </Box>
-        <Typography variant="h4" component="div" sx={{ mb: 1, color }}>
-          {value}
-        </Typography>
-        <Typography variant="body2" color="text.secondary">
-          {subtitle}
-        </Typography>
-      </CardContent>
-    </Card>
-  );
-
-  // Componente de tooltip personalizado
-  const CustomTooltip = ({ active, payload, label }: any) => {
-    if (active && payload && payload.length) {
-      return (
-        <Paper sx={{ p: 1.5, maxWidth: 250 }}>
-          <Typography variant="subtitle2">{label || payload[0].name}</Typography>
-          <Box sx={{ mt: 1 }}>
-            {payload.map((entry: any, index: number) => (
-              <Box key={`tooltip-${index}`} sx={{ display: 'flex', alignItems: 'center', mb: 0.5 }}>
-                <Box
-                  sx={{
-                    width: 12,
-                    height: 12,
-                    borderRadius: '50%',
-                    bgcolor: entry.color || entry.fill,
-                    mr: 1
-                  }}
-                />
-                <Typography variant="body2" component="span">
-                  {entry.name}:
-                </Typography>
-                <Typography variant="body2" component="span" fontWeight="bold" sx={{ ml: 0.5 }}>
-                  {entry.value}
-                </Typography>
-              </Box>
-            ))}
-          </Box>
-        </Paper>
-      );
-    }
-    return null;
+    return (metrics.progressOverTime || []).map((point: { date: string; value: number }) => ({
+      date: format(parseISO(point.date), 'dd/MM'),
+      valor: point.value,
+    }));
   };
+
+  // Gera dados para o gráfico de radar de habilidades da equipe
+  const getTeamSkillsRadarData = () => {
+    if (!metrics || !metrics.teamSkillsDistribution) return [];
+
+    return Object.entries(metrics.teamSkillsDistribution || {}).map(([skill, value]) => ({
+      skill,
+      value,
+      fullMark: 100,
+    }));
+  };
+
+  // Se estiver carregando, exibe o indicador de progresso
+  if (loading) {
+    return (
+      <Box
+        sx={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          height: height || 400,
+          width,
+          ...(style || {}),
+        }}
+        className={className}
+      >
+        <CircularProgress />
+      </Box>
+    );
+  }
+
+  // Se houver erro, exibe a mensagem de erro
+  if (error) {
+    return (
+      <Box
+        sx={{
+          width,
+          ...(style || {}),
+        }}
+        className={className}
+      >
+        <Alert severity="error">{error}</Alert>
+      </Box>
+    );
+  }
+
+  // Se não houver dados, exibe mensagem adequada
+  if (!metrics) {
+    return (
+      <Box
+        sx={{
+          width,
+          ...(style || {}),
+        }}
+        className={className}
+      >
+        <Alert severity="info">Nenhum dado disponível para o período selecionado.</Alert>
+      </Box>
+    );
+  }
 
   // Renderização principal do componente
   return (
     <Box
       sx={{
         width: width,
-        ...(style || {})
+        ...(style || {}),
       }}
       className={className}
     >
@@ -238,18 +220,18 @@ export const TeamPerformanceDashboard: React.FC<TeamPerformanceDashboardProps> =
             Dashboard de Desempenho da Equipe
           </Typography>
 
-          <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={ptBR}>
+          <LocalizationProvider dateAdapter={AdapterDateFns}>
             <Box sx={{ display: 'flex', gap: 2 }}>
               <DatePicker
                 label="Data Inicial"
                 value={dateRange.start}
-                onChange={(newDate) => handleDateRangeChange('start', newDate)}
+                onChange={newDate => handleDateRangeChange('start', newDate)}
                 slotProps={{ textField: { size: 'small' } }}
               />
               <DatePicker
                 label="Data Final"
                 value={dateRange.end}
-                onChange={(newDate) => handleDateRangeChange('end', newDate)}
+                onChange={newDate => handleDateRangeChange('end', newDate)}
                 slotProps={{ textField: { size: 'small' } }}
               />
             </Box>
@@ -257,155 +239,156 @@ export const TeamPerformanceDashboard: React.FC<TeamPerformanceDashboardProps> =
         </Box>
       </Paper>
 
-      {isLoading ? (
-        <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: 300 }}>
-          <CircularProgress />
+      {/* Cards de estatísticas */}
+      <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 3, mb: 3 }}>
+        <Box sx={{ flex: '1 1 calc(25% - 24px)', minWidth: '240px' }}>
+          <Card variant="outlined">
+            <CardContent>
+              <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+                <GroupIcon sx={{ mr: 1, color: '#3f51b5' }} />
+                <Typography variant="h6">Membros</Typography>
+              </Box>
+              <Typography variant="h4">{metrics.teamSize || 0}</Typography>
+              <Typography variant="body2" color="text.secondary">
+                Total de membros ativos
+              </Typography>
+            </CardContent>
+          </Card>
         </Box>
-      ) : error ? (
-        <Alert severity="error" sx={{ mb: 3 }}>
-          {error.message}
-        </Alert>
-      ) : metrics ? (
-        <>
-          {/* Cards de métricas principais */}
-          <Grid container spacing={3} sx={{ mb: 3 }}>
-            <Grid item xs={12} sm={6} md={3}>
-              {renderMetricCard(
-                'Total de Casos',
-                metrics.totalCases.toString(),
-                'Casos gerenciados pela equipe',
-                <AssignmentIcon fontSize="large" />,
-                theme.palette.primary.main
-              )}
-            </Grid>
-            <Grid item xs={12} sm={6} md={3}>
-              {renderMetricCard(
-                'Tempo Médio de Resolução',
-                `${metrics.averageResolutionTime.toFixed(1)} dias`,
-                'Tempo médio para solução de casos',
-                <ScheduleIcon fontSize="large" />,
-                theme.palette.warning.main
-              )}
-            </Grid>
-            <Grid item xs={12} sm={6} md={3}>
-              {renderMetricCard(
-                'Reuniões Mensais',
-                metrics.meetingsPerMonth.toString(),
-                'Média de reuniões por mês',
-                <CalendarMonthIcon fontSize="large" />,
-                theme.palette.info.main
-              )}
-            </Grid>
-            <Grid item xs={12} sm={6} md={3}>
-              {renderMetricCard(
-                'Eficácia de Intervenções',
-                `${metrics.interventionEffectiveness}%`,
-                'Taxa de sucesso das intervenções',
-                <CheckCircleIcon fontSize="large" />,
-                theme.palette.success.main
-              )}
-            </Grid>
-          </Grid>
 
-          {/* Gráficos */}
-          <Grid container spacing={3}>
-            {/* Distribuição por Status */}
-            <Grid item xs={12} md={6}>
-              <Paper sx={{ p: 3, height: '100%' }}>
-                <Typography variant="h6" gutterBottom>
-                  Distribuição por Status
-                </Typography>
-                <Box sx={{ height: 300 }}>
-                  <ResponsiveContainer width="100%" height="100%">
-                    <PieChart>
-                      <Pie
-                        data={statusDistributionData}
-                        cx="50%"
-                        cy="50%"
-                        labelLine={true}
-                        label={({ name, percent }) => `${name} (${(percent * 100).toFixed(0)}%)`}
-                        outerRadius={80}
-                        fill="#8884d8"
-                        dataKey="value"
-                      >
-                        {statusDistributionData.map((entry, index) => (
-                          <Cell key={`cell-${index}`} fill={entry.color} />
-                        ))}
-                      </Pie>
-                      <Tooltip content={<CustomTooltip />} />
-                      <Legend />
-                    </PieChart>
-                  </ResponsiveContainer>
-                </Box>
-              </Paper>
-            </Grid>
+        <Box sx={{ flex: '1 1 calc(25% - 24px)', minWidth: '240px' }}>
+          <Card variant="outlined">
+            <CardContent>
+              <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+                <AssignmentIcon sx={{ mr: 1, color: '#ff9800' }} />
+                <Typography variant="h6">Casos</Typography>
+              </Box>
+              <Typography variant="h4">{metrics.totalCases}</Typography>
+              <Typography variant="body2" color="text.secondary">
+                Casos atribuídos à equipe
+              </Typography>
+            </CardContent>
+          </Card>
+        </Box>
 
-            {/* Distribuição por Tier */}
-            <Grid item xs={12} md={6}>
-              <Paper sx={{ p: 3, height: '100%' }}>
-                <Typography variant="h6" gutterBottom>
-                  Distribuição por Tier
-                </Typography>
-                <Box sx={{ height: 300 }}>
-                  <ResponsiveContainer width="100%" height="100%">
-                    <BarChart
-                      data={tierDistributionData}
-                      margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
-                    >
-                      <CartesianGrid strokeDasharray="3 3" />
-                      <XAxis dataKey="name" />
-                      <YAxis />
-                      <Tooltip content={<CustomTooltip />} />
-                      <Legend />
-                      <Bar dataKey="value" name="Casos" fill="#8884d8">
-                        {tierDistributionData.map((entry, index) => (
-                          <Cell key={`cell-${index}`} fill={entry.color} />
-                        ))}
-                      </Bar>
-                    </BarChart>
-                  </ResponsiveContainer>
-                </Box>
-              </Paper>
-            </Grid>
+        <Box sx={{ flex: '1 1 calc(25% - 24px)', minWidth: '240px' }}>
+          <Card variant="outlined">
+            <CardContent>
+              <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+                <CheckCircleIcon sx={{ mr: 1, color: '#4caf50' }} />
+                <Typography variant="h6">Resolvidos</Typography>
+              </Box>
+              <Typography variant="h4">
+                {Math.round(((metrics.resolvedCases || 0) / metrics.totalCases) * 100)}%
+              </Typography>
+              <Typography variant="body2" color="text.secondary">
+                Taxa de resolução de casos
+              </Typography>
+            </CardContent>
+          </Card>
+        </Box>
 
-            {/* Desempenho de Membros */}
-            <Grid item xs={12}>
-              <Paper sx={{ p: 3 }}>
-                <Typography variant="h6" gutterBottom>
-                  Desempenho de Membros da Equipe
-                </Typography>
-                <Box sx={{ height: 300 }}>
-                  <ResponsiveContainer width="100%" height="100%">
-                    <BarChart
-                      data={memberPerformanceData}
-                      margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
-                    >
-                      <CartesianGrid strokeDasharray="3 3" />
-                      <XAxis dataKey="memberId" />
-                      <YAxis />
-                      <Tooltip content={<CustomTooltip />} />
-                      <Legend />
-                      <Bar dataKey="casesAssigned" name="Casos Atribuídos" fill={theme.palette.primary.main} />
-                      <Bar dataKey="casesCompleted" name="Casos Concluídos" fill={theme.palette.success.main} />
-                    </BarChart>
-                  </ResponsiveContainer>
-                </Box>
-              </Paper>
-            </Grid>
-          </Grid>
+        <Box sx={{ flex: '1 1 calc(25% - 24px)', minWidth: '240px' }}>
+          <Card variant="outlined">
+            <CardContent>
+              <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+                <SyncIcon sx={{ mr: 1, color: '#2196f3' }} />
+                <Typography variant="h6">Progresso</Typography>
+              </Box>
+              <Typography variant="h4">{metrics.averageProgress || 0}%</Typography>
+              <Typography variant="body2" color="text.secondary">
+                Progresso médio dos casos
+              </Typography>
+            </CardContent>
+          </Card>
+        </Box>
+      </Box>
 
-          {/* Estatísticas Adicionais */}
-          <Box sx={{ mt: 3 }}>
-            <Typography variant="body2" color="text.secondary" align="right">
-              Dashboard atualizado em: {format(new Date(), 'dd/MM/yyyy HH:mm')}
-            </Typography>
-          </Box>
-        </>
-      ) : (
-        <Alert severity="info" sx={{ mb: 3 }}>
-          Sem dados disponíveis para o período selecionado.
-        </Alert>
-      )}
+      {/* Gráficos */}
+      <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 3 }}>
+        <Box sx={{ flex: '1 1 calc(50% - 12px)', minWidth: '300px' }}>
+          <Card variant="outlined" sx={{ height: '100%' }}>
+            <CardHeader title="Status dos Casos" />
+            <Divider />
+            <CardContent>
+              <ResponsiveContainer width="100%" height={300}>
+                <PieChart>
+                  <Pie
+                    data={getCaseStatusChartData()}
+                    cx="50%"
+                    cy="50%"
+                    outerRadius={100}
+                    fill="#8884d8"
+                    dataKey="value"
+                    nameKey="name"
+                    label={({ name, percent }) => `${name}: ${(percent * 100).toFixed(0)}%`}
+                  >
+                    {getCaseStatusChartData().map((entry, index) => {
+                      // Conversão segura do status
+                      const status = entry.name;
+                      return (
+                        <Cell key={`cell-${index}`} fill={statusColors[status] || '#000000'} />
+                      );
+                    })}
+                  </Pie>
+                  <Tooltip />
+                  <Legend />
+                </PieChart>
+              </ResponsiveContainer>
+            </CardContent>
+          </Card>
+        </Box>
+
+        <Box sx={{ flex: '1 1 calc(50% - 12px)', minWidth: '300px' }}>
+          <Card variant="outlined" sx={{ height: '100%' }}>
+            <CardHeader title="Distribuição por Tier" />
+            <Divider />
+            <CardContent>
+              <ResponsiveContainer width="100%" height={300}>
+                <BarChart data={getTierDistributionChartData()}>
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis dataKey="name" />
+                  <YAxis />
+                  <Tooltip />
+                  <Legend />
+                  <Bar dataKey="value" name="Quantidade">
+                    {getTierDistributionChartData().map((entry, index) => {
+                      // Conversão segura do tier
+                      const tier = Number(entry.name);
+                      return <Cell key={`cell-${index}`} fill={tierColors[tier] || '#000000'} />;
+                    })}
+                  </Bar>
+                </BarChart>
+              </ResponsiveContainer>
+            </CardContent>
+          </Card>
+        </Box>
+
+        <Box sx={{ flex: '1 1 100%' }}>
+          <Card variant="outlined">
+            <CardHeader title="Progresso ao Longo do Tempo" />
+            <Divider />
+            <CardContent>
+              <ResponsiveContainer width="100%" height={300}>
+                <LineChart data={getProgressChartData()}>
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis dataKey="date" />
+                  <YAxis />
+                  <Tooltip />
+                  <Legend />
+                  <Line
+                    type="monotone"
+                    dataKey="valor"
+                    name="Progresso (%)"
+                    stroke="#2196f3"
+                    activeDot={{ r: 8 }}
+                  />
+                </LineChart>
+              </ResponsiveContainer>
+            </CardContent>
+          </Card>
+        </Box>
+      </Box>
     </Box>
   );
 };

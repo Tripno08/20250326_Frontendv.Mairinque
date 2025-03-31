@@ -22,9 +22,7 @@ export const PyramidVisualization: React.FC<PyramidVisualizationProps> = ({
   const svgRef = useRef<SVGSVGElement>(null);
   const [hoveredLevel, setHoveredLevel] = useState<RTILevel | null>(null);
   const [selectedLevel, setSelectedLevel] = useState<RTILevel | null>(null);
-  const [dimensions, setDimensions] = useState(() =>
-    calculatePyramidDimensions(width, height)
-  );
+  const [dimensions, setDimensions] = useState(() => calculatePyramidDimensions(width, height));
 
   useEffect(() => {
     const handleResize = () => {
@@ -181,4 +179,4 @@ export const PyramidVisualization: React.FC<PyramidVisualizationProps> = ({
       </AnimatePresence>
     </Box>
   );
-}; 
+};

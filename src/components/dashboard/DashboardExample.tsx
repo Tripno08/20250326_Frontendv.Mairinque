@@ -141,17 +141,17 @@ export const DashboardExample: React.FC = () => {
         <ProgressMonitoringChart
           data={data?.progressData || mockData.progressData}
           benchmarks={[
-            { 
-              name: 'Meta', 
-              value: 90, 
+            {
+              name: 'Meta',
+              value: 90,
               color: '#4CAF50',
-              description: 'Meta de desempenho esperada'
+              description: 'Meta de desempenho esperada',
             },
-            { 
-              name: 'Média', 
-              value: 75, 
+            {
+              name: 'Média',
+              value: 75,
               color: '#FFC107',
-              description: 'Média de desempenho atual'
+              description: 'Média de desempenho atual',
             },
           ]}
           goals={[
@@ -160,7 +160,7 @@ export const DashboardExample: React.FC = () => {
               targetValue: 95,
               deadline: new Date('2024-12-31'),
               color: '#2196F3',
-              description: 'Meta de desempenho para o final do ano'
+              description: 'Meta de desempenho para o final do ano',
             },
           ]}
         />
@@ -193,4 +193,4 @@ export const DashboardExample: React.FC = () => {
       />
     </Box>
   );
-}; 
+};

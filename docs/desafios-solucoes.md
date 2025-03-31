@@ -3,8 +3,10 @@
 ## Setup e Configuração
 
 ### 1. Compatibilidade de Versões
+
 **Desafio**: Incompatibilidade entre Next.js e Material UI
 **Solução**:
+
 ```json
 {
   "dependencies": {
@@ -17,15 +19,15 @@
 ```
 
 ### 2. Conflito Material UI e Tailwind
+
 **Desafio**: Estilos conflitantes entre Material UI e Tailwind
 **Solução**: Configuração do Tailwind para respeitar classes do Material UI
+
 ```typescript
 // tailwind.config.ts
 export default {
   important: true,
-  content: [
-    './src/**/*.{js,ts,jsx,tsx}',
-  ],
+  content: ['./src/**/*.{js,ts,jsx,tsx}'],
   theme: {
     extend: {
       colors: {
@@ -37,14 +39,16 @@ export default {
       },
     },
   },
-}
+};
 ```
 
 ## Tipagem e Type Safety
 
 ### 1. Tipagem Estrita
+
 **Desafio**: Garantir type safety em componentes complexos
 **Solução**: Interfaces bem definidas e validação de props
+
 ```typescript
 interface DomainSummaryProps {
   data: DomainSummaryData;
@@ -60,8 +64,10 @@ interface DomainSummaryData {
 ```
 
 ### 2. Validação de Props
+
 **Desafio**: Props inválidas causando erros em runtime
 **Solução**: Validação com PropTypes e TypeScript
+
 ```typescript
 const DomainSummary: React.FC<DomainSummaryProps> = ({
   data,
@@ -79,16 +85,20 @@ const DomainSummary: React.FC<DomainSummaryProps> = ({
 ## Performance
 
 ### 1. Re-renders Desnecessários
+
 **Desafio**: Componentes re-renderizando sem necessidade
 **Solução**: Memoização e useMemo
+
 ```typescript
 const MemoizedChart = React.memo(ChartComponent);
 const chartData = useMemo(() => processData(data), [data]);
 ```
 
 ### 2. Carregamento de Dados
+
 **Desafio**: Gerenciamento eficiente de dados
 **Solução**: React Query com cache
+
 ```typescript
 const { data, isLoading, error } = useQuery(
   ['dashboard', filters],
@@ -103,8 +113,10 @@ const { data, isLoading, error } = useQuery(
 ## Estado Global
 
 ### 1. Complexidade do Estado
+
 **Desafio**: Gerenciamento de estado complexo
 **Solução**: Zustand com slices
+
 ```typescript
 interface DashboardStore {
   filters: DashboardFilters;
@@ -115,8 +127,10 @@ interface DashboardStore {
 ```
 
 ### 2. Sincronização de Estado
+
 **Desafio**: Estados desincronizados entre componentes
 **Solução**: Context API com Zustand
+
 ```typescript
 const DashboardContext = createContext<DashboardStore | null>(null);
 ```
@@ -124,8 +138,10 @@ const DashboardContext = createContext<DashboardStore | null>(null);
 ## Testes
 
 ### 1. Componentes Complexos
+
 **Desafio**: Testar componentes com múltiplas dependências
 **Solução**: Mocks e testes isolados
+
 ```typescript
 jest.mock('recharts', () => ({
   RadarChart: () => <div data-testid="mock-radar-chart" />,
@@ -137,8 +153,10 @@ jest.mock('recharts', () => ({
 ```
 
 ### 2. Testes de Integração
+
 **Desafio**: Testar fluxos completos
 **Solução**: Testes E2E com Cypress
+
 ```typescript
 describe('Dashboard Flow', () => {
   it('should load and display data', () => {
@@ -152,8 +170,10 @@ describe('Dashboard Flow', () => {
 ## Acessibilidade
 
 ### 1. WCAG Compliance
+
 **Desafio**: Garantir acessibilidade
 **Solução**: Implementação de ARIA labels e roles
+
 ```typescript
 <Box
   role="region"
@@ -165,8 +185,10 @@ describe('Dashboard Flow', () => {
 ```
 
 ### 2. Navegação por Teclado
+
 **Desafio**: Navegação acessível
 **Solução**: Foco e tabIndex
+
 ```typescript
 <TabList
   aria-label="Filtros do dashboard"
@@ -180,8 +202,10 @@ describe('Dashboard Flow', () => {
 ## Documentação
 
 ### 1. Manutenção da Documentação
+
 **Desafio**: Documentação desatualizada
 **Solução**: Documentação automatizada
+
 ```typescript
 /**
  * @component DomainSummary
@@ -196,8 +220,10 @@ describe('Dashboard Flow', () => {
 ```
 
 ### 2. Exemplos de Uso
+
 **Desafio**: Falta de exemplos práticos
 **Solução**: Storybook com casos de uso
+
 ```typescript
 export default {
   title: 'Dashboard/DomainSummary',
@@ -215,11 +241,13 @@ export default {
 ## Lições Aprendidas
 
 1. **Planejamento**:
+
    - Definir arquitetura antes de começar
    - Documentar decisões técnicas
    - Estabelecer padrões claros
 
 2. **Desenvolvimento**:
+
    - Começar com tipagem forte
    - Implementar testes desde o início
    - Manter componentes pequenos e focados
@@ -232,11 +260,13 @@ export default {
 ## Próximos Passos
 
 1. **Melhorias**:
+
    - Implementar CI/CD
    - Adicionar análise estática
    - Melhorar cobertura de testes
 
 2. **Novas Features**:
+
    - Sistema de temas
    - Internacionalização
    - PWA support
@@ -251,44 +281,49 @@ export default {
 ### 1. Tipagem do Material UI
 
 #### Desafio
+
 Ao implementar o design system, encontramos problemas com a tipagem do Material UI, especialmente:
+
 - Referências circulares nas interfaces de tema
 - Propriedades não reconhecidas em componentes estendidos
 - Conflitos entre tipos do Material UI e nossas customizações
 
 #### Solução
+
 1. **Reestruturação das Declarações de Tipo**
+
    ```typescript
    // Antes
    interface Palette {
      primary: Palette['primary'] & {
-       main: string
-       light: string
-       dark: string
-       contrastText: string
-     }
+       main: string;
+       light: string;
+       dark: string;
+       contrastText: string;
+     };
    }
 
    // Depois
    interface CustomPaletteColor {
-     main: string
-     light: string
-     dark: string
-     contrastText: string
+     main: string;
+     light: string;
+     dark: string;
+     contrastText: string;
    }
 
    interface Palette {
-     primary: CustomPaletteColor
-     secondary: CustomPaletteColor
+     primary: CustomPaletteColor;
+     secondary: CustomPaletteColor;
      // ...
    }
    ```
 
 2. **Extensão de Componentes**
+
    ```typescript
    interface ActionButtonProps extends Omit<ButtonProps, 'variant'> {
-     variant?: 'primary' | 'secondary' | 'success' | 'warning' | 'error' | 'info'
-     loading?: boolean
+     variant?: 'primary' | 'secondary' | 'success' | 'warning' | 'error' | 'info';
+     loading?: boolean;
    }
    ```
 
@@ -297,13 +332,14 @@ Ao implementar o design system, encontramos problemas com a tipagem do Material 
    declare module '@mui/material/styles' {
      interface Theme {
        status: {
-         danger: string
-       }
+         danger: string;
+       };
      }
    }
    ```
 
 #### Próximos Passos
+
 1. [ ] Revisar todas as declarações de tipo
 2. [ ] Implementar testes de tipo
 3. [ ] Documentar padrões de tipagem
@@ -312,10 +348,13 @@ Ao implementar o design system, encontramos problemas com a tipagem do Material 
 ### 2. Compatibilidade de Versões
 
 #### Desafio
+
 Incompatibilidade entre versões do Material UI e suas dependências.
 
 #### Solução
+
 1. Atualização do `package.json`:
+
    ```json
    {
      "dependencies": {
@@ -339,10 +378,13 @@ Incompatibilidade entre versões do Material UI e suas dependências.
 ### 3. Testes de Componentes
 
 #### Desafio
+
 Dificuldade em testar componentes que dependem do tema do Material UI.
 
 #### Solução
+
 1. Criação de um wrapper de teste:
+
    ```typescript
    const renderWithTheme = (ui: React.ReactElement) => {
      return render(
@@ -364,24 +406,28 @@ Dificuldade em testar componentes que dependem do tema do Material UI.
 ## Boas Práticas
 
 ### 1. Tipagem
+
 - Usar interfaces para props de componentes
 - Evitar referências circulares
 - Documentar tipos complexos
 - Utilizar utilitários do TypeScript
 
 ### 2. Testes
+
 - Testar comportamento, não implementação
 - Usar mocks quando necessário
 - Manter testes simples e focados
 - Documentar casos de teste
 
 ### 3. Componentes
+
 - Seguir princípios SOLID
 - Manter componentes pequenos e reutilizáveis
 - Documentar props e comportamentos
 - Implementar acessibilidade
 
 ## Referências
+
 - [Documentação do Material UI](https://mui.com/material-ui/)
 - [TypeScript Handbook](https://www.typescriptlang.org/docs/)
 - [Jest Documentation](https://jestjs.io/docs/getting-started)
@@ -392,12 +438,15 @@ Dificuldade em testar componentes que dependem do tema do Material UI.
 ## 1. Tipagem TypeScript
 
 ### Desafios
+
 1. **Props Dinâmicas em Componentes**
+
    - Componentes precisavam aceitar diferentes tipos de dados
    - Props opcionais com valores padrão
    - Tipos complexos para eventos e callbacks
 
 2. **Generics em Hooks**
+
    - Hooks precisavam ser tipados para diferentes tipos de dados
    - Reutilização de tipos entre diferentes hooks
    - Tipagem de retornos assíncronos
@@ -408,7 +457,9 @@ Dificuldade em testar componentes que dependem do tema do Material UI.
    - Tipagem de ações e eventos
 
 ### Soluções
+
 1. **Tipos Utilitários**
+
    ```typescript
    // Tipos base para props
    type BaseProps = {
@@ -430,6 +481,7 @@ Dificuldade em testar componentes que dependem do tema do Material UI.
    ```
 
 2. **Generics em Hooks**
+
    ```typescript
    // Hook genérico para dados
    function useData<T>(key: string) {
@@ -451,6 +503,7 @@ Dificuldade em testar componentes que dependem do tema do Material UI.
    ```
 
 3. **Estados Discriminados**
+
    ```typescript
    type AssessmentState =
      | { status: 'draft'; canEdit: true }
@@ -465,12 +518,15 @@ Dificuldade em testar componentes que dependem do tema do Material UI.
 ## 2. Performance
 
 ### Desafios
+
 1. **Re-renders Desnecessários**
+
    - Componentes re-renderizando sem necessidade
    - Props mudando frequentemente
    - Estados globais causando re-renders
 
 2. **Carregamento de Dados**
+
    - Múltiplas requisições simultâneas
    - Cache ineficiente
    - Estados de loading complexos
@@ -481,7 +537,9 @@ Dificuldade em testar componentes que dependem do tema do Material UI.
    - Imagens não otimizadas
 
 ### Soluções
+
 1. **Otimização de Renderização**
+
    ```typescript
    // Memoização de componentes
    const MemoizedComponent = React.memo(Component, (prev, next) => {
@@ -500,6 +558,7 @@ Dificuldade em testar componentes que dependem do tema do Material UI.
    ```
 
 2. **Gerenciamento de Cache**
+
    ```typescript
    // Configuração do React Query
    const queryClient = new QueryClient({
@@ -523,6 +582,7 @@ Dificuldade em testar componentes que dependem do tema do Material UI.
    ```
 
 3. **Otimização de Bundle**
+
    ```typescript
    // Lazy loading de componentes
    const HeavyComponent = lazy(() => import('./HeavyComponent'));
@@ -539,12 +599,15 @@ Dificuldade em testar componentes que dependem do tema do Material UI.
 ## 3. Acessibilidade
 
 ### Desafios
+
 1. **Compatibilidade com Leitores de Tela**
+
    - Estrutura semântica incorreta
    - Falta de ARIA labels
    - Navegação por teclado
 
 2. **Contraste e Cores**
+
    - Contraste insuficiente
    - Cores não acessíveis
    - Modo escuro
@@ -555,7 +618,9 @@ Dificuldade em testar componentes que dependem do tema do Material UI.
    - Mensagens de erro
 
 ### Soluções
+
 1. **Semântica e ARIA**
+
    ```typescript
    // Componente acessível
    function AccessibleButton({ children, ...props }) {
@@ -584,6 +649,7 @@ Dificuldade em testar componentes que dependem do tema do Material UI.
    ```
 
 2. **Tema Acessível**
+
    ```typescript
    // Configuração de cores
    const theme = createTheme({
@@ -635,12 +701,15 @@ Dificuldade em testar componentes que dependem do tema do Material UI.
 ## 4. Testes
 
 ### Desafios
+
 1. **Configuração do Ambiente**
+
    - Setup com TypeScript
    - Mocks complexos
    - Ambiente isolado
 
 2. **Cobertura de Testes**
+
    - Componentes complexos
    - Hooks assíncronos
    - Integrações
@@ -651,7 +720,9 @@ Dificuldade em testar componentes que dependem do tema do Material UI.
    - Performance
 
 ### Soluções
+
 1. **Setup de Testes**
+
    ```typescript
    // Configuração do Jest
    export default {
@@ -673,6 +744,7 @@ Dificuldade em testar componentes que dependem do tema do Material UI.
    ```
 
 2. **Testes de Componentes**
+
    ```typescript
    // Teste de componente
    describe('GradientCard', () => {
@@ -696,6 +768,7 @@ Dificuldade em testar componentes que dependem do tema do Material UI.
    ```
 
 3. **Testes de Hooks**
+
    ```typescript
    // Teste de hook
    describe('useAssessment', () => {
@@ -714,12 +787,15 @@ Dificuldade em testar componentes que dependem do tema do Material UI.
 ## 5. Cache e Estado
 
 ### Desafios
+
 1. **Gerenciamento de Estado**
+
    - Estados complexos
    - Sincronização entre componentes
    - Persistência
 
 2. **Cache de Dados**
+
    - Invalidação de cache
    - Dados desatualizados
    - Performance
@@ -730,7 +806,9 @@ Dificuldade em testar componentes que dependem do tema do Material UI.
    - Conflitos
 
 ### Soluções
+
 1. **React Query**
+
    ```typescript
    // Configuração do cliente
    const queryClient = new QueryClient({
@@ -756,6 +834,7 @@ Dificuldade em testar componentes que dependem do tema do Material UI.
    ```
 
 2. **Invalidação Inteligente**
+
    ```typescript
    // Mutação com invalidação
    function useUpdateAssessment() {
@@ -763,7 +842,7 @@ Dificuldade em testar componentes que dependem do tema do Material UI.
 
      return useMutation({
        mutationFn: updateAssessment,
-       onSuccess: (data) => {
+       onSuccess: data => {
          queryClient.invalidateQueries(['assessment', data.id]);
          queryClient.invalidateQueries(['assessments']);
        },
@@ -772,6 +851,7 @@ Dificuldade em testar componentes que dependem do tema do Material UI.
    ```
 
 3. **Suporte Offline**
+
    ```typescript
    // Configuração offline
    const offlineConfig = {
@@ -800,21 +880,25 @@ Dificuldade em testar componentes que dependem do tema do Material UI.
 Os desafios encontrados durante o desenvolvimento foram resolvidos através de:
 
 1. **Tipagem Forte**
+
    - Uso de TypeScript avançado
    - Generics e tipos utilitários
    - Validação em tempo de compilação
 
 2. **Performance**
+
    - Otimização de renderização
    - Gerenciamento eficiente de cache
    - Code splitting e lazy loading
 
 3. **Acessibilidade**
+
    - Implementação de ARIA
    - Semântica HTML
    - Testes com leitores de tela
 
 4. **Testes**
+
    - Ambiente isolado
    - Mocks tipados
    - Cobertura abrangente
@@ -831,27 +915,32 @@ Estas soluções resultaram em um código mais robusto, performático e acessív
 ### 8. Implementação do InterventionPlannerBoard
 
 #### Desafio
+
 Criar um sistema de arrastar e soltar (drag and drop) para um quadro de planejamento de intervenções educacionais, permitindo aos usuários planejar visualmente intervenções para estudantes.
 
 #### Soluções Aplicadas
 
 1. **Estratégia de Componentes**
+
    - Divisão em componentes especializados (DraggableIntervention, DroppableIntervention, InterventionDropzone)
    - Separação de responsabilidades para facilitar manutenção e testes
    - Uso de props bem definidas para cada componente
 
 2. **Biblioteca dnd-kit**
+
    - Escolha da biblioteca dnd-kit pela sua tipagem nativa com TypeScript
    - Uso do `useDraggable` para itens arrastáveis da biblioteca
    - Uso do `useSortable` para itens que podem ser reordenados
    - Uso do `useDroppable` para a área de soltar intervenções
 
 3. **Gerenciamento de Estado**
+
    - Gerenciamento de estado local com `useState` para itens do plano
    - Sincronização bidirecional com o estado externo através de props
    - Atualização de posição dos itens ao arrastar e soltar
 
 4. **Feedback Visual**
+
    - Animações com Framer Motion para criar sensação de interatividade
    - Estado visual de "sobre" quando um item está sendo arrastado para a área
    - Overlay para mostrar o item sendo arrastado
@@ -865,14 +954,17 @@ Criar um sistema de arrastar e soltar (drag and drop) para um quadro de planejam
 #### Desafios Específicos
 
 1. **Tipagem de Eventos de Drag and Drop**
+
    - **Problema**: Tipagem correta dos eventos e handlers do dnd-kit
    - **Solução**: Uso de interfaces genéricas e tipagem adequada de eventos
 
 2. **Interação entre Biblioteca e Lista Ordenável**
+
    - **Problema**: Permitir arrastar itens da biblioteca para a lista e reordenar itens já na lista
    - **Solução**: Identificação única para itens e lógica diferenciada para origem e destino
 
 3. **Persistência e Atualização de Posição**
+
    - **Problema**: Manter ordem correta e persistir após arrastar e soltar
    - **Solução**: Atualização de índices após cada operação e uso de arrayMove do dnd-kit
 
@@ -884,45 +976,24 @@ Criar um sistema de arrastar e soltar (drag and drop) para um quadro de planejam
 
 ```tsx
 // Exemplo simplificado do gerenciamento de drag and drop
-const handleDragEnd = useCallback((event: DragEndEvent) => {
-  const { active, over } = event;
+const handleDragEnd = useCallback(
+  (event: DragEndEvent) => {
+    const { active, over } = event;
 
-  if (!over) return;
+    if (!over) return;
 
-  // Arrastar da biblioteca para o plano
-  if (over.id === 'interventions-dropzone' && active.data.current) {
-    const intervention = active.data.current.intervention as Intervention;
+    // Arrastar da biblioteca para o plano
+    if (over.id === 'interventions-dropzone' && active.data.current) {
+      const intervention = active.data.current.intervention as Intervention;
 
-    // Criar novo item no plano
-    const newItem: InterventionPlanItem = {
-      id: uuidv4(),
-      intervention,
-      position: items.length,
-    };
+      // Criar novo item no plano
+      const newItem: InterventionPlanItem = {
+        id: uuidv4(),
+        intervention,
+        position: items.length,
+      };
 
-    const updatedItems = [...items, newItem];
-    setItems(updatedItems);
-
-    // Atualizar plano completo
-    onPlanUpdate({
-      ...plan,
-      items: updatedItems,
-      updatedAt: new Date(),
-    });
-
-    return;
-  }
-
-  // Reordenar itens já no plano
-  if (active.id !== over.id) {
-    const oldIndex = items.findIndex(item => item.id === active.id);
-    const newIndex = items.findIndex(item => item.id === over.id);
-
-    if (oldIndex !== -1 && newIndex !== -1) {
-      const updatedItems = arrayMove(items, oldIndex, newIndex).map(
-        (item, index) => ({ ...item, position: index })
-      );
-
+      const updatedItems = [...items, newItem];
       setItems(updatedItems);
 
       // Atualizar plano completo
@@ -931,9 +1002,34 @@ const handleDragEnd = useCallback((event: DragEndEvent) => {
         items: updatedItems,
         updatedAt: new Date(),
       });
+
+      return;
     }
-  }
-}, [items, onPlanUpdate, plan]);
+
+    // Reordenar itens já no plano
+    if (active.id !== over.id) {
+      const oldIndex = items.findIndex(item => item.id === active.id);
+      const newIndex = items.findIndex(item => item.id === over.id);
+
+      if (oldIndex !== -1 && newIndex !== -1) {
+        const updatedItems = arrayMove(items, oldIndex, newIndex).map((item, index) => ({
+          ...item,
+          position: index,
+        }));
+
+        setItems(updatedItems);
+
+        // Atualizar plano completo
+        onPlanUpdate({
+          ...plan,
+          items: updatedItems,
+          updatedAt: new Date(),
+        });
+      }
+    }
+  },
+  [items, onPlanUpdate, plan]
+);
 ```
 
 #### Aprendizados
@@ -949,24 +1045,29 @@ const handleDragEnd = useCallback((event: DragEndEvent) => {
 #### Desafios
 
 1. **Implementação de formulário complexo com validação**
+
    - O formulário de metas SMART exige múltiplos campos organizados em seções específicas (Specific, Measurable, Achievable, Relevant, Time-bound)
    - Cada campo possui regras de validação próprias
    - Necessidade de campos dinâmicos para os passos de realização da meta
 
 2. **Cálculo de progresso para diferentes cenários**
+
    - Necessidade de lidar com diferentes tipos de metas: aumento de valor, redução de valor, e valor binário
    - Cálculo de porcentagem de progresso precisava ser adaptativo ao contexto
 
 3. **Visualização de dados históricos**
+
    - Representação gráfica precisa do progresso ao longo do tempo
    - Exibição de tendências (melhoria/piora) baseadas nos dados históricos
    - Tooltip customizado com informações detalhadas
 
 4. **Integração com sistema de intervenções**
+
    - Necessidade de vincular metas SMART com intervenções existentes
    - Interface de seleção de intervenções intuitiva
 
 5. **Interfaces TypeScript complexas**
+
    - Estrutura de dados aninhada para metas SMART
    - Tipos específicos para diferentes aspectos do sistema
 
@@ -977,6 +1078,7 @@ const handleDragEnd = useCallback((event: DragEndEvent) => {
 #### Soluções Aplicadas
 
 1. **Organização do formulário**
+
    ```tsx
    <Grid item xs={12}>
      <Typography variant="h6" gutterBottom sx={{ mt: 2, color: 'primary.main' }}>
@@ -998,13 +1100,15 @@ const handleDragEnd = useCallback((event: DragEndEvent) => {
    ```
 
 2. **Validação de formulário**
+
    ```tsx
    const validateForm = (): boolean => {
      const newErrors: Record<string, string> = {};
 
      // Campos obrigatórios
      if (!formData.title.trim()) newErrors.title = 'O título é obrigatório';
-     if (!formData.specificDetails.trim()) newErrors.specificDetails = 'Os detalhes específicos são obrigatórios';
+     if (!formData.specificDetails.trim())
+       newErrors.specificDetails = 'Os detalhes específicos são obrigatórios';
 
      // Validação de datas
      if (formData.startDate && formData.targetDate && formData.startDate >= formData.targetDate) {
@@ -1017,6 +1121,7 @@ const handleDragEnd = useCallback((event: DragEndEvent) => {
    ```
 
 3. **Cálculo adaptativo de progresso**
+
    ```tsx
    const calculateProgress = (goal: SmartGoal): number => {
      const { initialValue, targetValue, currentValue } = goal.measurement;
@@ -1041,6 +1146,7 @@ const handleDragEnd = useCallback((event: DragEndEvent) => {
    ```
 
 4. **Visualização gráfica com Recharts**
+
    ```tsx
    <LineChart
      data={chartData}
@@ -1068,18 +1174,10 @@ const handleDragEnd = useCallback((event: DragEndEvent) => {
      />
 
      {/* Linha de valor inicial */}
-     <ReferenceLine
-       y={initialValue}
-       stroke={theme.palette.grey[500]}
-       strokeDasharray="3 3"
-     />
+     <ReferenceLine y={initialValue} stroke={theme.palette.grey[500]} strokeDasharray="3 3" />
 
      {/* Linha de valor alvo */}
-     <ReferenceLine
-       y={targetValue}
-       stroke={theme.palette.success.main}
-       strokeDasharray="3 3"
-     />
+     <ReferenceLine y={targetValue} stroke={theme.palette.success.main} strokeDasharray="3 3" />
 
      <Line
        type="monotone"
@@ -1093,11 +1191,12 @@ const handleDragEnd = useCallback((event: DragEndEvent) => {
    ```
 
 5. **Seleção de intervenções relacionadas**
+
    ```tsx
    <Autocomplete
      multiple
      options={interventionsLibrary.map(i => i.id)}
-     getOptionLabel={(optionId) => {
+     getOptionLabel={optionId => {
        const intervention = interventionsLibrary.find(i => i.id === optionId);
        return intervention ? intervention.title : '';
      }}
@@ -1113,8 +1212,11 @@ const handleDragEnd = useCallback((event: DragEndEvent) => {
              label={intervention.tier}
              size="small"
              color={
-               intervention.tier === 'Tier 1' ? 'success' :
-               intervention.tier === 'Tier 2' ? 'warning' : 'error'
+               intervention.tier === 'Tier 1'
+                 ? 'success'
+                 : intervention.tier === 'Tier 2'
+                   ? 'warning'
+                   : 'error'
              }
            />
            <Typography variant="body2">{intervention.title}</Typography>
@@ -1125,24 +1227,25 @@ const handleDragEnd = useCallback((event: DragEndEvent) => {
    ```
 
 6. **Tratamento personalizado de datas**
+
    ```tsx
    // Verificar se meta está atrasada mas não marcada como tal
-   const isOverdue = (
+   const isOverdue =
      goal.status !== 'concluída' &&
      goal.status !== 'cancelada' &&
      isBefore(goal.targetDate, new Date()) &&
-     goal.status !== 'atrasada'
-   );
+     goal.status !== 'atrasada';
 
    // Calcular dias restantes
    const daysLeft = differenceInDays(goal.targetDate, new Date());
 
    // Verificar se meta está perto do prazo (menos de 7 dias)
-   const isCloseToDeadline = daysLeft >= 0 && daysLeft < 7 &&
-     goal.status !== 'concluída' && goal.status !== 'cancelada';
+   const isCloseToDeadline =
+     daysLeft >= 0 && daysLeft < 7 && goal.status !== 'concluída' && goal.status !== 'cancelada';
    ```
 
 7. **Filtros e busca para lista de metas**
+
    ```tsx
    const filteredGoals = useMemo(() => {
      return goals.filter(goal => {
@@ -1178,6 +1281,7 @@ const handleDragEnd = useCallback((event: DragEndEvent) => {
 ## Dashboard de Análise de Risco Acadêmico
 
 ### 1. Gerenciamento de Múltiplos Datasets
+
 **Desafio**: Coordenar diferentes conjuntos de dados relacionados mas independentes
 **Solução**: Hooks customizados orquestrados
 
@@ -1220,6 +1324,7 @@ export const useRiskAnalysisDashboard = () => {
 ```
 
 ### 2. Visualização de Tendências e Projeções
+
 **Desafio**: Representar visualmente dados históricos e projeções futuras
 **Solução**: Gráficos especializados com distinção visual clara
 
@@ -1244,11 +1349,12 @@ const RiskProjectionChart: React.FC<RiskProjectionChartProps> = ({
 ```
 
 ### 3. Sistema de Filtros Integrados
+
 **Desafio**: Filtros que afetam múltiplas visualizações simultaneamente
 **Solução**: Sistema centralizado de filtros com estado compartilhado
 
 ```typescript
-const RiskAnalysisDashboard: React.FC<RiskAnalysisDashboardProps> = (props) => {
+const RiskAnalysisDashboard: React.FC<RiskAnalysisDashboardProps> = props => {
   const [filters, setFilters] = useState<RiskAnalysisFilters>({});
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedGrades, setSelectedGrades] = useState<string[]>([]);
@@ -1259,14 +1365,14 @@ const RiskAnalysisDashboard: React.FC<RiskAnalysisDashboardProps> = (props) => {
     studentRiskData,
     riskTrendData,
     // ... outros dados
-    setFilters: setApiFilters
+    setFilters: setApiFilters,
   } = useRiskAnalysisDashboard();
 
   const handleApplyFilters = () => {
     const newFilters: RiskAnalysisFilters = {
       grades: selectedGrades.length > 0 ? selectedGrades : undefined,
       riskLevels: selectedRiskLevels.length > 0 ? selectedRiskLevels : undefined,
-      searchTerm: searchTerm.length > 0 ? searchTerm : undefined
+      searchTerm: searchTerm.length > 0 ? searchTerm : undefined,
     };
 
     // Aplicar filtros em todos os datasets simultaneamente
@@ -1279,6 +1385,7 @@ const RiskAnalysisDashboard: React.FC<RiskAnalysisDashboardProps> = (props) => {
 ```
 
 ### 4. Tratamento de Grandes Volumes de Dados
+
 **Desafio**: Performance com grande volume de dados de estudantes
 **Solução**: Paginação, ordenação e memoização eficientes
 
@@ -1304,23 +1411,18 @@ const StudentRiskTable: React.FC<StudentRiskTableProps> = ({
       let bValue: any = b[orderBy];
 
       if (orderBy === 'changeTrend') {
-        const trendOrder = { 'improving': 0, 'stable': 1, 'worsening': 2 };
+        const trendOrder = { improving: 0, stable: 1, worsening: 2 };
         aValue = trendOrder[a.changeTrend];
         bValue = trendOrder[b.changeTrend];
       }
 
-      return order === 'asc'
-        ? (aValue < bValue ? -1 : 1)
-        : (aValue > bValue ? -1 : 1);
+      return order === 'asc' ? (aValue < bValue ? -1 : 1) : aValue > bValue ? -1 : 1;
     });
   }, [data, order, orderBy]);
 
   // Aplicar paginação após ordenação
   const paginatedData = useMemo(() => {
-    return sortedData.slice(
-      page * rowsPerPage,
-      page * rowsPerPage + rowsPerPage
-    );
+    return sortedData.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
   }, [sortedData, page, rowsPerPage]);
 
   // ... renderização da tabela otimizada
@@ -1328,6 +1430,7 @@ const StudentRiskTable: React.FC<StudentRiskTableProps> = ({
 ```
 
 ### 5. Tipo de Dados Reutilizáveis
+
 **Desafio**: Criar tipos de dados coesos e reutilizáveis para múltiplos componentes
 **Solução**: Sistema de tipagem TypeScript hierárquico e modular
 
@@ -1377,6 +1480,7 @@ export interface RiskAnalysisDashboardProps {
 ```
 
 ### 6. Integração com Framework RTI/MTSS
+
 **Desafio**: Alinhar o dashboard com conceitos específicos do framework RTI/MTSS
 **Solução**: Mapeamento de níveis de risco para tiers e cores padronizadas
 
@@ -1404,7 +1508,7 @@ const RiskLevelBadge: React.FC<RiskLevelBadgeProps> = ({
   showTrend = false,
   tooltipTitle,
   size = 'medium',
-  className
+  className,
 }) => {
   // Traduções e cores consistentes com o framework RTI/MTSS
   const label = getRiskLabel(level);
@@ -1412,3 +1516,138 @@ const RiskLevelBadge: React.FC<RiskLevelBadgeProps> = ({
 
   // ... renderização do badge alinhado ao framework
 };
+```
+
+## Atualizações para Material UI 7 e React 19
+
+### Desafios Encontrados
+
+Durante a atualização do projeto para usar o Material UI 7 e React 19, encontramos diversos desafios que precisaram ser abordados para manter a compatibilidade e funcionalidade do sistema:
+
+#### 1. Problemas com Tipos de Componente Grid
+
+O Material UI 7 mudou a forma como o componente Grid é implementado, exigindo agora uma propriedade `component`. Isso causou vários erros de tipagem em toda a aplicação.
+
+```typescript
+// Erro encontrado
+<Grid item xs={12} sm={6} md={3}>
+  <Card>...</Card>
+</Grid>
+
+// Erro: Property 'component' is missing in type '{ children: Element; item: true; xs: number; sm: number; md: number; }'
+// but required in type '{ component: ElementType<any>; }'.
+```
+
+#### 2. Incompatibilidade com date-fns v4 e LocalizationProvider
+
+A versão 4 do date-fns alterou a forma como os locais são exportados, causando incompatibilidade com o AdapterDateFns do Material UI.
+
+```typescript
+// Erro encontrado
+<LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={ptBR}>
+  <DatePicker ... />
+</LocalizationProvider>
+
+// Erro: Property 'enUS' is missing in type 'Locale' but required in type 'typeof import(...)'
+```
+
+#### 3. Problemas com Temas e Paletas de Cores
+
+Houve conflitos de definição de tipos para a paleta de cores no tema do Material UI:
+
+```typescript
+// Erro encontrado
+declare module '@mui/material/styles' {
+  interface Palette {
+    primary: Palette['primary'] & {
+      main: string;
+      light: string;
+      dark: string;
+      contrastText: string;
+    };
+    // similar para outras cores...
+  }
+}
+
+// Erro: Subsequent property declarations must have the same type. Property 'primary' must be of type 'PaletteColor'
+```
+
+### Soluções Implementadas
+
+Para resolver esses desafios, adotamos as seguintes soluções:
+
+#### 1. Solução para Componente Grid
+
+Duas abordagens foram implementadas:
+
+a) Adicionar o atributo `component` explicitamente:
+
+```typescript
+<Grid item xs={12} sm={6} md={3} component="div">
+  <Card>...</Card>
+</Grid>
+```
+
+b) Criar componentes reutilizáveis com a configuração correta:
+
+```typescript
+// GridItem.tsx
+export const GridItem: React.FC<GridItemProps> = ({ children, ...props }) => (
+  <Grid component="div" item {...props}>
+    {children}
+  </Grid>
+);
+```
+
+#### 2. Solução para date-fns e LocalizationProvider
+
+Atualizamos a forma como importamos e usamos o locale do date-fns:
+
+```typescript
+// Antes
+import { ptBR } from 'date-fns/locale';
+<LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={ptBR}>
+
+// Depois
+import { ptBR } from 'date-fns/locale';
+<LocalizationProvider dateAdapter={AdapterDateFns} locale={ptBR}>
+```
+
+A mudança principal é o uso da propriedade `locale` em vez de `adapterLocale`.
+
+#### 3. Solução para Configuração de Tema
+
+Reformulamos completamente a declaração do tema para ser compatível com as novas versões:
+
+```typescript
+// Interface customizada para cores
+interface CustomPaletteColor {
+  main: string;
+  light: string;
+  dark: string;
+  contrastText: string;
+}
+
+// Extensão apenas para cores adicionais
+declare module '@mui/material/styles' {
+  interface Palette {
+    neutral: CustomPaletteColor;
+  }
+
+  interface PaletteOptions {
+    neutral?: Partial<CustomPaletteColor>;
+  }
+
+  // Outras extensões necessárias...
+}
+```
+
+### Lições Aprendidas
+
+1. **Migração Incremental**: A migração de bibliotecas principais como React e Material UI deve ser feita de forma incremental, testando cada componente após as mudanças.
+
+2. **Typings Atualizados**: Muitos erros podem ser evitados mantendo as definições de tipo atualizadas e compatíveis com as versões das bibliotecas.
+
+3. **Documentação dos Breaks**: Manter uma documentação detalhada das mudanças de breaking changes ajuda a identificar e resolver problemas mais rapidamente.
+
+4. **Uso de Ferramentas de Análise**: Ferramentas como TypeScript Compiler, ESLint e testes automatizados podem ajudar a identificar problemas antes que eles afetem o ambiente de produção.

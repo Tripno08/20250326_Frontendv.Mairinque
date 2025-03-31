@@ -21,11 +21,7 @@ import {
   Grid,
   Chip,
 } from '@mui/material';
-import {
-  Add as AddIcon,
-  Delete as DeleteIcon,
-  Edit as EditIcon,
-} from '@mui/icons-material';
+import { Add as AddIcon, Delete as DeleteIcon, Edit as EditIcon } from '@mui/icons-material';
 import { DateTimePicker } from '@mui/x-date-pickers';
 import { MeetingDecisionsProps, MeetingDecision } from '@/types/meeting';
 
@@ -40,12 +36,14 @@ export const MeetingDecisions: React.FC<MeetingDecisionsProps> = ({
 }) => {
   const [open, setOpen] = useState(false);
   const [editingDecision, setEditingDecision] = useState<MeetingDecision | null>(null);
-  const [formData, setFormData] = useState<Omit<MeetingDecision, 'id' | 'createdAt' | 'updatedAt'>>({
-    description: '',
-    assignedTo: [],
-    dueDate: new Date(),
-    status: 'pending' as DecisionStatus,
-  });
+  const [formData, setFormData] = useState<Omit<MeetingDecision, 'id' | 'createdAt' | 'updatedAt'>>(
+    {
+      description: '',
+      assignedTo: [],
+      dueDate: new Date(),
+      status: 'pending' as DecisionStatus,
+    }
+  );
 
   const handleOpen = () => {
     setOpen(true);
@@ -131,17 +129,13 @@ export const MeetingDecisions: React.FC<MeetingDecisionsProps> = ({
     <Paper className={className} style={style} sx={{ p: 2 }}>
       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
         <Typography variant="h6">Decisões e Encaminhamentos</Typography>
-        <Button
-          startIcon={<AddIcon />}
-          onClick={handleOpen}
-          variant="outlined"
-        >
+        <Button startIcon={<AddIcon />} onClick={handleOpen} variant="outlined">
           Nova Decisão
         </Button>
       </Box>
 
       <List>
-        {meeting.decisions.map((decision) => (
+        {meeting.decisions.map(decision => (
           <ListItem
             key={decision.id}
             secondaryAction={
@@ -195,9 +189,7 @@ export const MeetingDecisions: React.FC<MeetingDecisionsProps> = ({
       </List>
 
       <Dialog open={open} onClose={handleClose} maxWidth="md" fullWidth>
-        <DialogTitle>
-          {editingDecision ? 'Editar Decisão' : 'Nova Decisão'}
-        </DialogTitle>
+        <DialogTitle>{editingDecision ? 'Editar Decisão' : 'Nova Decisão'}</DialogTitle>
         <DialogContent>
           <Grid container spacing={2} sx={{ mt: 1 }}>
             <Grid item xs={12}>
@@ -207,9 +199,7 @@ export const MeetingDecisions: React.FC<MeetingDecisionsProps> = ({
                 multiline
                 rows={4}
                 value={formData.description}
-                onChange={(e) =>
-                  setFormData((prev) => ({ ...prev, description: e.target.value }))
-                }
+                onChange={e => setFormData(prev => ({ ...prev, description: e.target.value }))}
                 required
               />
             </Grid>
@@ -219,10 +209,10 @@ export const MeetingDecisions: React.FC<MeetingDecisionsProps> = ({
                 fullWidth
                 label="Responsáveis (separados por vírgula)"
                 value={formData.assignedTo.join(', ')}
-                onChange={(e) =>
-                  setFormData((prev) => ({
+                onChange={e =>
+                  setFormData(prev => ({
                     ...prev,
-                    assignedTo: e.target.value.split(',').map((s) => s.trim()),
+                    assignedTo: e.target.value.split(',').map(s => s.trim()),
                   }))
                 }
                 required
@@ -233,8 +223,8 @@ export const MeetingDecisions: React.FC<MeetingDecisionsProps> = ({
               <DateTimePicker
                 label="Prazo"
                 value={formData.dueDate}
-                onChange={(newValue) =>
-                  setFormData((prev) => ({ ...prev, dueDate: newValue || new Date() }))
+                onChange={newValue =>
+                  setFormData(prev => ({ ...prev, dueDate: newValue || new Date() }))
                 }
                 slotProps={{ textField: { fullWidth: true, required: true } }}
               />
@@ -245,8 +235,8 @@ export const MeetingDecisions: React.FC<MeetingDecisionsProps> = ({
                 <InputLabel>Status</InputLabel>
                 <Select
                   value={formData.status}
-                  onChange={(e) =>
-                    setFormData((prev) => ({ ...prev, status: e.target.value as DecisionStatus }))
+                  onChange={e =>
+                    setFormData(prev => ({ ...prev, status: e.target.value as DecisionStatus }))
                   }
                   label="Status"
                 >

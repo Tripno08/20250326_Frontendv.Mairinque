@@ -90,4 +90,4 @@ export const ProgressMonitoringChartExample: React.FC = () => {
       </Box>
     </Box>
   );
-}; 
+};

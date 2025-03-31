@@ -43,7 +43,7 @@ describe('PyramidVisualization', () => {
 
   it('exibe os níveis da pirâmide', () => {
     render(<PyramidVisualization data={mockData} />);
-    mockData.levels.forEach((level) => {
+    mockData.levels.forEach(level => {
       expect(screen.getByText(level.name)).toBeInTheDocument();
       expect(screen.getByText(`${level.percentage.toFixed(1)}%`)).toBeInTheDocument();
       expect(screen.getByText(`${level.students} alunos`)).toBeInTheDocument();
@@ -115,4 +115,4 @@ describe('PyramidVisualization', () => {
       expect(rect).toHaveAttribute('opacity', '0.8');
     });
   });
-}); 
+});

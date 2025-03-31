@@ -1,9 +1,6 @@
 import type { ProgressDataPoint, TrendLine, Projection } from '@/types/progress';
 
-export const calculateChartDimensions = (
-  containerWidth: number,
-  containerHeight: number
-) => {
+export const calculateChartDimensions = (containerWidth: number, containerHeight: number) => {
   const margin = {
     top: 40,
     right: 40,
@@ -36,7 +33,7 @@ export const calculateTrendLine = (data: ProgressDataPoint[]): TrendLine => {
   }
 
   const xValues = data.map((_, i) => i);
-  const yValues = data.map((d) => d.value);
+  const yValues = data.map(d => d.value);
 
   const sumX = xValues.reduce((a, b) => a + b, 0);
   const sumY = yValues.reduce((a, b) => a + b, 0);
@@ -48,8 +45,7 @@ export const calculateTrendLine = (data: ProgressDataPoint[]): TrendLine => {
   const intercept = (sumY - slope * sumX) / n;
 
   const rSquared =
-    Math.pow(n * sumXY - sumX * sumY, 2) /
-    ((n * sumXX - sumX * sumX) * (n * sumYY - sumY * sumY));
+    Math.pow(n * sumXY - sumX * sumY, 2) / ((n * sumXX - sumX * sumX) * (n * sumYY - sumY * sumY));
 
   return {
     slope,
@@ -70,15 +66,16 @@ export const calculateProjection = (
   }
 
   const targetDateTime = typeof targetDate === 'string' ? new Date(targetDate) : targetDate;
-  const lastDateTime = typeof data[lastIndex].date === 'string' ? new Date(data[lastIndex].date) : data[lastIndex].date;
+  const lastDateTime =
+    typeof data[lastIndex].date === 'string'
+      ? new Date(data[lastIndex].date)
+      : data[lastIndex].date;
 
   const daysUntilTarget = Math.ceil(
-    (targetDateTime.getTime() - lastDateTime.getTime()) /
-      (1000 * 60 * 60 * 24)
+    (targetDateTime.getTime() - lastDateTime.getTime()) / (1000 * 60 * 60 * 24)
   );
 
-  const projectedValue =
-    trendLine.slope * (lastIndex + daysUntilTarget) + trendLine.intercept;
+  const projectedValue = trendLine.slope * (lastIndex + daysUntilTarget) + trendLine.intercept;
 
   return {
     targetValue: projectedValue,
@@ -105,7 +102,7 @@ export const getInterventionColor = (intervention: string): string => {
     'Grupo de Estudo': '#2196F3',
     'Avaliação Diagnóstica': '#FFC107',
     'Plano de Ação': '#9C27B0',
-    'Feedback': '#FF5722',
+    Feedback: '#FF5722',
   };
 
   return colors[intervention] || '#757575';

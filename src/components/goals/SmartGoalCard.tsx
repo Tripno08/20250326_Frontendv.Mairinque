@@ -17,7 +17,7 @@ import {
   DialogContent,
   DialogContentText,
   DialogTitle,
-  TextField
+  TextField,
 } from '@mui/material';
 import {
   Edit as EditIcon,
@@ -29,7 +29,7 @@ import {
   Cancel as CancelIcon,
   TrendingUp as TrendingUpIcon,
   TrendingDown as TrendingDownIcon,
-  Flag as FlagIcon
+  Flag as FlagIcon,
 } from '@mui/icons-material';
 import { format, isBefore, differenceInDays, isAfter } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
@@ -61,21 +61,30 @@ const calculateProgress = (goal: SmartGoal): number => {
 // Função para obter cor com base no status
 const getStatusColor = (status: string): string => {
   switch (status) {
-    case 'concluída': return 'success.main';
-    case 'em andamento': return 'info.main';
-    case 'atrasada': return 'error.main';
-    case 'cancelada': return 'text.disabled';
-    default: return 'warning.main'; // não iniciada
+    case 'concluída':
+      return 'success.main';
+    case 'em andamento':
+      return 'info.main';
+    case 'atrasada':
+      return 'error.main';
+    case 'cancelada':
+      return 'text.disabled';
+    default:
+      return 'warning.main'; // não iniciada
   }
 };
 
 // Função para obter cor com base na prioridade
 const getPriorityColor = (priority: string): string => {
   switch (priority) {
-    case 'crítica': return 'error';
-    case 'alta': return 'warning';
-    case 'média': return 'info';
-    default: return 'success'; // baixa
+    case 'crítica':
+      return 'error';
+    case 'alta':
+      return 'warning';
+    case 'média':
+      return 'info';
+    default:
+      return 'success'; // baixa
   }
 };
 
@@ -99,7 +108,7 @@ export const SmartGoalCard: React.FC<GoalVisualizationProps> = ({
   goal,
   onEdit,
   onDelete,
-  onUpdateProgress
+  onUpdateProgress,
 }) => {
   // Estados para diálogos
   const [openDelete, setOpenDelete] = useState(false);
@@ -111,18 +120,18 @@ export const SmartGoalCard: React.FC<GoalVisualizationProps> = ({
   const progress = calculateProgress(goal);
 
   // Verificar se meta está atrasada mas não marcada como tal
-  const isOverdue = (
+  const isOverdue =
     goal.status !== 'concluída' &&
     goal.status !== 'cancelada' &&
     isBefore(goal.targetDate, new Date()) &&
-    goal.status !== 'atrasada'
-  );
+    goal.status !== 'atrasada';
 
   // Calcular dias restantes
   const daysLeft = differenceInDays(goal.targetDate, new Date());
 
   // Verificar se meta está perto do prazo (menos de 7 dias)
-  const isCloseToDeadline = daysLeft >= 0 && daysLeft < 7 && goal.status !== 'concluída' && goal.status !== 'cancelada';
+  const isCloseToDeadline =
+    daysLeft >= 0 && daysLeft < 7 && goal.status !== 'concluída' && goal.status !== 'cancelada';
 
   // Analisar tendência (baseado no último registro do histórico)
   const getTrend = () => {
@@ -130,8 +139,8 @@ export const SmartGoalCard: React.FC<GoalVisualizationProps> = ({
     if (progressHistory.length < 2) return 'stable';
 
     // Ordena por data (mais recente primeiro)
-    const sortedHistory = [...progressHistory].sort((a, b) =>
-      new Date(b.date).getTime() - new Date(a.date).getTime()
+    const sortedHistory = [...progressHistory].sort(
+      (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
     );
 
     const latestValue = sortedHistory[0].value;
@@ -181,8 +190,8 @@ export const SmartGoalCard: React.FC<GoalVisualizationProps> = ({
         position: 'relative',
         transition: 'all 0.2s',
         '&:hover': {
-          boxShadow: 6
-        }
+          boxShadow: 6,
+        },
       }}
     >
       {/* Cabeçalho */}
@@ -204,42 +213,26 @@ export const SmartGoalCard: React.FC<GoalVisualizationProps> = ({
               color={getPriorityColor(goal.priority)}
               variant="outlined"
             />
-            <Chip
-              label={goal.domain}
-              size="small"
-              variant="outlined"
-            />
+            <Chip label={goal.domain} size="small" variant="outlined" />
           </Box>
         </Box>
 
         {/* Ações */}
         <Box>
           {onUpdateProgress && goal.status !== 'concluída' && goal.status !== 'cancelada' && (
-            <IconButton
-              color="primary"
-              onClick={handleOpenUpdate}
-              aria-label="Atualizar progresso"
-            >
+            <IconButton color="primary" onClick={handleOpenUpdate} aria-label="Atualizar progresso">
               <UpdateIcon />
             </IconButton>
           )}
 
           {onEdit && (
-            <IconButton
-              color="info"
-              onClick={() => onEdit(goal.id)}
-              aria-label="Editar meta"
-            >
+            <IconButton color="info" onClick={() => onEdit(goal.id)} aria-label="Editar meta">
               <EditIcon />
             </IconButton>
           )}
 
           {onDelete && (
-            <IconButton
-              color="error"
-              onClick={handleOpenDelete}
-              aria-label="Excluir meta"
-            >
+            <IconButton color="error" onClick={handleOpenDelete} aria-label="Excluir meta">
               <DeleteIcon />
             </IconButton>
           )}
@@ -350,7 +343,9 @@ export const SmartGoalCard: React.FC<GoalVisualizationProps> = ({
           <Grid item xs={12} sm={6}>
             <Typography
               variant="body2"
-              color={isOverdue ? 'error.main' : isCloseToDeadline ? 'warning.main' : 'text.secondary'}
+              color={
+                isOverdue ? 'error.main' : isCloseToDeadline ? 'warning.main' : 'text.secondary'
+              }
               fontWeight={isOverdue || isCloseToDeadline ? 'bold' : 'regular'}
             >
               Prazo: {format(new Date(goal.targetDate), 'dd/MM/yyyy', { locale: ptBR })}
@@ -372,12 +367,7 @@ export const SmartGoalCard: React.FC<GoalVisualizationProps> = ({
                 </Typography>
                 <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
                   {goal.responsibleUsers.map((user, index) => (
-                    <Chip
-                      key={index}
-                      label={user}
-                      size="small"
-                      variant="outlined"
-                    />
+                    <Chip key={index} label={user} size="small" variant="outlined" />
                   ))}
                 </Box>
               </Grid>
@@ -390,12 +380,7 @@ export const SmartGoalCard: React.FC<GoalVisualizationProps> = ({
                 </Typography>
                 <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
                   {goal.skills.map((skill, index) => (
-                    <Chip
-                      key={index}
-                      label={skill}
-                      size="small"
-                      variant="outlined"
-                    />
+                    <Chip key={index} label={skill} size="small" variant="outlined" />
                   ))}
                 </Box>
               </Grid>
@@ -434,12 +419,12 @@ export const SmartGoalCard: React.FC<GoalVisualizationProps> = ({
             type="number"
             fullWidth
             value={newValue}
-            onChange={(e) => setNewValue(Number(e.target.value))}
+            onChange={e => setNewValue(Number(e.target.value))}
             sx={{ mb: 3 }}
             inputProps={{
               min: Math.min(goal.measurement.initialValue, goal.measurement.targetValue),
               max: Math.max(goal.measurement.initialValue, goal.measurement.targetValue),
-              step: 0.1
+              step: 0.1,
             }}
           />
 
@@ -449,7 +434,7 @@ export const SmartGoalCard: React.FC<GoalVisualizationProps> = ({
             multiline
             rows={3}
             value={progressNotes}
-            onChange={(e) => setProgressNotes(e.target.value)}
+            onChange={e => setProgressNotes(e.target.value)}
             placeholder="Descreva o que foi feito e/ou observações relevantes"
           />
         </DialogContent>

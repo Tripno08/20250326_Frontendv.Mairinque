@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState } from 'react';
 import {
   Card,
   CardContent,
@@ -12,31 +12,31 @@ import {
   List,
   ListItem,
   ListItemText,
-  useTheme
-} from '@mui/material'
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
-import CheckCircleIcon from '@mui/icons-material/CheckCircle'
-import DoneIcon from '@mui/icons-material/Done'
-import CloseIcon from '@mui/icons-material/Close'
-import ArrowRightIcon from '@mui/icons-material/ArrowRight'
-import { motion } from 'framer-motion'
-import { PreventiveAlertProps, AlertLevel } from '@/types/actionable-insights'
+  useTheme,
+} from '@mui/material';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import DoneIcon from '@mui/icons-material/Done';
+import CloseIcon from '@mui/icons-material/Close';
+import ArrowRightIcon from '@mui/icons-material/ArrowRight';
+import { motion } from 'framer-motion';
+import { PreventiveAlertProps, AlertLevel } from '@/types/actionable-insights';
 
 // Mapeamento de cores para níveis de alerta
 const alertLevelColors: Record<AlertLevel, string> = {
-  'low': '#4caf50',      // verde
-  'moderate': '#ff9800', // laranja
-  'high': '#f44336',     // vermelho
-  'critical': '#d32f2f'  // vermelho escuro
-}
+  low: '#4caf50', // verde
+  moderate: '#ff9800', // laranja
+  high: '#f44336', // vermelho
+  critical: '#d32f2f', // vermelho escuro
+};
 
 // Mapeamento de textos para níveis de alerta
 const alertLevelText: Record<AlertLevel, string> = {
-  'low': 'Baixo',
-  'moderate': 'Moderado',
-  'high': 'Alto',
-  'critical': 'Crítico'
-}
+  low: 'Baixo',
+  moderate: 'Moderado',
+  high: 'Alto',
+  critical: 'Crítico',
+};
 
 /**
  * Componente que exibe um alerta preventivo com indicadores visuais.
@@ -48,37 +48,37 @@ export const PreventiveAlertCard: React.FC<PreventiveAlertProps> = ({
   onDismiss,
   expanded = false,
   className,
-  style
+  style,
 }) => {
-  const theme = useTheme()
-  const [isExpanded, setIsExpanded] = useState<boolean>(expanded)
+  const theme = useTheme();
+  const [isExpanded, setIsExpanded] = useState<boolean>(expanded);
 
   // Formata a data para exibição
   const formatDate = (dateString: string): string => {
-    const date = new Date(dateString)
+    const date = new Date(dateString);
     return new Intl.DateTimeFormat('pt-BR', {
       day: '2-digit',
       month: '2-digit',
       year: 'numeric',
       hour: '2-digit',
-      minute: '2-digit'
-    }).format(date)
-  }
+      minute: '2-digit',
+    }).format(date);
+  };
 
   // Manipula o reconhecimento do alerta
   const handleAcknowledge = () => {
-    onAcknowledge?.(insight.id)
-  }
+    onAcknowledge?.(insight.id);
+  };
 
   // Manipula a resolução do alerta
   const handleResolve = () => {
-    onResolve?.(insight.id)
-  }
+    onResolve?.(insight.id);
+  };
 
   // Manipula a dispensa do alerta
   const handleDismiss = () => {
-    onDismiss?.(insight.id)
-  }
+    onDismiss?.(insight.id);
+  };
 
   return (
     <motion.div
@@ -95,9 +95,9 @@ export const PreventiveAlertCard: React.FC<PreventiveAlertProps> = ({
           borderLeft: `4px solid ${alertLevelColors[insight.alertLevel]}`,
           mb: 2,
           '&:hover': {
-            boxShadow: theme.shadows[4]
+            boxShadow: theme.shadows[4],
           },
-          transition: 'box-shadow 0.3s ease-in-out'
+          transition: 'box-shadow 0.3s ease-in-out',
         }}
       >
         {/* Indicador de status */}
@@ -110,7 +110,7 @@ export const PreventiveAlertCard: React.FC<PreventiveAlertProps> = ({
             sx={{
               position: 'absolute',
               top: 8,
-              right: 8
+              right: 8,
             }}
           />
         )}
@@ -124,7 +124,7 @@ export const PreventiveAlertCard: React.FC<PreventiveAlertProps> = ({
             sx={{
               position: 'absolute',
               top: 8,
-              right: insight.isAcknowledged ? 110 : 8
+              right: insight.isAcknowledged ? 110 : 8,
             }}
           />
         )}
@@ -140,15 +140,10 @@ export const PreventiveAlertCard: React.FC<PreventiveAlertProps> = ({
                     bgcolor: alertLevelColors[insight.alertLevel],
                     color: 'white',
                     mr: 1,
-                    fontWeight: 'bold'
+                    fontWeight: 'bold',
                   }}
                 />
-                <Chip
-                  label={insight.category}
-                  size="small"
-                  variant="outlined"
-                  sx={{ mr: 1 }}
-                />
+                <Chip label={insight.category} size="small" variant="outlined" sx={{ mr: 1 }} />
                 <Typography variant="caption" color="text.secondary">
                   {formatDate(insight.timestamp)}
                 </Typography>
@@ -169,7 +164,7 @@ export const PreventiveAlertCard: React.FC<PreventiveAlertProps> = ({
               aria-label="mostrar mais"
               sx={{
                 transform: isExpanded ? 'rotate(180deg)' : 'rotate(0deg)',
-                transition: 'transform 0.3s'
+                transition: 'transform 0.3s',
               }}
             >
               <ExpandMoreIcon />
@@ -181,14 +176,15 @@ export const PreventiveAlertCard: React.FC<PreventiveAlertProps> = ({
               <Divider sx={{ mb: 2 }} />
 
               <Typography variant="subtitle2" gutterBottom>
-                Impacto Potencial: {insight.potentialImpact ? `${insight.potentialImpact}%` : 'Não determinado'}
+                Impacto Potencial:{' '}
+                {insight.potentialImpact ? `${insight.potentialImpact}%` : 'Não determinado'}
               </Typography>
 
               <Typography variant="subtitle2" gutterBottom>
                 Áreas de Impacto:
               </Typography>
               <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5, mb: 2 }}>
-                {insight.impactArea.map((area) => (
+                {insight.impactArea.map(area => (
                   <Chip key={area} label={area} size="small" variant="outlined" />
                 ))}
               </Box>
@@ -199,7 +195,10 @@ export const PreventiveAlertCard: React.FC<PreventiveAlertProps> = ({
               <List dense disablePadding>
                 {insight.suggestedActions.map((action, index) => (
                   <ListItem key={index} sx={{ py: 0.5 }}>
-                    <ArrowRightIcon fontSize="small" sx={{ mr: 1, color: theme.palette.primary.main }} />
+                    <ArrowRightIcon
+                      fontSize="small"
+                      sx={{ mr: 1, color: theme.palette.primary.main }}
+                    />
                     <ListItemText primary={action} />
                   </ListItem>
                 ))}
@@ -245,5 +244,5 @@ export const PreventiveAlertCard: React.FC<PreventiveAlertProps> = ({
         </CardContent>
       </Card>
     </motion.div>
-  )
-}
+  );
+};

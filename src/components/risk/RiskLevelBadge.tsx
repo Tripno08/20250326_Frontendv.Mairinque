@@ -62,7 +62,7 @@ const RiskLevelBadge: React.FC<RiskLevelBadgeProps> = ({
   showTrend = false,
   tooltipTitle,
   size = 'medium',
-  className
+  className,
 }) => {
   const badgeContent = showTrend && trend ? getTrendIcon(trend) : null;
   const label = getRiskLabel(level);

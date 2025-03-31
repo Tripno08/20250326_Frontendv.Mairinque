@@ -12,7 +12,6 @@ import {
   DialogContent,
   DialogActions,
   TextField,
-  Grid,
   Card,
   CardContent,
   CardActions,
@@ -24,7 +23,7 @@ import {
   Alert,
   Badge,
   Divider,
-  Tooltip
+  Tooltip,
 } from '@mui/material';
 import {
   Add as AddIcon,
@@ -37,11 +36,13 @@ import {
   Event as EventIcon,
   Search as SearchIcon,
   FilterList as FilterIcon,
-  MoreVert as MoreVertIcon
+  MoreVert as MoreVertIcon,
 } from '@mui/icons-material';
 import { Team, TeamMember, TeamRole } from '@/types/team';
 import { useTeams } from '@/hooks/useTeam';
 import { TeamManagementProps } from '@/types/team';
+import GridContainer from '@/components/GridContainer';
+import GridItem from '@/components/GridItem';
 
 /**
  * Componente principal para gerenciamento de equipes multidisciplinares
@@ -55,19 +56,21 @@ export const TeamManagement: React.FC<TeamManagementProps> = ({
   onMemberAdd,
   onMemberRemove,
   onCaseAssign,
-  onCaseUnassign
+  onCaseUnassign,
 }) => {
   // Estado local
   const [activeTab, setActiveTab] = useState(0);
   const [teamDialogOpen, setTeamDialogOpen] = useState(false);
   const [editingTeam, setEditingTeam] = useState<Team | null>(null);
-  const [newTeam, setNewTeam] = useState<Partial<Omit<Team, 'id' | 'dateCreated' | 'dateModified'>>>({
+  const [newTeam, setNewTeam] = useState<
+    Partial<Omit<Team, 'id' | 'dateCreated' | 'dateModified'>>
+  >({
     name: '',
     description: '',
     members: [],
     coordinator: '',
     caseIds: [],
-    isActive: true
+    isActive: true,
   });
   const [snackbar, setSnackbar] = useState<{
     open: boolean;
@@ -76,7 +79,7 @@ export const TeamManagement: React.FC<TeamManagementProps> = ({
   }>({
     open: false,
     message: '',
-    severity: 'info'
+    severity: 'info',
   });
 
   // Hooks personalizados
@@ -96,7 +99,7 @@ export const TeamManagement: React.FC<TeamManagementProps> = ({
         members: team.members,
         coordinator: team.coordinator,
         caseIds: team.caseIds,
-        isActive: team.isActive
+        isActive: team.isActive,
       });
     } else {
       setEditingTeam(null);
@@ -106,7 +109,7 @@ export const TeamManagement: React.FC<TeamManagementProps> = ({
         members: [],
         coordinator: '',
         caseIds: [],
-        isActive: true
+        isActive: true,
       });
     }
     setTeamDialogOpen(true);
@@ -121,7 +124,7 @@ export const TeamManagement: React.FC<TeamManagementProps> = ({
     const { name, value } = e.target;
     setNewTeam(prev => ({
       ...prev,
-      [name]: value
+      [name]: value,
     }));
   };
 
@@ -130,28 +133,26 @@ export const TeamManagement: React.FC<TeamManagementProps> = ({
       if (editingTeam) {
         // Atualizando equipe existente
         const result = onTeamUpdate
-          ? await onTeamUpdate({ ...editingTeam, ...newTeam as Partial<Team> })
+          ? await onTeamUpdate({ ...editingTeam, ...(newTeam as Partial<Team>) })
           : await updateTeam(editingTeam.id, newTeam);
 
         if (result) {
           setSnackbar({
             open: true,
             message: 'Equipe atualizada com sucesso.',
-            severity: 'success'
+            severity: 'success',
           });
         }
       } else {
         // Criando nova equipe
         const teamData = newTeam as Omit<Team, 'id' | 'dateCreated' | 'dateModified'>;
-        const result = onTeamCreate
-          ? await onTeamCreate(teamData)
-          : await createTeam(teamData);
+        const result = onTeamCreate ? await onTeamCreate(teamData) : await createTeam(teamData);
 
         if (result) {
           setSnackbar({
             open: true,
             message: 'Equipe criada com sucesso.',
-            severity: 'success'
+            severity: 'success',
           });
         }
       }
@@ -161,23 +162,23 @@ export const TeamManagement: React.FC<TeamManagementProps> = ({
       setSnackbar({
         open: true,
         message: `Erro ao ${editingTeam ? 'atualizar' : 'criar'} equipe: ${err instanceof Error ? err.message : 'Erro desconhecido'}`,
-        severity: 'error'
+        severity: 'error',
       });
     }
   };
 
   const handleDeleteTeam = async (teamId: string) => {
-    if (window.confirm('Tem certeza que deseja excluir esta equipe? Esta ação não pode ser desfeita.')) {
+    if (
+      window.confirm('Tem certeza que deseja excluir esta equipe? Esta ação não pode ser desfeita.')
+    ) {
       try {
-        const success = onTeamDelete
-          ? await onTeamDelete(teamId)
-          : await deleteTeam(teamId);
+        const success = onTeamDelete ? await onTeamDelete(teamId) : await deleteTeam(teamId);
 
         if (success) {
           setSnackbar({
             open: true,
             message: 'Equipe excluída com sucesso.',
-            severity: 'success'
+            severity: 'success',
           });
           fetchTeams();
         }
@@ -185,7 +186,7 @@ export const TeamManagement: React.FC<TeamManagementProps> = ({
         setSnackbar({
           open: true,
           message: `Erro ao excluir equipe: ${err instanceof Error ? err.message : 'Erro desconhecido'}`,
-          severity: 'error'
+          severity: 'error',
         });
       }
     }
@@ -231,26 +232,40 @@ export const TeamManagement: React.FC<TeamManagementProps> = ({
             </Typography>
           )}
 
-          <Grid container spacing={2} sx={{ mt: 1 }}>
-            <Grid item xs={6}>
-              <Typography variant="body2" component="div" sx={{ display: 'flex', alignItems: 'center' }}>
+          <GridContainer spacing={2} sx={{ mt: 1 }}>
+            <GridItem xs={6}>
+              <Typography
+                variant="body2"
+                component="div"
+                sx={{ display: 'flex', alignItems: 'center' }}
+              >
                 <PeopleIcon fontSize="small" sx={{ mr: 1, color: 'primary.main' }} />
                 {team.members.length} membros
               </Typography>
-            </Grid>
-            <Grid item xs={6}>
-              <Typography variant="body2" component="div" sx={{ display: 'flex', alignItems: 'center' }}>
+            </GridItem>
+            <GridItem xs={6}>
+              <Typography
+                variant="body2"
+                component="div"
+                sx={{ display: 'flex', alignItems: 'center' }}
+              >
                 <AssignmentIcon fontSize="small" sx={{ mr: 1, color: 'secondary.main' }} />
                 {team.caseIds.length} casos
               </Typography>
-            </Grid>
-          </Grid>
+            </GridItem>
+          </GridContainer>
         </CardContent>
         <Divider />
         <CardActions>
-          <Button size="small" href={`/teams/${team.id}`}>Visualizar Detalhes</Button>
-          <Button size="small" href={`/teams/${team.id}/members`}>Gerenciar Membros</Button>
-          <Button size="small" href={`/teams/${team.id}/cases`}>Gerenciar Casos</Button>
+          <Button size="small" href={`/teams/${team.id}`}>
+            Visualizar Detalhes
+          </Button>
+          <Button size="small" href={`/teams/${team.id}/members`}>
+            Gerenciar Membros
+          </Button>
+          <Button size="small" href={`/teams/${team.id}/cases`}>
+            Gerenciar Casos
+          </Button>
         </CardActions>
       </Card>
     );
@@ -265,8 +280,8 @@ export const TeamManagement: React.FC<TeamManagementProps> = ({
         </DialogTitle>
         <DialogContent>
           <Box component="form" noValidate sx={{ mt: 2 }}>
-            <Grid container spacing={2}>
-              <Grid item xs={12}>
+            <GridContainer spacing={2}>
+              <GridItem xs={12}>
                 <TextField
                   required
                   fullWidth
@@ -275,8 +290,8 @@ export const TeamManagement: React.FC<TeamManagementProps> = ({
                   value={newTeam.name}
                   onChange={handleTeamInputChange}
                 />
-              </Grid>
-              <Grid item xs={12}>
+              </GridItem>
+              <GridItem xs={12}>
                 <TextField
                   fullWidth
                   label="Descrição"
@@ -286,17 +301,13 @@ export const TeamManagement: React.FC<TeamManagementProps> = ({
                   multiline
                   rows={3}
                 />
-              </Grid>
-            </Grid>
+              </GridItem>
+            </GridContainer>
           </Box>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleCloseTeamDialog}>Cancelar</Button>
-          <Button
-            onClick={handleCreateUpdateTeam}
-            variant="contained"
-            disabled={!newTeam.name}
-          >
+          <Button onClick={handleCreateUpdateTeam} variant="contained" disabled={!newTeam.name}>
             {editingTeam ? 'Atualizar' : 'Criar'}
           </Button>
         </DialogActions>
@@ -311,11 +322,7 @@ export const TeamManagement: React.FC<TeamManagementProps> = ({
         <Typography variant="h4" component="h1">
           Gestão de Equipes Multidisciplinares
         </Typography>
-        <Button
-          variant="contained"
-          startIcon={<AddIcon />}
-          onClick={() => handleOpenTeamDialog()}
-        >
+        <Button variant="contained" startIcon={<AddIcon />} onClick={() => handleOpenTeamDialog()}>
           Nova Equipe
         </Button>
       </Box>
@@ -359,40 +366,40 @@ export const TeamManagement: React.FC<TeamManagementProps> = ({
         </Paper>
       ) : (
         <Box role="tabpanel" hidden={activeTab !== 0} id="tabpanel-0">
-          <Grid container spacing={3}>
+          <GridContainer spacing={3}>
             {teams.map(team => (
-              <Grid item xs={12} sm={6} md={4} key={team.id}>
+              <GridItem xs={12} sm={6} md={4} key={team.id}>
                 {renderTeamCard(team)}
-              </Grid>
+              </GridItem>
             ))}
-          </Grid>
+          </GridContainer>
         </Box>
       )}
 
       {/* Painel para equipes ativas */}
       <Box role="tabpanel" hidden={activeTab !== 1} id="tabpanel-1">
-        <Grid container spacing={3}>
+        <GridContainer spacing={3}>
           {teams
             .filter(team => team.isActive)
             .map(team => (
-              <Grid item xs={12} sm={6} md={4} key={team.id}>
+              <GridItem xs={12} sm={6} md={4} key={team.id}>
                 {renderTeamCard(team)}
-              </Grid>
+              </GridItem>
             ))}
-        </Grid>
+        </GridContainer>
       </Box>
 
       {/* Painel para equipes inativas */}
       <Box role="tabpanel" hidden={activeTab !== 2} id="tabpanel-2">
-        <Grid container spacing={3}>
+        <GridContainer spacing={3}>
           {teams
             .filter(team => !team.isActive)
             .map(team => (
-              <Grid item xs={12} sm={6} md={4} key={team.id}>
+              <GridItem xs={12} sm={6} md={4} key={team.id}>
                 {renderTeamCard(team)}
-              </Grid>
+              </GridItem>
             ))}
-        </Grid>
+        </GridContainer>
       </Box>
 
       {/* Diálogo para criar/editar equipes */}

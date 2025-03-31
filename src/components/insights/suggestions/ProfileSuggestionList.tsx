@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 import {
   Box,
   Typography,
@@ -8,35 +8,35 @@ import {
   Divider,
   Avatar,
   Paper,
-  Chip
-} from '@mui/material'
+  Chip,
+} from '@mui/material';
 import {
   PersonOutline as PersonIcon,
   School as SchoolIcon,
   SupervisorAccount as SupervisorIcon,
   Build as BuildIcon,
-  Assessment as AssessmentIcon
-} from '@mui/icons-material'
-import { motion } from 'framer-motion'
-import { ProfileSuggestionsProps, UserProfile } from '@/types/actionable-insights'
+  Assessment as AssessmentIcon,
+} from '@mui/icons-material';
+import { motion } from 'framer-motion';
+import { ProfileSuggestionsProps, UserProfile } from '@/types/actionable-insights';
 
 // Mapeamento de ícones por perfil de usuário
 const profileIcons: Record<UserProfile, React.ReactNode> = {
-  'teacher': <PersonIcon />,
-  'specialist': <BuildIcon />,
-  'coordinator': <SupervisorIcon />,
-  'principal': <SchoolIcon />,
-  'administrator': <AssessmentIcon />
-}
+  teacher: <PersonIcon />,
+  specialist: <BuildIcon />,
+  coordinator: <SupervisorIcon />,
+  principal: <SchoolIcon />,
+  administrator: <AssessmentIcon />,
+};
 
 // Mapeamento de textos por perfil de usuário
 const profileText: Record<UserProfile, string> = {
-  'teacher': 'Professor',
-  'specialist': 'Especialista',
-  'coordinator': 'Coordenador',
-  'principal': 'Diretor',
-  'administrator': 'Administrador'
-}
+  teacher: 'Professor',
+  specialist: 'Especialista',
+  coordinator: 'Coordenador',
+  principal: 'Diretor',
+  administrator: 'Administrador',
+};
 
 /**
  * Componente que exibe sugestões específicas por perfil de usuário.
@@ -46,22 +46,18 @@ export const ProfileSuggestionList: React.FC<ProfileSuggestionsProps> = ({
   profile,
   maxItems = 10,
   className,
-  style
+  style,
 }) => {
   // Filtra apenas insights com alta relevância para o perfil atual
   const relevantInsights = insights
     .filter(insight => insight.profileRelevance[profile] >= 0.7)
-    .slice(0, maxItems)
+    .slice(0, maxItems);
 
   return (
     <Box className={className} style={style}>
       <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
-        <Avatar sx={{ bgcolor: 'primary.main', mr: 1 }}>
-          {profileIcons[profile]}
-        </Avatar>
-        <Typography variant="h6">
-          Sugestões para {profileText[profile]}
-        </Typography>
+        <Avatar sx={{ bgcolor: 'primary.main', mr: 1 }}>{profileIcons[profile]}</Avatar>
+        <Typography variant="h6">Sugestões para {profileText[profile]}</Typography>
       </Box>
 
       {relevantInsights.length === 0 ? (
@@ -81,7 +77,14 @@ export const ProfileSuggestionList: React.FC<ProfileSuggestionsProps> = ({
             >
               <ListItem alignItems="flex-start">
                 <Box sx={{ width: '100%' }}>
-                  <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', mb: 1 }}>
+                  <Box
+                    sx={{
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                      alignItems: 'flex-start',
+                      mb: 1,
+                    }}
+                  >
                     <Typography variant="subtitle1" fontWeight="bold">
                       {insight.title}
                     </Typography>
@@ -106,7 +109,7 @@ export const ProfileSuggestionList: React.FC<ProfileSuggestionsProps> = ({
                           primary={action}
                           primaryTypographyProps={{
                             variant: 'body2',
-                            color: 'text.primary'
+                            color: 'text.primary',
                           }}
                         />
                       </ListItem>
@@ -114,7 +117,7 @@ export const ProfileSuggestionList: React.FC<ProfileSuggestionsProps> = ({
                   </List>
 
                   <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5, mt: 1 }}>
-                    {insight.impactArea.map((area) => (
+                    {insight.impactArea.map(area => (
                       <Chip key={area} label={area} size="small" variant="outlined" />
                     ))}
                   </Box>
@@ -126,5 +129,5 @@ export const ProfileSuggestionList: React.FC<ProfileSuggestionsProps> = ({
         </List>
       )}
     </Box>
-  )
-}
+  );
+};

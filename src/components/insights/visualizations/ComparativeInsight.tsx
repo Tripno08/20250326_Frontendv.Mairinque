@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 import {
   Box,
   Typography,
@@ -9,8 +9,8 @@ import {
   List,
   ListItem,
   ListItemIcon,
-  ListItemText
-} from '@mui/material'
+  ListItemText,
+} from '@mui/material';
 import {
   BarChart,
   Bar,
@@ -22,15 +22,15 @@ import {
   Tooltip,
   Legend,
   ResponsiveContainer,
-  ReferenceLine
-} from 'recharts'
-import CompareArrowsIcon from '@mui/icons-material/CompareArrows'
-import TrendingUpIcon from '@mui/icons-material/TrendingUp'
-import TrendingDownIcon from '@mui/icons-material/TrendingDown'
-import TrendingFlatIcon from '@mui/icons-material/TrendingFlat'
-import SourceIcon from '@mui/icons-material/Source'
-import { motion } from 'framer-motion'
-import { ComparativeInsightProps } from '@/types/actionable-insights'
+  ReferenceLine,
+} from 'recharts';
+import CompareArrowsIcon from '@mui/icons-material/CompareArrows';
+import TrendingUpIcon from '@mui/icons-material/TrendingUp';
+import TrendingDownIcon from '@mui/icons-material/TrendingDown';
+import TrendingFlatIcon from '@mui/icons-material/TrendingFlat';
+import SourceIcon from '@mui/icons-material/Source';
+import { motion } from 'framer-motion';
+import { ComparativeInsightProps } from '@/types/actionable-insights';
 
 /**
  * Componente que exibe uma visualização comparativa detalhada de um insight.
@@ -39,47 +39,47 @@ export const ComparativeInsight: React.FC<ComparativeInsightProps> = ({
   insight,
   showEvidence = true,
   className,
-  style
+  style,
 }) => {
-  const theme = useTheme()
+  const theme = useTheme();
 
   // Se não houver evidência ou showEvidence for false, não renderiza o componente
   if (!showEvidence || !insight.evidence) {
-    return null
+    return null;
   }
 
-  const { dataPoints, trend, sources } = insight.evidence
+  const { dataPoints, trend, sources } = insight.evidence;
 
   // Função para renderizar o ícone de tendência
   const getTrendIcon = () => {
-    if (!trend) return <TrendingFlatIcon />
+    if (!trend) return <TrendingFlatIcon />;
 
     switch (trend.direction) {
       case 'up':
-        return <TrendingUpIcon color="success" />
+        return <TrendingUpIcon color="success" />;
       case 'down':
-        return <TrendingDownIcon color="error" />
+        return <TrendingDownIcon color="error" />;
       case 'stable':
       default:
-        return <TrendingFlatIcon color="action" />
+        return <TrendingFlatIcon color="action" />;
     }
-  }
+  };
 
   // Função para renderizar o texto de tendência
   const getTrendText = () => {
-    if (!trend) return 'Sem dados de tendência'
+    if (!trend) return 'Sem dados de tendência';
 
     const directionText =
-      trend.direction === 'up' ? 'aumento' :
-      trend.direction === 'down' ? 'redução' :
-      'estabilidade'
+      trend.direction === 'up'
+        ? 'aumento'
+        : trend.direction === 'down'
+          ? 'redução'
+          : 'estabilidade';
 
-    const percentText = trend.percentChange
-      ? `${Math.abs(trend.percentChange).toFixed(1)}%`
-      : ''
+    const percentText = trend.percentChange ? `${Math.abs(trend.percentChange).toFixed(1)}%` : '';
 
-    return `${directionText} ${percentText} no período ${trend.period}`
-  }
+    return `${directionText} ${percentText} no período ${trend.period}`;
+  };
 
   return (
     <motion.div
@@ -103,14 +103,27 @@ export const ComparativeInsight: React.FC<ComparativeInsightProps> = ({
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis dataKey="name" />
               <YAxis />
-              <Tooltip formatter={(value, name) => [value, name === 'value' ? 'Valor Atual' : name === 'baseline' ? 'Linha Base' : 'Comparação']} />
+              <Tooltip
+                formatter={(value, name) => [
+                  value,
+                  name === 'value'
+                    ? 'Valor Atual'
+                    : name === 'baseline'
+                      ? 'Linha Base'
+                      : 'Comparação',
+                ]}
+              />
               <Legend />
               <Bar dataKey="value" name="Valor Atual" fill={theme.palette.primary.main} />
               {dataPoints.some(d => d.baseline !== undefined) && (
                 <Bar dataKey="baseline" name="Linha Base" fill={theme.palette.grey[500]} />
               )}
               {dataPoints.some(d => d.comparisonValue !== undefined) && (
-                <Bar dataKey="comparisonValue" name="Comparação" fill={theme.palette.secondary.main} />
+                <Bar
+                  dataKey="comparisonValue"
+                  name="Comparação"
+                  fill={theme.palette.secondary.main}
+                />
               )}
             </BarChart>
           </ResponsiveContainer>
@@ -155,5 +168,5 @@ export const ComparativeInsight: React.FC<ComparativeInsightProps> = ({
         </Grid>
       </Paper>
     </motion.div>
-  )
-}
+  );
+};
